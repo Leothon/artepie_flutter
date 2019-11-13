@@ -18,7 +18,11 @@ class _MyArticlePage extends State<ArticlePage>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return null;
+    return Scaffold(
+      body: Center(
+        child: Text('文章'),
+      ),
+    );
   }
 
 }

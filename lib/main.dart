@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:artepie/model/user_info.dart';
 import 'package:artepie/routers/Application.dart';
 import 'package:artepie/routers/routers.dart';
@@ -7,6 +9,8 @@ import 'package:artepie/views/loginPage/LoginPage.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:artepie/views/Home.dart';
+import 'package:flutter/services.dart';
 
 SpUtil sp;
 
@@ -66,7 +70,7 @@ class _MyAppState extends State<MyApp> {
 
   showFirstPage(){
     if(_hasLogin){
-      return HomePage(_userInfo,_hasLogin);
+      return AppPage(_userInfo,_hasLogin);
     }else{
       return LoginPage();
     }
@@ -74,14 +78,39 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    int lastTime = 0;
 
-    return new MaterialApp(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
 
-      home: showFirstPage(),
+        value: SystemUiOverlayStyle.dark,
+      //home: showFirstPage(),
+
+        child: MaterialApp(
+          home: AppPage(_userInfo, _hasLogin),
+          onGenerateRoute: Application.router.generator,
 
 
-      onGenerateRoute: Application.router.generator,
-//      navigatorObservers: <NavigatorObserver>[Analytics.observer],
+        ),
+
+
+
+
+
+//      onWillPop: () {
+//          int newTime = DateTime.now().millisecondsSinceEpoch;
+//          int result = newTime - lastTime;
+//          lastTime = newTime;
+//          if (result > 2000) {
+//            Fluttertoast.showToast(msg: "再按一次退出",
+//                toastLength: Toast.LENGTH_SHORT,
+//                gravity: ToastGravity.BOTTOM,
+//                timeInSecForIos: 1);
+//          } else {
+//            SystemNavigator.pop();
+//          }
+//          return null;
+//        }
+        //navigatorObservers: <NavigatorObserver>[Analytics.observer],
     );
   }
 }
@@ -89,7 +118,12 @@ class _MyAppState extends State<MyApp> {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   sp = await SpUtil.getInstance();
-
+  Application.spUtil = sp;
   runApp(new MyApp());
-
+  if (Platform.isAndroid) {
+    SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+    );
+    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+  }
 }
