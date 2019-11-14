@@ -86,7 +86,7 @@ class _MyAppState extends State<MyApp> {
       //home: showFirstPage(),
 
         child: MaterialApp(
-          home: AppPage(_userInfo, _hasLogin),
+          home: showFirstPage(),
           onGenerateRoute: Application.router.generator,
 
 

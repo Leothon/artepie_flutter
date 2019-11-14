@@ -73,6 +73,9 @@ class _MyAppPageState extends State<AppPage> {
     super.dispose();
   }
 
+
+
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -134,9 +137,9 @@ class _MyAppPageState extends State<AppPage> {
             )),
         AnimatedSwitcher(
           transitionBuilder: (child,anim){
-            return ScaleTransition(scale: anim,child: child);
+            return FadeTransition(opacity: anim,child: child);
           },
-          duration: Duration(milliseconds: 300),
+          duration: Duration(milliseconds: 200),
           child: _addWidget(context),
         )
         
