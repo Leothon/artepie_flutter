@@ -55,4 +55,9 @@ class UserInformation {
         user_balance: json['user_balance'],
         user_art_coin: json['user_art_coin']);
   }
+
+  @override
+  String toString() {
+    return 'ID:$user_id,名字:$user_name,头像:$user_icon,生日:$user_birth,性别:$user_sex,密码:$user_password,令牌:$user_token,状态:$user_status,注册时间:$user_register_time,注册IP:$user_register_ip,最后一次登录时间:$user_lastlogin_time,手机号码:$user_phone,用户身份:$user_role,用户余额:$user_balance,艺币:$user_art_coin';
+  }
 }

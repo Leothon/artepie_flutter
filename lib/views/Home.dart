@@ -5,6 +5,7 @@ import 'package:artepie/views/articlePage/articlePage.dart';
 import 'package:artepie/views/homePage/homePage.dart';
 import 'package:artepie/views/videoPage/videoPage.dart';
 import 'package:artepie/views/emptyPage.dart';
+import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -59,7 +60,7 @@ class _MyAppPageState extends State<AppPage> {
         ),
       ));
     }
-
+    LogUtil.e(widget.userInfo.toString());
     _widgetList
       ..add(HomePage(widget.userInfo, widget._hasLogin))
       ..add(ArticlePage(widget.userInfo, widget._hasLogin))

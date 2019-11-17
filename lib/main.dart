@@ -6,6 +6,7 @@ import 'package:artepie/routers/routers.dart';
 import 'package:artepie/utils/shared_preferences.dart';
 import 'package:artepie/views/homePage/homePage.dart';
 import 'package:artepie/views/loginPage/LoginPage.dart';
+import 'package:common_utils/common_utils.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
   bool _hasLogin = false;
-  bool _isLoading = true;
   UserInformation _userInfo;
 
   //TODO 极光推送设置
@@ -43,27 +43,23 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     if(Application.spUtil.hasKey("login")){
       if(Application.spUtil.getBool("login")){
         //TODO 登录，显示登录情况,从数据库拿出数据
         setState(() {
           _hasLogin = true;
-          _isLoading = false;
         });
 
 
       }else{
         setState(() {
           _hasLogin = false;
-          _isLoading = false;
         });
       }
     }else{
       setState(() {
         _hasLogin = false;
-        _isLoading = false;
       });
     }
   }
@@ -83,8 +79,6 @@ class _MyAppState extends State<MyApp> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
 
         value: SystemUiOverlayStyle.dark,
-      //home: showFirstPage(),
-
         child: MaterialApp(
           home: showFirstPage(),
           onGenerateRoute: Application.router.generator,
