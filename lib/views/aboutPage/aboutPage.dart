@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 class AboutPage extends StatefulWidget{
 
-  final UserInformation userInfo;
+
   final bool hasLogined;
 
-  AboutPage(this.userInfo,this.hasLogined);
+  AboutPage(this.hasLogined);
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState

@@ -2,10 +2,10 @@ import 'package:artepie/model/user_info.dart';
 import 'package:flutter/material.dart';
 
 class ArticlePage extends StatefulWidget{
-  final UserInformation userInfo;
+
   final bool hasLogined;
 
-  ArticlePage(this.userInfo,this.hasLogined);
+  ArticlePage(this.hasLogined);
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState

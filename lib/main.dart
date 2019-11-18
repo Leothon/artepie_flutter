@@ -32,7 +32,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
   bool _hasLogin = false;
-  UserInformation _userInfo;
 
   //TODO 极光推送设置
 
@@ -66,7 +65,7 @@ class _MyAppState extends State<MyApp> {
 
   showFirstPage(){
     if(_hasLogin){
-      return AppPage(_userInfo,_hasLogin);
+      return AppPage(_hasLogin);
     }else{
       return LoginPage();
     }

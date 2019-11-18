@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 
 class VideoPage extends StatefulWidget{
 
-  final UserInformation userInfo;
   final bool hasLogined;
 
-  VideoPage(this.userInfo,this.hasLogined);
+  VideoPage(this.hasLogined);
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState

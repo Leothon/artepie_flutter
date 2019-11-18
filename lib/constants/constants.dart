@@ -1,0 +1,4 @@
+class Constants{
+  static const String visitorToken = 'eyJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIxOTg2MTk4NjE5ODYxOTg2MTk4NiIsInN0YSI6MTU0ODA1MzgzNDYzNCwiZXhwIjoxNTc5MTU3ODM0NjM0fQ.E12L7X-oBSIQw99DC353P64G422cYDMJ_CatsedRzoI';
+
+}

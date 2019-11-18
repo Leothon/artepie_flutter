@@ -1,4 +1,4 @@
-import 'package:artepie/api/api.dart';
+import 'package:artepie/constants/api.dart';
 import 'package:artepie/model/user_info.dart';
 import 'package:artepie/utils/net_utils.dart';
 

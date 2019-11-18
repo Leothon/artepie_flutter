@@ -1,5 +1,6 @@
 import 'package:artepie/model/user_info.dart';
 import 'package:artepie/resource/MyColors.dart';
+import 'package:artepie/routers/Application.dart';
 import 'package:artepie/views/aboutPage/aboutPage.dart';
 import 'package:artepie/views/articlePage/articlePage.dart';
 import 'package:artepie/views/homePage/homePage.dart';
@@ -10,9 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class AppPage extends StatefulWidget {
-  final UserInformation userInfo;
+  //final UserInformation userInfo;
   final bool _hasLogin;
-  AppPage(this.userInfo, this._hasLogin);
+  AppPage(this._hasLogin);
 
   @override
   State<StatefulWidget> createState() {
@@ -60,13 +61,13 @@ class _MyAppPageState extends State<AppPage> {
         ),
       ));
     }
-    LogUtil.e(widget.userInfo.toString());
+
     _widgetList
-      ..add(HomePage(widget.userInfo, widget._hasLogin))
-      ..add(ArticlePage(widget.userInfo, widget._hasLogin))
+      ..add(HomePage(widget._hasLogin))
+      ..add(ArticlePage(widget._hasLogin))
       ..add(EmptyPage())
-      ..add(VideoPage(widget.userInfo, widget._hasLogin))
-      ..add(AboutPage(widget.userInfo, widget._hasLogin));
+      ..add(VideoPage(widget._hasLogin))
+      ..add(AboutPage(widget._hasLogin));
   }
 
   @override
@@ -94,6 +95,7 @@ class _MyAppPageState extends State<AppPage> {
               floatingActionButton: Container(
                 height: 65,
                 width: 65,
+
                 padding: EdgeInsets.all(8),
                 margin: EdgeInsets.only(top: 10),
                 decoration: BoxDecoration(
@@ -101,6 +103,7 @@ class _MyAppPageState extends State<AppPage> {
                   color: Colors.white,
                 ),
                 child: FloatingActionButton(
+                  backgroundColor: MyColors.colorPrimary,
                   child: Icon(
                     Icons.add,
                     color: Colors.white,
@@ -112,15 +115,6 @@ class _MyAppPageState extends State<AppPage> {
                     } else {
                       _setAddBackshow(true);
                     }
-
-//            showModalBottomSheet(
-//                context: context,
-//                elevation: 0,
-//                isScrollControlled: true,
-//                backgroundColor: MyColors.alphaWhite,
-//                builder: (BuildContext context) {
-//                  return _addWidget(context);
-//                });
                   },
                 ),
               ),
@@ -131,7 +125,7 @@ class _MyAppPageState extends State<AppPage> {
                 currentIndex: _currentIndex,
                 onTap: _itemTapped,
                 type: BottomNavigationBarType.fixed,
-                fixedColor: Theme.of(context).primaryColor,
+                fixedColor: MyColors.colorPrimary,
                 backgroundColor: Colors.white,
                 elevation: 0,
               ),

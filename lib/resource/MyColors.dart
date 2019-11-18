@@ -10,8 +10,10 @@ class MyColors{
   static const Color primaryText = Color(0xff212121);
   static const Color secondaryText = Color(0xff757575);
 
-  static const Color dividerColor = Color(0xffBDBDBD);
 
   static const Color alphaWhite = Color(0xE6FFFFFF);
+
+  static const Color dividerColor = Color(0xfff5f5f5);
+
 
 }
