@@ -1,4 +1,5 @@
 import 'package:artepie/model/user_info.dart';
+import 'package:artepie/views/userIconWidget/UserIconWidget.dart';
 import 'package:flutter/material.dart';
 
 class VideoPage extends StatefulWidget{
@@ -21,8 +22,12 @@ class _MyVideoPageState extends State<VideoPage>{
     // TODO: implement build
     return Scaffold(
       body: Center(
-        child: Text('视频'),
-      ),
+        child: UserIconWidget(
+          url: 'http://www.artepie.cn/image/bannertest2.jpg',
+          size: 80,
+          authority: 0,
+        ),
+      )
     );
   }
 

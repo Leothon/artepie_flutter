@@ -15,15 +15,38 @@ class HomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<HomePage> {
+  ScrollController _scrollController = new ScrollController();
+
   @override
   void initState() {
     super.initState();
-    //TODO 加载数据
+    _scrollController.addListener(() {
+      if (_scrollController.offset < 200) {
+        setState(() {
+          isListInTop = true;
+        });
+      } else {
+        setState(() {
+          isListInTop = false;
+        });
+      }
+    });
   }
 
-  bool isListInTop = true;
+  @override
+  void dispose() {
+    //为了避免内存泄露，需要调用_controller.dispose
+    _scrollController.dispose();
+    super.dispose();
+  }
 
-  ScrollController _scrollController;
+
+  bool isListInTop = true;
+  bool isOfficialClass = true;
+  bool isSerial = false;
+
+  var _classViewCount = '265610';
+  var _classPrice = '15';
 
   List<String> bannerImgs = [
     'http://www.artepie.cn/image/bannertest.jpg',
@@ -79,8 +102,7 @@ class _MyHomePageState extends State<HomePage> {
     Icon(Icons.star_border),
     Icon(Icons.music_note)
   ];
-  
-  
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -89,10 +111,11 @@ class _MyHomePageState extends State<HomePage> {
       child: Stack(
         children: <Widget>[
           new RefreshIndicator(
+              displacement: 50,
               child: new Listener(
                 onPointerMove: (event) {
                   var position = event.position.distance;
-                  LogUtil.e(position);
+//                  LogUtil.e(position);
                 },
                 child: new CustomScrollView(
                   controller: _scrollController,
@@ -110,8 +133,40 @@ class _MyHomePageState extends State<HomePage> {
                         height: 40,
                         margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.yellowAccent
+                          borderRadius: BorderRadius.circular(10),
+                          color: MyColors.card_tap,
+                        ),
+                        child: new Padding(
+                          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                          child: new Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Expanded(
+                                child: Icon(
+                                  Icons.music_note,
+                                  color: MyColors.card_tap_to,
+                                ),
+                                flex: 1,
+                              ),
+                              Expanded(
+                                child: new Text(
+                                  'AIS商业音乐定制',
+                                  style: new TextStyle(
+                                    fontSize: 14,
+                                    color: MyColors.card_text,
+                                  ),
+                                ),
+                                flex: 10,
+                              ),
+                              Expanded(
+                                child: Icon(
+                                  Icons.touch_app,
+                                  color: MyColors.card_tap_to,
+                                ),
+                                flex: 1,
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -132,14 +187,10 @@ class _MyHomePageState extends State<HomePage> {
                       ),
                     ),
                     SliverFixedExtentList(
-                      itemExtent: 50.0,
+                      itemExtent: 180.0,
                       delegate: SliverChildBuilderDelegate(
                         (BuildContext context, int index) {
-                          return Container(
-                            alignment: Alignment.center,
-                            color: Colors.lightBlue[100 * (index % 9)],
-                            child: Text('SliverFixedExtentList item $index'),
-                          );
+                          return _classItem(context, index);
                         },
                         childCount: 20,
                       ),
@@ -148,15 +199,11 @@ class _MyHomePageState extends State<HomePage> {
                 ),
               ),
               onRefresh: () {}),
-          isListInTop
-              ? _searchWidgetFloating(context)
-              : _searchWidgetNormal(context),
+          _searchWidget(context)
         ],
       ),
     );
   }
-
-  
 
   Widget _bannerWidget(BuildContext context) {
     return new Container(
@@ -218,10 +265,27 @@ class _MyHomePageState extends State<HomePage> {
                       children: <Widget>[
                         Container(
                           margin: EdgeInsets.all(8),
-                          child: CircleAvatar(
-                            backgroundImage: NetworkImage(teaIcons[index]),
-                            radius: 25,
+
+
+                          child: ClipRRect(
+
+                            borderRadius: BorderRadius.circular(30),
+                            child: FadeInImage.assetNetwork(
+                              height: 50,
+                              width: 50,
+                              placeholder: 'lib/resource/assets/img/defaulticon.jpeg',
+                              image: teaIcons[index],
+                              fit: BoxFit.cover,
+                            ),
                           ),
+//                          child: Align(
+//                            child: CircleAvatar(
+//                              child: Image.network(teaIcons[index]),
+//                              backgroundImage: AssetImage(
+//                                  'lib/resource/assets/img/defaulticon.jpeg'),
+//                              radius: 25,
+//                            ),
+//                          )
                         ),
                         new Text(
                           teaNames[index],
@@ -244,8 +308,6 @@ class _MyHomePageState extends State<HomePage> {
       ),
     );
   }
-
-  
 
   Widget _typeWidget(BuildContext context) {
     return new Container(
@@ -329,51 +391,123 @@ class _MyHomePageState extends State<HomePage> {
     );
   }
 
-  Widget _searchWidgetFloating(BuildContext context) {
-    return new Container(
-      height: 86,
-      child: new Stack(
+  Widget _classItem(BuildContext context, int position) {
+    return Container(
+      height: 180,
+      margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
+      decoration: BoxDecoration(
+          color: Colors.white, borderRadius: BorderRadius.circular(15)),
+      child: new Row(
         children: <Widget>[
-          new AppBar(
-            elevation: 0,
-            brightness: Brightness.light,
-            backgroundColor: Colors.transparent,
-          ),
-          new SafeArea(
-              top: true,
-              child: new Container(
-                height: 56.0,
-                child: new Container(
-                  margin: EdgeInsets.fromLTRB(25, 10, 25, 10),
-                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(40),
-                      color: Colors.white),
-                  child: new Row(
-                    children: <Widget>[
-                      Icon(Icons.search),
-                      new Padding(
-                        padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                        child: new Text('搜索艺派相关内容'),
-                      )
-                    ],
+          new Stack(
+            children: <Widget>[
+              Container(
+                height: 180,
+                width: 160,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: FadeInImage.assetNetwork(
+                    placeholder: 'lib/resource/assets/img/loading.png',
+                    image: 'http://www.artepie.cn/image/bannertest2.jpg',
+                    fit: BoxFit.cover,
                   ),
                 ),
-              ))
+              ),
+              new Offstage(
+                offstage: !isOfficialClass,
+                child: Container(
+                  height: 32,
+                  width: 62,
+                  decoration: BoxDecoration(
+                    color: MyColors.colorPrimary,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(15),
+                        topRight: Radius.circular(0),
+                        bottomLeft: Radius.circular(0),
+                        bottomRight: Radius.circular(15)),
+                  ),
+                  child: new Center(
+                    child: new Text(
+                      '官方课程',
+                      style: new TextStyle(fontSize: 12, color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          new Container(
+            width: 180,
+            margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+            child: new Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new Text('标题',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: new TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    )),
+                new Text('作者',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: new TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold)),
+                new Text(
+                    '简介dsdsdsdsdsdsdsdsdsdsfwegregsdgdgsddgsgsewrwfewfwefwfwfewfewfwefwefwefewfwef',
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: new TextStyle(
+                      fontSize: 16,
+                    )),
+                new Container(
+                  height: 20,
+                  width: 50,
+                  decoration: BoxDecoration(
+                      color: MyColors.colorPrimary,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: new Text(isSerial ? '连载中' : '已完结',
+                      textAlign: TextAlign.center,
+                      style: new TextStyle(color: Colors.white, fontSize: 12)),
+                ),
+                new Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    new Text(
+                      '$_classViewCount人次已学习',
+                      style: new TextStyle(
+                        fontSize: 12,
+                      ),
+                    ),
+                    new Text(
+                      '￥$_classPrice',
+                      style: new TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic,
+                          color: MyColors.colorPrimary),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _searchWidgetNormal(BuildContext context) {
+  Widget _searchWidget(BuildContext context) {
     return new Container(
       height: 86,
       child: new Stack(
         children: <Widget>[
           new AppBar(
-            elevation: 3,
+            elevation: isListInTop ? 0 : 3,
             brightness: Brightness.light,
-            backgroundColor: Colors.white,
+            backgroundColor: isListInTop ? Colors.transparent : Colors.white,
           ),
           new SafeArea(
               top: true,
@@ -384,7 +518,8 @@ class _MyHomePageState extends State<HomePage> {
                   padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(40),
-                      color: MyColors.dividerColor),
+                      color:
+                          isListInTop ? Colors.white : MyColors.dividerColor),
                   child: new Row(
                     children: <Widget>[
                       Icon(Icons.search),

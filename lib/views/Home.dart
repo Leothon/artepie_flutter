@@ -124,6 +124,7 @@ class _MyAppPageState extends State<AppPage> {
                 items: _myTabs,
                 currentIndex: _currentIndex,
                 onTap: _itemTapped,
+
                 type: BottomNavigationBarType.fixed,
                 fixedColor: MyColors.colorPrimary,
                 backgroundColor: Colors.white,

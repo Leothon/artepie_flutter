@@ -49,6 +49,9 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - lib/resource/assets/img/loading.png
+    - lib/resource/assets/img/defaulticon.jpeg
   fonts:
     - family: wechatIcon
       fonts:
