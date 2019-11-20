@@ -1,6 +1,7 @@
 import 'package:artepie/model/user_info.dart';
 import 'package:artepie/resource/MyColors.dart';
 import 'package:artepie/views/commonAppBar/CommonAppBar.dart';
+import 'package:artepie/views/userIconWidget/UserIconWidget.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -179,15 +180,11 @@ class _MyArticlePage extends State<ArticlePage> {
                 ),
                 new Row(
                   children: <Widget>[
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: FadeInImage.assetNetwork(
-                        height: 18,
-                        width: 18,
-                        placeholder: 'lib/resource/assets/img/loading.png',
-                        image: 'http://www.artepie.cn/image/bannertest2.jpg',
-                        fit: BoxFit.cover,
-                      ),
+                    UserIconWidget(
+                      url: 'http://www.artepie.cn/image/bannertest2.jpg',
+                      size: 18,
+                      authority: true,
+                      isAuthor: true,
                     ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(10, 0, 10, 0),

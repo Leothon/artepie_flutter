@@ -4,6 +4,7 @@ import 'package:artepie/routers/Application.dart';
 import 'package:artepie/views/aboutPage/aboutPage.dart';
 import 'package:artepie/views/articlePage/articlePage.dart';
 import 'package:artepie/views/homePage/homePage.dart';
+import 'package:artepie/views/userIconWidget/UserIconWidget.dart';
 import 'package:artepie/views/videoPage/videoPage.dart';
 import 'package:artepie/views/emptyPage.dart';
 import 'package:common_utils/common_utils.dart';
@@ -34,6 +35,7 @@ class _MyAppPageState extends State<AppPage> {
   List<BottomNavigationBarItem> _myTabs = [];
   String appBarTitle;
 
+  var _joinDayCount = '15';
   List<String> addIconItems = <String>['录课程', '发文章', '秀吧拍', '开直播'];
   List<Icon> addIcon = [
     Icon(Icons.videocam, color: Colors.white),
@@ -75,9 +77,6 @@ class _MyAppPageState extends State<AppPage> {
     super.dispose();
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -86,7 +85,7 @@ class _MyAppPageState extends State<AppPage> {
       children: <Widget>[
         Container(
             foregroundDecoration: BoxDecoration(
-                color: addbackShow ? MyColors.alphaWhite : Colors.transparent),
+                color: addbackShow ? MyColors.alphaBack : Colors.transparent),
             child: Scaffold(
               body: IndexedStack(
                 index: _currentIndex,
@@ -95,7 +94,6 @@ class _MyAppPageState extends State<AppPage> {
               floatingActionButton: Container(
                 height: 65,
                 width: 65,
-
                 padding: EdgeInsets.all(8),
                 margin: EdgeInsets.only(top: 10),
                 decoration: BoxDecoration(
@@ -124,7 +122,6 @@ class _MyAppPageState extends State<AppPage> {
                 items: _myTabs,
                 currentIndex: _currentIndex,
                 onTap: _itemTapped,
-
                 type: BottomNavigationBarType.fixed,
                 fixedColor: MyColors.colorPrimary,
                 backgroundColor: Colors.white,
@@ -132,13 +129,12 @@ class _MyAppPageState extends State<AppPage> {
               ),
             )),
         AnimatedSwitcher(
-          transitionBuilder: (child,anim){
-            return FadeTransition(opacity: anim,child: child);
+          transitionBuilder: (child, anim) {
+            return FadeTransition(opacity: anim, child: child);
           },
           duration: Duration(milliseconds: 200),
           child: _addWidget(context),
         )
-        
       ],
     );
   }
@@ -146,7 +142,7 @@ class _MyAppPageState extends State<AppPage> {
   void _setAddBackshow(bool show) {
     setState(() {
       addbackShow = show;
-      () => opacityLevel = opacityLevel == 0? 1.0 : 0.0;
+      () => opacityLevel = opacityLevel == 0 ? 1.0 : 0.0;
     });
   }
 
@@ -164,69 +160,86 @@ class _MyAppPageState extends State<AppPage> {
   Widget _addWidget(BuildContext context) {
     if (addbackShow) {
       return new Scaffold(
-          backgroundColor: Colors.transparent,
-          body: new Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  new Container(),
-                  new Container(),
-                  new Container(),
-                  new Container(),
-                  new Container(),
-                  new Container(),
-                  new Container(),
-                  new Container(),
-                  new Container(),
-                  new Container(),
-                  new Container(),
-                  new Container(),
-                  new Container(),
-                  new Padding(
-                    padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
-                    child: new Container(
-                      height: 120,
-                      child: new CustomScrollView(
-                        physics: BouncingScrollPhysics(),
-                        slivers: <Widget>[
-                          new SliverPadding(
-                            padding: EdgeInsets.all(0.0),
-                            sliver: new SliverList(
-                              delegate: new SliverChildListDelegate(<Widget>[
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    _addIconWidget(context, 0),
-                                    _addIconWidget(context, 1),
-                                    _addIconWidget(context, 2),
-                                    _addIconWidget(context, 3),
-                                  ],
-                                )
-                              ]),
-                            ),
-                          )
-                        ],
-                      ),
+        backgroundColor: Colors.transparent,
+        body: new Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              new Container(),
+              new Container(),
+              new Container(),
+              new Container(),
+              new Container(),
+              new Container(),
+              new Container(),
+              new Container(),
+              new Container(),
+              new Container(),
+              new Container(),
+              new Container(),
+              new Container(
+                child: new Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    UserIconWidget(
+                      size: 40,
+                      isAuthor: true,
+                      authority: true,
+                      url: 'http://www.artepie.cn/image/bannertest2.jpg',
                     ),
-                  ),
-                  new Center(
-                      child: GestureDetector(
-                          child: new Padding(
-                            padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
-                            child: Icon(
-                              Icons.clear,
-                              size: 25,
-                            ),
-                          ),
-                          onTap: () {
-                            _setAddBackshow(false);
-//                      Navigator.pop(context);
-                          }))
-                ],
+                    new Container(
+                      margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                      child: new Text('今天是您加入艺派的第$_joinDayCount天，祝您学习愉快'),
+                    ),
+
+                  ],
+                ),
               ),
-            ),
-          );
+              new Padding(
+                padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+                child: new Container(
+                  height: 120,
+                  child: new CustomScrollView(
+                    physics: BouncingScrollPhysics(),
+                    slivers: <Widget>[
+                      new SliverPadding(
+                        padding: EdgeInsets.all(0.0),
+                        sliver: new SliverList(
+                          delegate: new SliverChildListDelegate(<Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                _addIconWidget(context, 0),
+                                _addIconWidget(context, 1),
+                                _addIconWidget(context, 2),
+                                _addIconWidget(context, 3),
+                              ],
+                            )
+                          ]),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              new Center(
+                  child: GestureDetector(
+                      child: new Padding(
+                        padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
+                        child: Icon(
+                          Icons.clear,
+                          size: 25,
+                        ),
+                      ),
+                      onTap: () {
+                        _setAddBackshow(false);
+//                      Navigator.pop(context);
+                      }))
+            ],
+          ),
+        ),
+      );
     } else {
       return Container(
         width: 0,
