@@ -19,7 +19,7 @@ class VideoPage extends StatefulWidget {
 class _MyVideoPageState extends State<VideoPage> {
   var _noticeInfo = '我这倒是难得跑i就得跑i手机打破旧的是';
   var _authInfo = '优秀民歌爱好者';
-  var _content = '视频播放器';
+  var _content = '视频播放器视频播放器视频播放器视频播放器视频播放器视频播放器视频播放器视频播放器视频播放器视频播放器';
   var _readCount = '125';
   @override
   Widget build(BuildContext context) {
@@ -64,8 +64,7 @@ class _MyVideoPageState extends State<VideoPage> {
                     ),
                   ),
                 ),
-                SliverFixedExtentList(
-                  itemExtent: 370.0,
+                SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
                       return _videoItem(context, index);
@@ -195,13 +194,13 @@ class _MyVideoPageState extends State<VideoPage> {
   }
 
   var testVideoUrl =
-      'http://www.artepie.cn/video/64496efbf9fa2bb8032c79268cddb7fa.mp4';
+      'https://v-cdn.zjol.com.cn/280443.mp4';
   Widget _contentWidget(BuildContext context, int position) {
     return new Container(
-      padding: EdgeInsets.all(5),
+      padding: EdgeInsets.all(10),
       child: new Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           new Text(
             '$_content',
@@ -215,20 +214,20 @@ class _MyVideoPageState extends State<VideoPage> {
               fontSize: 12,
             ),
           ),
-//          new Chewie(
-//            new VideoPlayerController.network(testVideoUrl),
-//            aspectRatio: 18 / 9,
-//            autoPlay: false,
-//            looping: true,
-//            showControls: true,
-//            placeholder: Image.asset('lib/resource/assets/img/loading.png',fit: BoxFit.cover,),
-//            autoInitialize: false,
-//            materialProgressColors: new ChewieProgressColors(
-//                playedColor: Colors.red,
-//                handleColor: Colors.blue,
-//                backgroundColor: Colors.grey,
-//                bufferedColor: Colors.lightGreen),
-//          )
+          new Chewie(
+            new VideoPlayerController.network(testVideoUrl),
+            aspectRatio: 16 / 9,
+            autoPlay: false,
+            looping: true,
+            showControls: true,
+            placeholder: Container(width:double.infinity,child: Image.network('http://www.artepie.cn/image/bannertest2.jpg',fit: BoxFit.cover,)),
+            autoInitialize: false,
+            materialProgressColors: new ChewieProgressColors(
+                playedColor: MyColors.white,
+                handleColor: MyColors.colorPrimary,
+                backgroundColor: Colors.grey,
+                bufferedColor: MyColors.pressColorPrimary),
+          )
         ],
       ),
     );
