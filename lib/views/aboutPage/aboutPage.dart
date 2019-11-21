@@ -264,7 +264,7 @@ class _MyAboutPageState extends State<AboutPage> {
                   flex: 8,
                 ),
                 Expanded(
-                  child: new Text('>',style: new TextStyle(fontSize: 18),),
+                  child: Icon(Icons.arrow_forward_ios,size: 15,),
                   flex: 1,
                 )
               ],
