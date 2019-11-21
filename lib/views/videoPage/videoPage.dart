@@ -1,7 +1,8 @@
 import 'package:artepie/model/user_info.dart';
 import 'package:artepie/resource/MyColors.dart';
 import 'package:artepie/views/userIconWidget/UserIconWidget.dart';
-import 'package:chewie/chewie.dart';
+import 'package:artepie/widgets/MyChewie/chewie_player.dart';
+import 'package:artepie/widgets/MyChewie/chewie_progress_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 

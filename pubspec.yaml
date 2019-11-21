@@ -34,7 +34,7 @@ dependencies:
   common_utils: ^1.1.1
   flutter_swiper : ^1.1.6
   video_player: ^0.7.0
-  chewie: ^0.8.0
+  open_iconic_flutter: ">=0.3.0 <0.4.0"
 
 dev_dependencies:
   flutter_test:
