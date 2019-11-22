@@ -30,69 +30,68 @@ class _MyCommonAppBar extends State<CommonAppBar> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return new Container(
-      height: Adapt.px(86),
-      child: Stack(
-        children: <Widget>[
-          new AppBar(
-            elevation: 3,
-            brightness: Brightness.light,
-            backgroundColor: Colors.white,
-          ),
-          new SafeArea(
-              top: true,
-              child: new Container(
-                  height: Adapt.px(56),
-                  child: new Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Expanded(
-                        child: new GestureDetector(
-                          child: widget.isBackLastPage
-                              ? Icon(
-                                  Icons.arrow_back,
-                                  size: 28,
-                                )
-                              : Icon(
-                                  Icons.clear,
-                                  size: 28,
-                                ),
-                          onTap: () {
-                            if (widget.isBackLastPage) {
-                              Navigator.pop(context);
-                            } else {
-                              SystemNavigator.pop();
-                            }
-                          },
-                        ),
-                        flex: 1,
+    return new Stack(
+      children: <Widget>[
+        new AppBar(
+          elevation: 3,
+          brightness: Brightness.light,
+          backgroundColor: Colors.white,
+        ),
+        new SafeArea(
+            top: true,
+            child: new Container(
+              height: kToolbarHeight,
+              child: new Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(
+                    child: new GestureDetector(
+                      child: widget.isBackLastPage
+                          ? Icon(
+                              Icons.arrow_back,
+                              size: Adapt.px(56),
+                            )
+                          : Icon(
+                              Icons.clear,
+                              size: Adapt.px(56),
+                            ),
+                      onTap: () {
+                        if (widget.isBackLastPage) {
+                          Navigator.pop(context);
+                        } else {
+                          SystemNavigator.pop();
+                        }
+                      },
+                    ),
+                    flex: 1,
+                  ),
+                  Expanded(
+                    child: new Text(
+                      widget.title,
+                      style: new TextStyle(
+                        fontSize: Adapt.px(36),
+                        color: Colors.black,
                       ),
-                      Expanded(
-                        child: new Text(
-                          widget.title,
-                          style: new TextStyle(
-                            fontSize: 18,
-                            color: Colors.black,
+                    ),
+                    flex: 4,
+                  ),
+                  Expanded(
+                    child: new Center(
+                      child: new GestureDetector(
+                          child: new Text(
+                            widget.subTitle,
+                            style: new TextStyle(
+                                fontSize: Adapt.px(30), color: widget.subTitleColor),
                           ),
-                        ),
-                        flex: 4,
-                      ),
-                      Expanded(
-                        child: new Center(
-                          child: new GestureDetector(
-                              child: new Text(
-                                widget.subTitle,
-                                style: new TextStyle(
-                                    fontSize: 15, color: widget.subTitleColor),
-                              ),
-                              onTap: this.widget.onPressSubTitle),
-                        ),
-                        flex: 2,
-                      ),
-                    ],
-                  )))
-        ],
-      ),
+                          onTap: this.widget.onPressSubTitle),
+                    ),
+                    flex: 2,
+                  ),
+                ],
+              ),
+            ))
+      ],
     );
   }
 }

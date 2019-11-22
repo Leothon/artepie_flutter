@@ -1,6 +1,7 @@
 import 'package:artepie/model/user_info.dart';
 import 'package:artepie/resource/MyColors.dart';
 import 'package:artepie/routers/Application.dart';
+import 'package:artepie/utils/Adapt.dart';
 import 'package:artepie/views/aboutPage/aboutPage.dart';
 import 'package:artepie/views/articlePage/articlePage.dart';
 import 'package:artepie/views/homePage/homePage.dart';
@@ -92,12 +93,12 @@ class _MyAppPageState extends State<AppPage> {
                 children: _widgetList,
               ),
               floatingActionButton: Container(
-                height: 65,
-                width: 65,
-                padding: EdgeInsets.all(8),
-                margin: EdgeInsets.only(top: 10),
+                height: Adapt.px(116),
+                width: Adapt.px(116),
+                padding: EdgeInsets.all(Adapt.px(14)),
+                margin: EdgeInsets.only(top: Adapt.px(20)),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(40),
+                  borderRadius: BorderRadius.circular(Adapt.px(70)),
                   color: Colors.white,
                 ),
                 child: FloatingActionButton(
@@ -183,23 +184,23 @@ class _MyAppPageState extends State<AppPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     UserIconWidget(
-                      size: 40,
+                      size: Adapt.px(80),
                       isAuthor: true,
                       authority: true,
                       url: 'http://www.artepie.cn/image/bannertest2.jpg',
                     ),
                     new Container(
-                      margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                      child: new Text('今天是您加入艺派的第$_joinDayCount天，祝您学习愉快'),
+                      margin: EdgeInsets.fromLTRB(Adapt.px(20), 0, 0, 0),
+                      child: new Text('今天是您加入艺派的第$_joinDayCount天，祝您学习愉快',style: new TextStyle(fontSize: Adapt.px(26)),),
                     ),
 
                   ],
                 ),
               ),
               new Padding(
-                padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+                padding: EdgeInsets.fromLTRB(0.0, Adapt.px(40), 0.0, 0.0),
                 child: new Container(
-                  height: 120,
+                  height: Adapt.px(238),
                   child: new CustomScrollView(
                     physics: BouncingScrollPhysics(),
                     slivers: <Widget>[
@@ -226,10 +227,10 @@ class _MyAppPageState extends State<AppPage> {
               new Center(
                   child: GestureDetector(
                       child: new Padding(
-                        padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
+                        padding: EdgeInsets.fromLTRB(0.0, Adapt.px(12), 0.0, 0.0),
                         child: Icon(
                           Icons.clear,
-                          size: 25,
+                          size: Adapt.px(50),
                         ),
                       ),
                       onTap: () {
@@ -252,12 +253,12 @@ class _MyAppPageState extends State<AppPage> {
     return new Column(
       children: <Widget>[
         new Container(
-          height: 50.0,
-          width: 50.0,
-          padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
-          margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+          height: Adapt.px(90),
+          width: Adapt.px(90),
+          padding: EdgeInsets.fromLTRB(0.0, Adapt.px(20), 0.0, Adapt.px(20)),
+          margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, Adapt.px(20)),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(40),
+            borderRadius: BorderRadius.circular(Adapt.px(80)),
             color: addIconColors[index],
           ),
           child: addIcon[index],

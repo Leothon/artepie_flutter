@@ -1,5 +1,6 @@
 import 'package:artepie/model/user_info.dart';
 import 'package:artepie/resource/MyColors.dart';
+import 'package:artepie/utils/Adapt.dart';
 import 'package:artepie/views/userIconWidget/UserIconWidget.dart';
 import 'package:artepie/widgets/MyChewie/chewie_player.dart';
 import 'package:artepie/widgets/MyChewie/chewie_progress_colors.dart';
@@ -37,7 +38,7 @@ class _MyVideoPageState extends State<VideoPage> {
                 SliverAppBar(
                   title: new Text(
                     '秀吧视频',
-                    style: new TextStyle(fontSize: 22, color: Colors.black),
+                    style: new TextStyle(fontSize: Adapt.px(34), color: Colors.black),
                   ),
                   pinned: true,
                   backgroundColor: Colors.white,
@@ -47,18 +48,18 @@ class _MyVideoPageState extends State<VideoPage> {
                 ),
                 SliverToBoxAdapter(
                   child: new Padding(
-                    padding: EdgeInsets.all(8),
+                    padding: EdgeInsets.all(Adapt.px(12)),
                     child: new Row(
                       children: <Widget>[
                         Icon(
                           Icons.info_outline,
-                          size: 18,
+                          size: Adapt.px(34),
                         ),
                         new Padding(
-                          padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                          padding: EdgeInsets.fromLTRB(Adapt.px(8), 0, Adapt.px(8), 0),
                           child: Text(
                             '官方消息：$_noticeInfo',
-                            style: new TextStyle(fontSize: 12),
+                            style: new TextStyle(fontSize: Adapt.px(22)),
                           ),
                         )
                       ],
@@ -83,8 +84,8 @@ class _MyVideoPageState extends State<VideoPage> {
   Widget _videoItem(BuildContext context, int position) {
     return new Container(
       color: MyColors.white,
-      margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-      padding: EdgeInsets.all(15),
+      margin: EdgeInsets.fromLTRB(0, 0, 0, Adapt.px(18)),
+      padding: EdgeInsets.all(Adapt.px(26)),
       child: new Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -104,7 +105,7 @@ class _MyVideoPageState extends State<VideoPage> {
           Expanded(
             child: UserIconWidget(
               url: 'http://www.artepie.cn/image/bannertest2.jpg',
-              size: 34,
+              size: Adapt.px(66),
               authority: true,
               isAuthor: true,
             ),
@@ -118,14 +119,14 @@ class _MyVideoPageState extends State<VideoPage> {
                 new Text(
                   '名字',
                   style: new TextStyle(
-                      fontSize: 14,
+                      fontSize: Adapt.px(26),
                       color: Colors.black,
                       fontWeight: FontWeight.bold),
                 ),
                 new Text(
                   '认证：$_authInfo',
                   style: new TextStyle(
-                    fontSize: 10,
+                    fontSize: Adapt.px(20),
                     color: MyColors.fontColor,
                   ),
                 ),
@@ -146,7 +147,7 @@ class _MyVideoPageState extends State<VideoPage> {
 
   Widget _footWidget(BuildContext context, int position) {
     return new Container(
-      margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+      margin: EdgeInsets.fromLTRB(Adapt.px(22), 0, Adapt.px(22), 0),
       child: new Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -154,11 +155,11 @@ class _MyVideoPageState extends State<VideoPage> {
             children: <Widget>[
               Icon(
                 Icons.favorite_border,
-                size: 18,
+                size: Adapt.px(34),
               ),
               new Text(
                 '12',
-                style: new TextStyle(fontSize: 12),
+                style: new TextStyle(fontSize: Adapt.px(22)),
               )
             ],
           ),
@@ -166,21 +167,21 @@ class _MyVideoPageState extends State<VideoPage> {
             children: <Widget>[
               Icon(
                 Icons.comment,
-                size: 18,
+                size: Adapt.px(34),
               ),
               new Text(
                 '5',
-                style: new TextStyle(fontSize: 12),
+                style: new TextStyle(fontSize: Adapt.px(22)),
               )
             ],
           ),
           Icon(
             Icons.repeat,
-            size: 18,
+            size: Adapt.px(34),
           ),
           Icon(
             Icons.share,
-            size: 18,
+            size: Adapt.px(34),
           ),
         ],
       ),
@@ -198,7 +199,7 @@ class _MyVideoPageState extends State<VideoPage> {
       'https://v-cdn.zjol.com.cn/280443.mp4';
   Widget _contentWidget(BuildContext context, int position) {
     return new Container(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(Adapt.px(18)),
       child: new Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -206,13 +207,14 @@ class _MyVideoPageState extends State<VideoPage> {
           new Text(
             '$_content',
             style: new TextStyle(
-              fontSize: 15,
+              fontSize: Adapt.px(26),
             ),
           ),
           new Text(
             '阅读：$_readCount',
             style: new TextStyle(
-              fontSize: 12,
+              fontSize: Adapt.px(22),
+              color: MyColors.lowfontColor
             ),
           ),
           new Chewie(

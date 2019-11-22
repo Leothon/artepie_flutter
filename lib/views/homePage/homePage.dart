@@ -1,4 +1,5 @@
 import 'package:artepie/resource/MyColors.dart';
+import 'package:artepie/utils/Adapt.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -21,7 +22,7 @@ class _MyHomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _scrollController.addListener(() {
-      if (_scrollController.offset < 200) {
+      if (_scrollController.offset < Adapt.px(400)) {
         setState(() {
           isListInTop = true;
         });
@@ -130,14 +131,14 @@ class _MyHomePageState extends State<HomePage> {
                     ),
                     SliverToBoxAdapter(
                       child: Container(
-                        height: 40,
-                        margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        height: Adapt.px(70),
+                        margin: EdgeInsets.fromLTRB(Adapt.px(20), 0, Adapt.px(20), 0),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(Adapt.px(20)),
                           color: MyColors.card_tap,
                         ),
                         child: new Padding(
-                          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                          padding: EdgeInsets.fromLTRB(Adapt.px(20), 0, Adapt.px(20), 0),
                           child: new Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
@@ -152,7 +153,7 @@ class _MyHomePageState extends State<HomePage> {
                                 child: new Text(
                                   'AIS商业音乐定制',
                                   style: new TextStyle(
-                                    fontSize: 14,
+                                    fontSize: Adapt.px(26),
                                     color: MyColors.card_text,
                                   ),
                                 ),
@@ -176,18 +177,18 @@ class _MyHomePageState extends State<HomePage> {
                     SliverToBoxAdapter(
                       child: new Container(
                         width: double.infinity,
-                        padding: EdgeInsets.all(10),
+                        padding: EdgeInsets.all(Adapt.px(18)),
                         child: new Text(
                           '热门课程',
                           style: new TextStyle(
-                              fontSize: 20,
+                              fontSize: Adapt.px(38),
                               color: Colors.black,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
                     SliverFixedExtentList(
-                      itemExtent: 180.0,
+                      itemExtent: Adapt.px(350),
                       delegate: SliverChildBuilderDelegate(
                         (BuildContext context, int index) {
                           return _classItem(context, index);
@@ -207,7 +208,7 @@ class _MyHomePageState extends State<HomePage> {
 
   Widget _bannerWidget(BuildContext context) {
     return new Container(
-      height: 220.0,
+      height: Adapt.px(420),
       child: Swiper(
         itemBuilder: (BuildContext context, int index) {
           return (Image.network(
@@ -220,8 +221,8 @@ class _MyHomePageState extends State<HomePage> {
             builder: DotSwiperPaginationBuilder(
                 color: Colors.white,
                 activeColor: MyColors.colorPrimary,
-                size: 5.0,
-                activeSize: 8.0)),
+                size: Adapt.px(8),
+                activeSize: Adapt.px(14))),
         autoplayDisableOnInteraction: true,
         controller: new SwiperController(),
         scrollDirection: Axis.horizontal,
@@ -235,16 +236,16 @@ class _MyHomePageState extends State<HomePage> {
 
   Widget _teacherItemWidget(BuildContext context) {
     return new Container(
-      height: 160,
+      height: Adapt.px(300),
       child: new Column(
         children: <Widget>[
           new Container(
             width: double.infinity,
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.all(Adapt.px(18)),
             child: new Text(
               '名师专栏',
               style: new TextStyle(
-                  fontSize: 20,
+                  fontSize: Adapt.px(38),
                   color: Colors.black,
                   fontWeight: FontWeight.bold),
             ),
@@ -255,24 +256,24 @@ class _MyHomePageState extends State<HomePage> {
             itemBuilder: (BuildContext context, int index) {
               return new GestureDetector(
                 child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                  margin: EdgeInsets.only(bottom: Adapt.px(18)),
                   child: Card(
                     elevation: 3,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      borderRadius: BorderRadius.all(Radius.circular(Adapt.px(18))),
                     ),
                     child: new Column(
                       children: <Widget>[
                         Container(
-                          margin: EdgeInsets.all(8),
+                          margin: EdgeInsets.all(Adapt.px(14)),
 
 
                           child: ClipRRect(
 
-                            borderRadius: BorderRadius.circular(30),
+                            borderRadius: BorderRadius.circular(Adapt.px(56)),
                             child: FadeInImage.assetNetwork(
-                              height: 50,
-                              width: 50,
+                              height: Adapt.px(90),
+                              width: Adapt.px(90),
                               placeholder: 'lib/resource/assets/img/defaulticon.jpeg',
                               image: teaIcons[index],
                               fit: BoxFit.cover,
@@ -290,7 +291,7 @@ class _MyHomePageState extends State<HomePage> {
                         new Text(
                           teaNames[index],
                           style: new TextStyle(
-                            fontSize: 12,
+                            fontSize: Adapt.px(22),
                           ),
                         ),
                       ],
@@ -311,14 +312,14 @@ class _MyHomePageState extends State<HomePage> {
 
   Widget _typeWidget(BuildContext context) {
     return new Container(
-        margin: EdgeInsets.fromLTRB(10, 5, 10, 0),
+        margin: EdgeInsets.fromLTRB(Adapt.px(18), Adapt.px(8), Adapt.px(18), 0),
         child: Card(
             elevation: 0,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              borderRadius: BorderRadius.all(Radius.circular(Adapt.px(18))),
             ),
             child: new Container(
-              margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+              margin: EdgeInsets.fromLTRB(0, Adapt.px(18), 0, Adapt.px(18)),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -372,14 +373,14 @@ class _MyHomePageState extends State<HomePage> {
   Widget _typeItem(BuildContext context, int position) {
     return new GestureDetector(
       child: Container(
-        margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+        margin: EdgeInsets.fromLTRB(0, Adapt.px(18), 0, Adapt.px(18)),
         child: new Column(
           children: <Widget>[
             typeIcons[position],
             new Text(
               typeNames[position],
               style: new TextStyle(
-                fontSize: 12,
+                fontSize: Adapt.px(22),
               ),
             ),
           ],
@@ -393,19 +394,19 @@ class _MyHomePageState extends State<HomePage> {
 
   Widget _classItem(BuildContext context, int position) {
     return Container(
-      height: 180,
-      margin: EdgeInsets.fromLTRB(20, 0, 20, 10),
+      height: Adapt.px(332),
+      margin: EdgeInsets.fromLTRB(Adapt.px(24), 0, Adapt.px(24), Adapt.px(18)),
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(15)),
+          color: Colors.white, borderRadius: BorderRadius.circular(Adapt.px(28))),
       child: new Row(
         children: <Widget>[
-          new Stack(
+          Expanded(child: new Stack(
             children: <Widget>[
               Container(
-                height: 180,
-                width: 160,
+                height: Adapt.px(332),
+                //width: Adapt.px(300),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(Adapt.px(28)),
                   child: FadeInImage.assetNetwork(
                     placeholder: 'lib/resource/assets/img/loading.png',
                     image: 'http://www.artepie.cn/image/bannertest2.jpg',
@@ -416,29 +417,30 @@ class _MyHomePageState extends State<HomePage> {
               new Offstage(
                 offstage: !isOfficialClass,
                 child: Container(
-                  height: 32,
-                  width: 62,
+                  height: Adapt.px(54),
+                  width: Adapt.px(120),
                   decoration: BoxDecoration(
                     color: MyColors.colorPrimary,
                     borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(15),
+                        topLeft: Radius.circular(Adapt.px(28)),
                         topRight: Radius.circular(0),
                         bottomLeft: Radius.circular(0),
-                        bottomRight: Radius.circular(15)),
+                        bottomRight: Radius.circular(Adapt.px(28))),
                   ),
                   child: new Center(
                     child: new Text(
                       '官方课程',
-                      style: new TextStyle(fontSize: 12, color: Colors.white),
+                      style: new TextStyle(fontSize: Adapt.px(22), color: Colors.white),
                     ),
                   ),
                 ),
               ),
             ],
-          ),
-          new Container(
-            width: 180,
-            margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+          ),flex: 2,),
+          
+          Expanded(child: new Container(
+            //width: 180,
+            margin: EdgeInsets.fromLTRB(Adapt.px(18), 0, Adapt.px(18), 0),
             child: new Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -447,30 +449,30 @@ class _MyHomePageState extends State<HomePage> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: new TextStyle(
-                      fontSize: 18,
+                      fontSize: Adapt.px(34),
                       fontWeight: FontWeight.bold,
                     )),
                 new Text('作者',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: new TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold)),
+                        fontSize: Adapt.px(30), fontWeight: FontWeight.bold)),
                 new Text(
                     '简介dsdsdsdsdsdsdsdsdsdsfwegregsdgdgsddgsgsewrwfewfwefwfwfewfewfwefwefwefewfwef',
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                     style: new TextStyle(
-                      fontSize: 16,
+                      fontSize: Adapt.px(28),
                     )),
                 new Container(
-                  height: 20,
-                  width: 50,
+                  height: Adapt.px(34),
+                  width: Adapt.px(88),
                   decoration: BoxDecoration(
                       color: MyColors.colorPrimary,
-                      borderRadius: BorderRadius.circular(10)),
+                      borderRadius: BorderRadius.circular(Adapt.px(18))),
                   child: new Text(isSerial ? '连载中' : '已完结',
                       textAlign: TextAlign.center,
-                      style: new TextStyle(color: Colors.white, fontSize: 12)),
+                      style: new TextStyle(color: Colors.white, fontSize: Adapt.px(20))),
                 ),
                 new Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -478,13 +480,13 @@ class _MyHomePageState extends State<HomePage> {
                     new Text(
                       '$_classViewCount人次已学习',
                       style: new TextStyle(
-                        fontSize: 12,
+                        fontSize: Adapt.px(22),
                       ),
                     ),
                     new Text(
                       '￥$_classPrice',
                       style: new TextStyle(
-                          fontSize: 18,
+                          fontSize: Adapt.px(30),
                           fontWeight: FontWeight.bold,
                           fontStyle: FontStyle.italic,
                           color: MyColors.colorPrimary),
@@ -493,7 +495,8 @@ class _MyHomePageState extends State<HomePage> {
                 )
               ],
             ),
-          ),
+          ),flex: 3,)
+          
         ],
       ),
     );
@@ -501,7 +504,7 @@ class _MyHomePageState extends State<HomePage> {
 
   Widget _searchWidget(BuildContext context) {
     return new Container(
-      height: 86,
+      height: Adapt.px(160),
       child: new Stack(
         children: <Widget>[
           new AppBar(
@@ -512,20 +515,20 @@ class _MyHomePageState extends State<HomePage> {
           new SafeArea(
               top: true,
               child: new Container(
-                height: 56.0,
+                height: Adapt.px(104),
                 child: new Container(
-                  margin: EdgeInsets.fromLTRB(25, 10, 25, 10),
-                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  margin: EdgeInsets.fromLTRB(Adapt.px(40), Adapt.px(18), Adapt.px(40), Adapt.px(18)),
+                  padding: EdgeInsets.fromLTRB(Adapt.px(18), 0, Adapt.px(18), 0),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(40),
+                      borderRadius: BorderRadius.circular(Adapt.px(80)),
                       color:
                           isListInTop ? Colors.white : MyColors.dividerColor),
                   child: new Row(
                     children: <Widget>[
                       Icon(Icons.search),
                       new Padding(
-                        padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                        child: new Text('搜索艺派相关内容'),
+                        padding: EdgeInsets.fromLTRB(Adapt.px(14), 0, Adapt.px(14), 0),
+                        child: new Text('搜索艺派相关内容',style: new TextStyle(fontSize: Adapt.px(24)),),
                       )
                     ],
                   ),

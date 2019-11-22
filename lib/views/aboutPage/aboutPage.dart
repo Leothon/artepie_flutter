@@ -1,5 +1,6 @@
 import 'package:artepie/model/user_info.dart';
 import 'package:artepie/resource/MyColors.dart';
+import 'package:artepie/utils/Adapt.dart';
 import 'package:artepie/views/userIconWidget/UserIconWidget.dart';
 import 'package:flutter/material.dart';
 
@@ -97,7 +98,7 @@ class _MyAboutPageState extends State<AboutPage> {
         new Column(
           children: <Widget>[
             Container(
-              height: 180,
+              height: Adapt.px(340),
               width: double.infinity,
               child: Image.network(
                 'http://www.artepie.cn/image/bannertest2.jpg',
@@ -108,20 +109,20 @@ class _MyAboutPageState extends State<AboutPage> {
               ),
             ),
             Container(
-              height: 120,
+              height: Adapt.px(200),
               width: double.infinity,
             )
           ],
         ),
         Container(
-          height: 210,
+          height: Adapt.px(380),
           width: double.infinity,
-          padding: EdgeInsets.all(10),
-          margin: EdgeInsets.fromLTRB(0, 90, 0, 0),
+          padding: EdgeInsets.all(Adapt.px(18)),
+          margin: EdgeInsets.fromLTRB(0, Adapt.px(160), 0, 0),
           child: Card(
             elevation: 3,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                borderRadius: BorderRadius.all(Radius.circular(Adapt.px(20)))),
             child: _userInfoWidget(context),
           ),
         )
@@ -131,7 +132,7 @@ class _MyAboutPageState extends State<AboutPage> {
 
   Widget _userInfoWidget(BuildContext context) {
     return new Container(
-      padding: EdgeInsets.fromLTRB(15, 8, 15, 8),
+      padding: EdgeInsets.fromLTRB(Adapt.px(28), Adapt.px(14), Adapt.px(28), Adapt.px(14)),
       child: new Column(
         children: <Widget>[
           Expanded(
@@ -141,7 +142,7 @@ class _MyAboutPageState extends State<AboutPage> {
                 Expanded(
                   child: UserIconWidget(
                     url: 'http://www.artepie.cn/image/bannertest2.jpg',
-                    size: 50,
+                    size: Adapt.px(90),
                     isAuthor: true,
                     authority: true,
                   ),
@@ -155,7 +156,7 @@ class _MyAboutPageState extends State<AboutPage> {
                       new Text(
                         '艺派',
                         style: new TextStyle(
-                          fontSize: 22,
+                          fontSize: Adapt.px(40),
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                         ),
@@ -163,20 +164,20 @@ class _MyAboutPageState extends State<AboutPage> {
                       new Text(
                         '认证：$_authorityInfo',
                         style: new TextStyle(
-                          fontSize: 12,
+                          fontSize: Adapt.px(24),
                           color: MyColors.colorPrimary,
                         ),
                       )
                     ],
                   ),
-                  flex: 3,
+                  flex: 2,
                 ),
                 Expanded(
                   child: new Text(
                     '个人主页 >',
                     textAlign: TextAlign.end,
                     style: new TextStyle(
-                      fontSize: 14,
+                      fontSize: Adapt.px(26),
                       color: MyColors.fontColor,
                     ),
                   ),
@@ -195,7 +196,7 @@ class _MyAboutPageState extends State<AboutPage> {
                     Icon(
                       Icons.favorite,
                       color: Colors.red,
-                      size: 28,
+                      size: Adapt.px(54),
                     ),
                     '我的收藏'),
                 _infoChildIcon(
@@ -203,7 +204,7 @@ class _MyAboutPageState extends State<AboutPage> {
                     Icon(
                       Icons.format_align_justify,
                       color: Colors.blue,
-                      size: 28,
+                      size: Adapt.px(54),
                     ),
                     '我的订单'),
                 _infoChildIcon(
@@ -211,7 +212,7 @@ class _MyAboutPageState extends State<AboutPage> {
                     Icon(
                       Icons.assignment_return,
                       color: Colors.orange,
-                      size: 28,
+                      size: Adapt.px(54),
                     ),
                     '我的发布'),
               ],
@@ -232,7 +233,7 @@ class _MyAboutPageState extends State<AboutPage> {
           new Text(
             name,
             style: new TextStyle(
-              fontSize: 12,
+              fontSize:  Adapt.px(22),
             ),
           )
         ],
@@ -244,12 +245,12 @@ class _MyAboutPageState extends State<AboutPage> {
       bool isTopLine, bool isTopEmpty) {
     return new Container(
       color: Colors.white,
-      margin: EdgeInsets.fromLTRB(0, isTopEmpty ? 10 : 0, 0, 0),
-      padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+      margin: EdgeInsets.fromLTRB(0, isTopEmpty ?  Adapt.px(18) : 0, 0, 0),
+      padding: EdgeInsets.fromLTRB( Adapt.px(16), 0, 0, 0),
       child: new Stack(
         children: <Widget>[
           new Container(
-            height: 50,
+            height: Adapt.px(90),
             child: new Row(
               children: <Widget>[
                 Expanded(
@@ -259,12 +260,12 @@ class _MyAboutPageState extends State<AboutPage> {
                 Expanded(
                   child: new Text(
                     name,
-                    style: new TextStyle(fontSize: 14),
+                    style: new TextStyle(fontSize: Adapt.px(26)),
                   ),
                   flex: 8,
                 ),
                 Expanded(
-                  child: Icon(Icons.arrow_forward_ios,size: 15,),
+                  child: Icon(Icons.arrow_forward_ios,size: Adapt.px(26),),
                   flex: 1,
                 )
               ],
@@ -273,8 +274,8 @@ class _MyAboutPageState extends State<AboutPage> {
           new Offstage(
             offstage: !isTopLine,
             child: Container(
-              margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
-              height: 1,
+              margin: EdgeInsets.fromLTRB(Adapt.px(48), 0, 0, 0),
+              height: Adapt.px(1.8),
               color: MyColors.dividerColor,
             ),
           )
@@ -285,7 +286,7 @@ class _MyAboutPageState extends State<AboutPage> {
 
   Widget _searchWidget(BuildContext context) {
     return new Container(
-      height: 86,
+      height: Adapt.px(160),
       child: new Stack(
         children: <Widget>[
           new AppBar(
@@ -296,19 +297,19 @@ class _MyAboutPageState extends State<AboutPage> {
           new SafeArea(
               top: true,
               child: new Container(
-                height: 56.0,
+                height: Adapt.px(104),
                 child: new Container(
-                  margin: EdgeInsets.fromLTRB(25, 10, 25, 10),
-                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  margin: EdgeInsets.fromLTRB(Adapt.px(40), Adapt.px(18), Adapt.px(40), Adapt.px(18)),
+                  padding: EdgeInsets.fromLTRB(Adapt.px(18), 0, Adapt.px(18), 0),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(40),
+                      borderRadius: BorderRadius.circular(Adapt.px(80)),
                       color: Colors.white),
                   child: new Row(
                     children: <Widget>[
                       Icon(Icons.search),
                       new Padding(
-                        padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-                        child: new Text('搜索艺派相关内容'),
+                        padding: EdgeInsets.fromLTRB(Adapt.px(14), 0, Adapt.px(14), 0),
+                        child: new Text('搜索艺派相关内容',style: new TextStyle(fontSize: Adapt.px(24)),),
                       )
                     ],
                   ),
