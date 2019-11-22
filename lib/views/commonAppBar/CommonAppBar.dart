@@ -29,7 +29,6 @@ class CommonAppBar extends StatefulWidget {
 class _MyCommonAppBar extends State<CommonAppBar> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return new Stack(
       children: <Widget>[
         new AppBar(
