@@ -504,7 +504,7 @@ class _MyHomePageState extends State<HomePage> {
 
   Widget _searchWidget(BuildContext context) {
     return new Container(
-      height: Adapt.px(160),
+      height: Adapt.px(180),
       child: new Stack(
         children: <Widget>[
           new AppBar(
