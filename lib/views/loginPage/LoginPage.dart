@@ -26,8 +26,6 @@ class _MyLoginPageState extends State<LoginPage> {
   bool isPassword = false;
   bool isVerifyCodeBtnDisable = false;
 
-
-
   @override
   void initState() {
     // TODO: implement initState
@@ -39,126 +37,140 @@ class _MyLoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
-        body: Stack(
-          children: <Widget>[
-            Column(children: <Widget>[
+        resizeToAvoidBottomPadding: true,
+
+          body: Stack(
+            children: <Widget>[
+              SingleChildScrollView(
+              child: Column(children: <Widget>[
+
+                new Container(
+                  margin: EdgeInsets.fromLTRB(
+                      0.0, Adapt.px(280), 0.0, Adapt.px(50)),
+                  child: new Text(
+                    '登录艺派，发掘艺术之美',
+                    style: new TextStyle(
+                        fontSize: Adapt.px(48), color: Colors.black),
+                  ),
+                ),
+                new Container(
+                  margin: EdgeInsets.fromLTRB(
+                      Adapt.px(50), Adapt.px(80), Adapt.px(50), 0),
+                  child: TextField(
+                    keyboardType: TextInputType.phone,
+                    maxLength: 11,
+                    controller: phoneController,
+                    decoration: InputDecoration(
+                        icon: isPassword
+                            ? Icon(Icons.account_circle)
+                            : Icon(Icons.phone),
+                        labelText: '输入手机号',
+                        labelStyle: new TextStyle(fontSize: Adapt.px(32)),
+                        hintText: '输入手机号,未注册的手机号会在验证后注册并登录',
+                        hintStyle: new TextStyle(fontSize: Adapt.px(22)),
+                        border: InputBorder.none),
+                    //autofocus: true,
+                  ),
+                ),
+                _passwordWidget(context),
+                new Container(
+                  margin: EdgeInsets.fromLTRB(
+                      Adapt.px(50), Adapt.px(20), Adapt.px(50), Adapt.px(20)),
+                  width: double.infinity,
+                  child: new MaterialButton(
+                      color: Colors.green,
+                      padding:
+                      EdgeInsets.fromLTRB(Adapt.px(20), 0, Adapt.px(20), 0),
+                      textColor: Colors.white,
+                      height: Adapt.px(90),
+                      child: new Text('登     录',
+                          style: new TextStyle(
+                              fontSize: Adapt.px(34), color: Colors.white)),
+                      onPressed:
+                      isPassword ? usePasswordLogin : useVerifyCodeLogin),
+                ),
+                new Container(
+                  margin: EdgeInsets.fromLTRB(
+                      Adapt.px(50), Adapt.px(20), Adapt.px(50), 0),
+                  child: new Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: new Text(
+                          '点击注册，则表示您已阅读并同意《用户协议》',
+                          style: new TextStyle(
+                              color: Colors.red, fontSize: Adapt.px(20)),
+                        ),
+                        flex: 3,
+                      ),
+                      Expanded(
+                        child: GestureDetector(
+                          child: new Center(
+                            child: new Text(
+                              isPassword ? '使用验证码登录' : '使用密码登录',
+                              style: new TextStyle(
+                                  color: Colors.green, fontSize: Adapt.px(20)),
+                            ),
+                          ),
+                          onTap: switchPasswordOrMessage,
+                        ),
+                        flex: 1,
+                      ),
+                    ],
+                  ),
+                ),
+                new Container(
+                    margin: EdgeInsets.all(Adapt.px(150)),
+                    child: new Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: new Center(
+                            child: Icon(
+                              IconData(0xe609, fontFamily: 'qqIcon'),
+                              size: Adapt.px(80),
+                              color: Colors.blue,
+                            ),
+                          ),
+                          flex: 1,
+                        ),
+                        Expanded(
+                          child: new Center(
+                            child: Icon(
+                              IconData(0xe6c3, fontFamily: 'wechatIcon'),
+                              size: Adapt.px(80),
+                              color: Colors.green,
+                            ),
+                          ),
+                          flex: 1,
+                        ),
+                      ],
+                    )),
+              ]),
+          ),
+
+              loadingDialog,
               CommonAppBar(
                 title: '',
                 subTitle: '暂不登录',
                 subTitleColor: Colors.black,
                 onPressSubTitle: () {
-                  Application.spUtil.putString("token", Constants.visitorToken);
+                  Application.spUtil
+                      .putString("token", Constants.visitorToken);
                   Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (context) => AppPage( false)),
-                      (route) => route == null);
+                      MaterialPageRoute(builder: (context) => AppPage(false)),
+                          (route) => route == null);
                 },
                 isBackLastPage: false,
               ),
-              new Container(
-                margin: EdgeInsets.fromLTRB(0.0, Adapt.px(100), 0.0, Adapt.px(50)),
-                child: new Text(
-                  '登录艺派，发掘艺术之美',
-                  style: new TextStyle(fontSize: Adapt.px(48), color: Colors.black),
-                ),
-              ),
-              new Container(
-                margin: EdgeInsets.fromLTRB(Adapt.px(50), Adapt.px(80), Adapt.px(50), 0),
-                child: TextField(
-                  keyboardType: TextInputType.phone,
-                  maxLength: 11,
-                  controller: phoneController,
-                  decoration: InputDecoration(
-                      icon: isPassword
-                          ? Icon(Icons.account_circle)
-                          : Icon(Icons.phone),
-                      labelText: '输入手机号',
-                      labelStyle: new TextStyle(fontSize: Adapt.px(32)),
-                      hintText: '输入手机号,未注册的手机号会在验证后注册并登录',
-                      hintStyle: new TextStyle(fontSize: Adapt.px(22)),
-                      border: InputBorder.none),
-                  autofocus: true,
-                ),
-              ),
-              _passwordWidget(context),
-              new Container(
-                margin: EdgeInsets.fromLTRB(Adapt.px(50), Adapt.px(20), Adapt.px(50), Adapt.px(20)),
-                width: double.infinity,
-                child: new MaterialButton(
-                    color: Colors.green,
-                    padding: EdgeInsets.fromLTRB(Adapt.px(20), 0, Adapt.px(20), 0),
-                    textColor: Colors.white,
-                    height: Adapt.px(90),
-                    child: new Text('登     录',
-                        style:
-                            new TextStyle(fontSize: Adapt.px(34), color: Colors.white)),
-                    onPressed:
-                        isPassword ? usePasswordLogin : useVerifyCodeLogin),
-              ),
-              new Container(
-                margin: EdgeInsets.fromLTRB(Adapt.px(50), Adapt.px(20), Adapt.px(50), 0),
-                child: new Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: new Text(
-                        '点击注册，则表示您已阅读并同意《用户协议》',
-                        style: new TextStyle(color: Colors.red, fontSize: Adapt.px(20)),
-                      ),
-                      flex: 3,
-                    ),
-                    Expanded(
-                      child: GestureDetector(
-                        child: new Center(
-                          child: new Text(
-                            isPassword ? '使用验证码登录' : '使用密码登录',
-                            style: new TextStyle(
-                                color: Colors.green, fontSize: Adapt.px(20)),
-                          ),
-                        ),
-                        onTap: switchPasswordOrMessage,
-                      ),
-                      flex: 1,
-                    ),
-                  ],
-                ),
-              ),
-              new Container(
-                  margin: EdgeInsets.all(Adapt.px(150)),
-                  child: new Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: new Center(
-                          child: Icon(
-                            IconData(0xe609, fontFamily: 'qqIcon'),
-                            size: Adapt.px(80),
-                            color: Colors.blue,
-                          ),
-                        ),
-                        flex: 1,
-                      ),
-                      Expanded(
-                        child: new Center(
-                          child: Icon(
-                            IconData(0xe6c3, fontFamily: 'wechatIcon'),
-                            size: Adapt.px(80),
-                            color: Colors.green,
-                          ),
-                        ),
-                        flex: 1,
-                      ),
-                    ],
-                  )),
-            ]),
-            loadingDialog,
-          ],
-        ));
+            ],
+          ),
+        );
   }
 
   Widget _passwordWidget(BuildContext context) {
     if (!isPassword) {
       return new Container(
-        margin: EdgeInsets.fromLTRB(Adapt.px(50), Adapt.px(15), Adapt.px(50), 0),
+        margin:
+            EdgeInsets.fromLTRB(Adapt.px(50), Adapt.px(15), Adapt.px(50), 0),
         child: new Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -192,7 +204,8 @@ class _MyLoginPageState extends State<LoginPage> {
       );
     } else {
       return new Container(
-        margin: EdgeInsets.fromLTRB(Adapt.px(50), Adapt.px(15), Adapt.px(50), 0),
+        margin:
+            EdgeInsets.fromLTRB(Adapt.px(50), Adapt.px(15), Adapt.px(50), 0),
         child: TextField(
           controller: passwordController,
           keyboardType: TextInputType.visiblePassword,
@@ -274,8 +287,7 @@ class _MyLoginPageState extends State<LoginPage> {
             Application.spUtil.putBool('login', true);
             Application.spUtil.putString('token', userInfo.user_token);
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                    builder: (context) => AppPage(true)),
+                MaterialPageRoute(builder: (context) => AppPage(true)),
                 (route) => route == null);
           } else {
             Toast.show("登录失败：" + response['msg'], context,
