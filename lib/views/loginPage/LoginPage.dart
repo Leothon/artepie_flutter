@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:artepie/constants/constants.dart';
 import 'package:artepie/model/user_info.dart';
 import 'package:artepie/routers/Application.dart';
+import 'package:artepie/utils/Adapt.dart';
 import 'package:artepie/utils/data_utils.dart';
 import 'package:artepie/views/Home.dart';
 import 'package:artepie/views/commonAppBar/CommonAppBar.dart';
@@ -59,7 +60,7 @@ class _MyLoginPageState extends State<LoginPage> {
                 margin: EdgeInsets.fromLTRB(0.0, 50, 0.0, 50),
                 child: new Text(
                   '登录艺派，发掘艺术之美',
-                  style: new TextStyle(fontSize: 28, color: Colors.black),
+                  style: new TextStyle(fontSize: Adapt.px(58), color: Colors.black),
                 ),
               ),
               new Container(

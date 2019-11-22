@@ -1,3 +1,4 @@
+import 'package:artepie/utils/Adapt.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,7 +30,9 @@ class _MyCommonAppBar extends State<CommonAppBar> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return new Stack(
+    return new Container(
+      height: Adapt.px(86),
+      child: Stack(
         children: <Widget>[
           new AppBar(
             elevation: 3,
@@ -39,7 +42,7 @@ class _MyCommonAppBar extends State<CommonAppBar> {
           new SafeArea(
               top: true,
               child: new Container(
-                  height: 56.0,
+                  height: Adapt.px(56),
                   child: new Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
@@ -89,7 +92,7 @@ class _MyCommonAppBar extends State<CommonAppBar> {
                     ],
                   )))
         ],
-      );
-
+      ),
+    );
   }
 }
