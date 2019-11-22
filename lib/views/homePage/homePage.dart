@@ -515,9 +515,9 @@ class _MyHomePageState extends State<HomePage> {
           new SafeArea(
               top: true,
               child: new Container(
-                height: Adapt.px(104),
+                height: Adapt.px(80),
                 child: new Container(
-                  margin: EdgeInsets.fromLTRB(Adapt.px(40), Adapt.px(18), Adapt.px(40), Adapt.px(18)),
+                  margin: EdgeInsets.fromLTRB(Adapt.px(40), Adapt.px(20), Adapt.px(40), 0),
                   padding: EdgeInsets.fromLTRB(Adapt.px(18), 0, Adapt.px(18), 0),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(Adapt.px(80)),
