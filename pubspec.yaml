@@ -58,6 +58,7 @@ flutter:
     - lib/resource/assets/img/loading.png
     - lib/resource/assets/img/defaulticon.jpeg
     - lib/resource/assets/img/icon.png
+    - lib/resource/assets/img/emptyimg.png
   fonts:
     - family: wechatIcon
       fonts:

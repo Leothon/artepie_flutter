@@ -23,4 +23,15 @@ class CommonUtils {
 
     return packageInfoResult;
   }
+
+  static int isVip(String authInfo){
+    String role = authInfo.substring(0, 1);
+    if (role == "0") {
+      return 0;
+    } else if (role == "1") {
+      return 1;
+    } else {
+      return 2;
+    }
+  }
 }

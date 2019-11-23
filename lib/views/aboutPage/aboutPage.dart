@@ -2,7 +2,11 @@ import 'package:artepie/model/user_info.dart';
 import 'package:artepie/resource/MyColors.dart';
 import 'package:artepie/routers/Application.dart';
 import 'package:artepie/utils/Adapt.dart';
+import 'package:artepie/utils/CommonUtils.dart';
+import 'package:artepie/utils/data_utils.dart';
+import 'package:artepie/views/LoadStateLayout.dart';
 import 'package:artepie/views/userIconWidget/UserIconWidget.dart';
+import 'package:common_utils/common_utils.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
@@ -18,109 +22,142 @@ class AboutPage extends StatefulWidget {
 }
 
 class _MyAboutPageState extends State<AboutPage> {
-  var _authorityInfo = '艺派客服';
+  var _authorityInfo = '';
+  var _userIconurl = '';
+  var _userName = '';
+  var _userSignal = '';
+
+  bool _isAnthority = false;
+  bool _isWriter = false;
+
+  LoadState _layoutState = LoadState.State_Loading;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadUserInfo();
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
         backgroundColor: MyColors.dividerColor,
-        body: new Stack(
-          children: <Widget>[
-            CustomScrollView(
-                physics: BouncingScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                slivers: <Widget>[
-                  SliverToBoxAdapter(
-                    child: _headWidget(context),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Material(
-                      color: Colors.white,
-                      child: InkWell(
-                        child: _aboutItemWidget(
-                            context,
-                            Icon(
-                              Icons.bookmark,
-                              color: Colors.blue,
-                            ),
-                            '我的订阅',
-                            false),
-                        onTap: () {},
-                      ),
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Material(
-                      color: Colors.white,
-                      child: InkWell(
-                        child: _aboutItemWidget(
-                            context,
-                            Icon(
-                              Icons.account_balance_wallet,
-                              color: Colors.brown,
-                            ),
-                            '我的钱包',
-                            true),
-                        onTap: () {},
-                      ),
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Material(
-                      color: Colors.white,
-                      child: InkWell(
-                        child: _aboutItemWidget(
-                            context,
-                            Icon(
-                              Icons.perm_contact_calendar,
-                              color: Colors.deepPurple,
-                            ),
-                            '消息提醒',
-                            true),
-                        onTap: () {},
-                      ),
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Material(
-                      color: Colors.white,
-                      child: InkWell(
-                        child: _aboutItemWidget(
-                            context,
-                            Icon(
-                              Icons.settings,
-                              color: Colors.orange,
-                            ),
-                            '设置',
-                            true),
-                        onTap: () {},
-                      ),
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                        margin: EdgeInsets.only(top: Adapt.px(25)),
-                        child: Material(
-                            color: Colors.white,
-                            child: InkWell(
-                              child: _aboutItemWidget(
-                                  context,
-                                  Icon(
-                                    Icons.info,
-                                    color: Colors.green,
-                                  ),
-                                  '关于我们',
-                                  false),
-                              onTap: () {
-                                Application.router.navigateTo(context, "/appInfoPage",transition: TransitionType.material);
-                              },
-                            ))),
-                  ),
-                ]),
-            _searchWidget(context)
-          ],
+        body:LoadStateLayout(
+          state: _layoutState,
+          errorRetry: () {
+            setState(() {
+              _layoutState = LoadState.State_Loading;
+            });
+            loadUserInfo();
+          },
+          successWidget: _aboutPageWidget(context)
         ));
   }
+
+
+  Widget _aboutPageWidget(BuildContext context){
+    return new Stack(
+      children: <Widget>[
+        CustomScrollView(
+            physics: BouncingScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            slivers: <Widget>[
+              SliverToBoxAdapter(
+                child: _headWidget(context),
+              ),
+              SliverToBoxAdapter(
+                child: Material(
+                  color: Colors.white,
+                  child: InkWell(
+                    child: _aboutItemWidget(
+                        context,
+                        Icon(
+                          Icons.bookmark,
+                          color: Colors.blue,
+                        ),
+                        '我的订阅',
+                        false),
+                    onTap: () {},
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Material(
+                  color: Colors.white,
+                  child: InkWell(
+                    child: _aboutItemWidget(
+                        context,
+                        Icon(
+                          Icons.account_balance_wallet,
+                          color: Colors.brown,
+                        ),
+                        '我的钱包',
+                        true),
+                    onTap: () {},
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Material(
+                  color: Colors.white,
+                  child: InkWell(
+                    child: _aboutItemWidget(
+                        context,
+                        Icon(
+                          Icons.perm_contact_calendar,
+                          color: Colors.deepPurple,
+                        ),
+                        '消息提醒',
+                        true),
+                    onTap: () {},
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Material(
+                  color: Colors.white,
+                  child: InkWell(
+                    child: _aboutItemWidget(
+                        context,
+                        Icon(
+                          Icons.settings,
+                          color: Colors.orange,
+                        ),
+                        '设置',
+                        true),
+                    onTap: () {},
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Container(
+                    margin: EdgeInsets.only(top: Adapt.px(25)),
+                    child: Material(
+                        color: Colors.white,
+                        child: InkWell(
+                          child: _aboutItemWidget(
+                              context,
+                              Icon(
+                                Icons.info,
+                                color: Colors.green,
+                              ),
+                              '关于我们',
+                              false),
+                          onTap: () {
+                            Application.router.navigateTo(
+                                context, "/appInfoPage",
+                                transition: TransitionType.material);
+                          },
+                        ))),
+              ),
+            ]),
+        _searchWidget(context)
+      ],
+    );
+  }
+
 
   Widget _headWidget(BuildContext context) {
     return new Stack(
@@ -131,7 +168,7 @@ class _MyAboutPageState extends State<AboutPage> {
               height: Adapt.px(340),
               width: double.infinity,
               child: Image.network(
-                'http://www.artepie.cn/image/bannertest2.jpg',
+                '$_userIconurl',
                 fit: BoxFit.cover,
               ),
               foregroundDecoration: BoxDecoration(
@@ -173,10 +210,10 @@ class _MyAboutPageState extends State<AboutPage> {
                 children: <Widget>[
                   Expanded(
                     child: UserIconWidget(
-                      url: 'http://www.artepie.cn/image/bannertest2.jpg',
+                      url: '$_userIconurl',
                       size: Adapt.px(90),
-                      isAuthor: true,
-                      authority: true,
+                      isAuthor: _isWriter,
+                      authority: _isAnthority,
                     ),
                     flex: 1,
                   ),
@@ -186,7 +223,7 @@ class _MyAboutPageState extends State<AboutPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         new Text(
-                          '艺派',
+                          '$_userName',
                           style: new TextStyle(
                             fontSize: Adapt.px(40),
                             color: Colors.black,
@@ -194,7 +231,7 @@ class _MyAboutPageState extends State<AboutPage> {
                           ),
                         ),
                         new Text(
-                          '认证：$_authorityInfo',
+                          _isAnthority ? '认证：$_authorityInfo' : '$_userSignal',
                           style: new TextStyle(
                             fontSize: Adapt.px(24),
                             color: MyColors.colorPrimary,
@@ -369,5 +406,56 @@ class _MyAboutPageState extends State<AboutPage> {
         ],
       ),
     );
+  }
+
+  void loadUserInfo() {
+
+    DataUtils.getUserInfo({'token' : Application.spUtil.get('token')}).then((result){
+
+      var data = result['data'];
+
+      if(data.length == 0){
+        setState(() {
+          _layoutState = LoadState.State_Empty;
+        });
+
+      }else{
+
+        var role = CommonUtils.isVip(data['user_role']);
+        var authorInfo = data['user_role'];
+        if(role == 0){
+          setState(() {
+            _isAnthority = true;
+            _isWriter = false;
+            _authorityInfo = authorInfo.substring(1);
+          });
+        }else if(role == 1){
+          setState(() {
+            _isAnthority = true;
+            _isWriter = true;
+            _authorityInfo = authorInfo.substring(1);
+
+          });
+        }else{
+          setState(() {
+            _isAnthority = false;
+            _isWriter = false;
+            _userSignal = data['user_signal'];
+          });
+        }
+        setState(() {
+          _layoutState = LoadState.State_Success;
+          _userIconurl = data['user_icon'];
+          _userName = data['user_name'];
+        });
+
+
+      }
+    }).catchError((onError) {
+      LogUtil.e(onError);
+      setState(() {
+        _layoutState = LoadState.State_Error;
+      });
+    });
   }
 }

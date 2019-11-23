@@ -3,4 +3,11 @@ class Api{
 
   //使用账号密码登录
   static const String usePasswordLogin = Base_URL + 'usepasswordlogin';
+
+
+  static const String getUserInfo = Base_URL + 'getuserinfo';
+
+
+  static const String test = Base_URL + 'getmoreqadetail';
+
 }

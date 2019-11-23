@@ -11,14 +11,14 @@ class DataUtils{
     var response = await NetUtils.get(Api.usePasswordLogin, params);
 
     return response;
-//    if(response['success']){
-//      UserInformation userInfo = UserInformation.fromJson(response['data']);
-//      return userInfo;
-//    }else{
-//      return response['msg'];
-//    }
-
 
   }
 
+  static Future getUserInfo(Map<String,String> params) async{
+    return await NetUtils.get(Api.getUserInfo,params);
+  }
+
+  static Future test(Map<String,String> params) async{
+    return await NetUtils.get(Api.test,params);
+  }
 }
