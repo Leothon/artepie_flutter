@@ -35,6 +35,9 @@ dependencies:
   flutter_swiper : ^1.1.6
   video_player: ^0.7.0
   open_iconic_flutter: ">=0.3.0 <0.4.0"
+  package_info: ^0.4.0+2
+  url_launcher: ^5.2.5
+
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +57,7 @@ flutter:
   assets:
     - lib/resource/assets/img/loading.png
     - lib/resource/assets/img/defaulticon.jpeg
+    - lib/resource/assets/img/icon.png
   fonts:
     - family: wechatIcon
       fonts:

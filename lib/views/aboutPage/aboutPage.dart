@@ -1,7 +1,9 @@
 import 'package:artepie/model/user_info.dart';
 import 'package:artepie/resource/MyColors.dart';
+import 'package:artepie/routers/Application.dart';
 import 'package:artepie/utils/Adapt.dart';
 import 'package:artepie/views/userIconWidget/UserIconWidget.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
 class AboutPage extends StatefulWidget {
@@ -32,59 +34,87 @@ class _MyAboutPageState extends State<AboutPage> {
                     child: _headWidget(context),
                   ),
                   SliverToBoxAdapter(
-                    child: _aboutItemWidget(
-                        context,
-                        Icon(
-                          Icons.bookmark,
-                          color: Colors.blue,
-                        ),
-                        '我的订阅',
-                        false,
-                        false),
+                    child: Material(
+                      color: Colors.white,
+                      child: InkWell(
+                        child: _aboutItemWidget(
+                            context,
+                            Icon(
+                              Icons.bookmark,
+                              color: Colors.blue,
+                            ),
+                            '我的订阅',
+                            false),
+                        onTap: () {},
+                      ),
+                    ),
                   ),
                   SliverToBoxAdapter(
-                    child: _aboutItemWidget(
-                        context,
-                        Icon(
-                          Icons.account_balance_wallet,
-                          color: Colors.brown,
-                        ),
-                        '我的钱包',
-                        true,
-                        false),
+                    child: Material(
+                      color: Colors.white,
+                      child: InkWell(
+                        child: _aboutItemWidget(
+                            context,
+                            Icon(
+                              Icons.account_balance_wallet,
+                              color: Colors.brown,
+                            ),
+                            '我的钱包',
+                            true),
+                        onTap: () {},
+                      ),
+                    ),
                   ),
                   SliverToBoxAdapter(
-                    child: _aboutItemWidget(
-                        context,
-                        Icon(
-                          Icons.perm_contact_calendar,
-                          color: Colors.deepPurple,
-                        ),
-                        '消息提醒',
-                        true,
-                        false),
+                    child: Material(
+                      color: Colors.white,
+                      child: InkWell(
+                        child: _aboutItemWidget(
+                            context,
+                            Icon(
+                              Icons.perm_contact_calendar,
+                              color: Colors.deepPurple,
+                            ),
+                            '消息提醒',
+                            true),
+                        onTap: () {},
+                      ),
+                    ),
                   ),
                   SliverToBoxAdapter(
-                    child: _aboutItemWidget(
-                        context,
-                        Icon(
-                          Icons.settings,
-                          color: Colors.orange,
-                        ),
-                        '设置',
-                        true,
-                        false),
+                    child: Material(
+                      color: Colors.white,
+                      child: InkWell(
+                        child: _aboutItemWidget(
+                            context,
+                            Icon(
+                              Icons.settings,
+                              color: Colors.orange,
+                            ),
+                            '设置',
+                            true),
+                        onTap: () {},
+                      ),
+                    ),
                   ),
                   SliverToBoxAdapter(
-                    child: _aboutItemWidget(
-                        context,
-                        Icon(
-                          Icons.info,
-                          color: Colors.green,
-                        ),
-                        '关于我们',
-                        false,
-                        true),
+                    child: Container(
+                        margin: EdgeInsets.only(top: Adapt.px(25)),
+                        child: Material(
+                            color: Colors.white,
+                            child: InkWell(
+                              child: _aboutItemWidget(
+                                  context,
+                                  Icon(
+                                    Icons.info,
+                                    color: Colors.green,
+                                  ),
+                                  '关于我们',
+                                  false),
+                              onTap: () {
+                                Application.router.navigateTo(context, "/appInfoPage",transition: TransitionType.material);
+                              },
+                            ))),
                   ),
                 ]),
             _searchWidget(context)
@@ -132,58 +162,62 @@ class _MyAboutPageState extends State<AboutPage> {
 
   Widget _userInfoWidget(BuildContext context) {
     return new Container(
-      padding: EdgeInsets.fromLTRB(Adapt.px(28), Adapt.px(14), Adapt.px(28), Adapt.px(14)),
+      padding: EdgeInsets.fromLTRB(
+          Adapt.px(28), Adapt.px(14), Adapt.px(28), Adapt.px(14)),
       child: new Column(
         children: <Widget>[
           Expanded(
-            child: new Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(
-                  child: UserIconWidget(
-                    url: 'http://www.artepie.cn/image/bannertest2.jpg',
-                    size: Adapt.px(90),
-                    isAuthor: true,
-                    authority: true,
-                  ),
-                  flex: 1,
-                ),
-                Expanded(
-                  child: new Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      new Text(
-                        '艺派',
-                        style: new TextStyle(
-                          fontSize: Adapt.px(40),
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      new Text(
-                        '认证：$_authorityInfo',
-                        style: new TextStyle(
-                          fontSize: Adapt.px(24),
-                          color: MyColors.colorPrimary,
-                        ),
-                      )
-                    ],
-                  ),
-                  flex: 2,
-                ),
-                Expanded(
-                  child: new Text(
-                    '个人主页 >',
-                    textAlign: TextAlign.end,
-                    style: new TextStyle(
-                      fontSize: Adapt.px(26),
-                      color: MyColors.fontColor,
+            child: InkWell(
+              child: new Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Expanded(
+                    child: UserIconWidget(
+                      url: 'http://www.artepie.cn/image/bannertest2.jpg',
+                      size: Adapt.px(90),
+                      isAuthor: true,
+                      authority: true,
                     ),
+                    flex: 1,
                   ),
-                  flex: 2,
-                ),
-              ],
+                  Expanded(
+                    child: new Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        new Text(
+                          '艺派',
+                          style: new TextStyle(
+                            fontSize: Adapt.px(40),
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        new Text(
+                          '认证：$_authorityInfo',
+                          style: new TextStyle(
+                            fontSize: Adapt.px(24),
+                            color: MyColors.colorPrimary,
+                          ),
+                        )
+                      ],
+                    ),
+                    flex: 2,
+                  ),
+                  Expanded(
+                    child: new Text(
+                      '个人主页 >',
+                      textAlign: TextAlign.end,
+                      style: new TextStyle(
+                        fontSize: Adapt.px(26),
+                        color: MyColors.fontColor,
+                      ),
+                    ),
+                    flex: 2,
+                  ),
+                ],
+              ),
+              onTap: () {},
             ),
             flex: 1,
           ),
@@ -191,30 +225,39 @@ class _MyAboutPageState extends State<AboutPage> {
             child: new Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                _infoChildIcon(
-                    context,
-                    Icon(
-                      Icons.favorite,
-                      color: Colors.red,
-                      size: Adapt.px(54),
-                    ),
-                    '我的收藏'),
-                _infoChildIcon(
-                    context,
-                    Icon(
-                      Icons.format_align_justify,
-                      color: Colors.blue,
-                      size: Adapt.px(54),
-                    ),
-                    '我的订单'),
-                _infoChildIcon(
-                    context,
-                    Icon(
-                      Icons.assignment_return,
-                      color: Colors.orange,
-                      size: Adapt.px(54),
-                    ),
-                    '我的发布'),
+                InkWell(
+                  child: _infoChildIcon(
+                      context,
+                      Icon(
+                        Icons.favorite,
+                        color: Colors.red,
+                        size: Adapt.px(54),
+                      ),
+                      '我的收藏'),
+                  onTap: () {},
+                ),
+                InkWell(
+                  child: _infoChildIcon(
+                      context,
+                      Icon(
+                        Icons.format_align_justify,
+                        color: Colors.blue,
+                        size: Adapt.px(54),
+                      ),
+                      '我的订单'),
+                  onTap: () {},
+                ),
+                InkWell(
+                  child: _infoChildIcon(
+                      context,
+                      Icon(
+                        Icons.assignment_return,
+                        color: Colors.orange,
+                        size: Adapt.px(54),
+                      ),
+                      '我的发布'),
+                  onTap: () {},
+                ),
               ],
             ),
             flex: 1,
@@ -233,7 +276,7 @@ class _MyAboutPageState extends State<AboutPage> {
           new Text(
             name,
             style: new TextStyle(
-              fontSize:  Adapt.px(22),
+              fontSize: Adapt.px(22),
             ),
           )
         ],
@@ -241,12 +284,11 @@ class _MyAboutPageState extends State<AboutPage> {
     );
   }
 
-  Widget _aboutItemWidget(BuildContext context, Icon icon, String name,
-      bool isTopLine, bool isTopEmpty) {
+  Widget _aboutItemWidget(
+      BuildContext context, Icon icon, String name, bool isTopLine) {
     return new Container(
-      color: Colors.white,
-      margin: EdgeInsets.fromLTRB(0, isTopEmpty ?  Adapt.px(18) : 0, 0, 0),
-      padding: EdgeInsets.fromLTRB( Adapt.px(16), 0, 0, 0),
+//      color: Colors.white,
+      padding: EdgeInsets.fromLTRB(Adapt.px(16), 0, 0, 0),
       child: new Stack(
         children: <Widget>[
           new Container(
@@ -265,7 +307,10 @@ class _MyAboutPageState extends State<AboutPage> {
                   flex: 8,
                 ),
                 Expanded(
-                  child: Icon(Icons.arrow_forward_ios,size: Adapt.px(26),),
+                  child: Icon(
+                    Icons.arrow_forward_ios,
+                    size: Adapt.px(26),
+                  ),
                   flex: 1,
                 )
               ],
@@ -299,8 +344,10 @@ class _MyAboutPageState extends State<AboutPage> {
               child: new Container(
                 height: Adapt.px(80),
                 child: new Container(
-                  margin: EdgeInsets.fromLTRB(Adapt.px(40), Adapt.px(20), Adapt.px(40),0),
-                  padding: EdgeInsets.fromLTRB(Adapt.px(18), 0, Adapt.px(18), 0),
+                  margin: EdgeInsets.fromLTRB(
+                      Adapt.px(40), Adapt.px(20), Adapt.px(40), 0),
+                  padding:
+                      EdgeInsets.fromLTRB(Adapt.px(18), 0, Adapt.px(18), 0),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(Adapt.px(80)),
                       color: Colors.white),
@@ -308,8 +355,12 @@ class _MyAboutPageState extends State<AboutPage> {
                     children: <Widget>[
                       Icon(Icons.search),
                       new Padding(
-                        padding: EdgeInsets.fromLTRB(Adapt.px(14), 0, Adapt.px(14), 0),
-                        child: new Text('搜索艺派相关内容',style: new TextStyle(fontSize: Adapt.px(24)),),
+                        padding: EdgeInsets.fromLTRB(
+                            Adapt.px(14), 0, Adapt.px(14), 0),
+                        child: new Text(
+                          '搜索艺派相关内容',
+                          style: new TextStyle(fontSize: Adapt.px(24)),
+                        ),
                       )
                     ],
                   ),

@@ -110,7 +110,6 @@ class _MyAppState extends State<MyApp> {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   sp = await SpUtil.getInstance();
   Application.spUtil = sp;
   runApp(new MyApp());
