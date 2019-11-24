@@ -59,6 +59,22 @@ flutter:
     - lib/resource/assets/img/defaulticon.jpeg
     - lib/resource/assets/img/icon.png
     - lib/resource/assets/img/emptyimg.png
+    - lib/resource/assets/img/minzu.png
+    - lib/resource/assets/img/meisheng.png
+    - lib/resource/assets/img/gudian.png
+    - lib/resource/assets/img/xiqu.png
+    - lib/resource/assets/img/yuanshengtai.png
+    - lib/resource/assets/img/minyao.png
+    - lib/resource/assets/img/tongsu.png
+    - lib/resource/assets/img/qita.png
+    - lib/resource/assets/img/favicon.png
+    - lib/resource/assets/img/upload.png
+    - lib/resource/assets/img/order.png
+    - lib/resource/assets/img/buy_about.png
+    - lib/resource/assets/img/bullet.png
+    - lib/resource/assets/img/message.png
+    - lib/resource/assets/img/settings.png
+    - lib/resource/assets/img/tap_back_icon.png
   fonts:
     - family: wechatIcon
       fonts:

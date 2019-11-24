@@ -8,7 +8,7 @@ Map<String,dynamic> optHeader = {
   'content-type' : 'application/json'
 };
 
-var dio = new Dio(BaseOptions(connectTimeout: 30000,headers: optHeader));
+var dio = new Dio(BaseOptions(connectTimeout: 5000,headers: optHeader));
 
 class NetUtils{
   static Future get(String url,[Map<String,dynamic> params]) async {

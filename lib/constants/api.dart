@@ -8,6 +8,13 @@ class Api{
   static const String getUserInfo = Base_URL + 'getuserinfo';
 
 
-  static const String test = Base_URL + 'getmoreqadetail';
+  static const String getHomeData = Base_URL + 'gethomedata';
+
+  static const String getHomeMoreData = Base_URL + 'getmoredata';
+
+  static const String getArticleData = Base_URL + 'getarticledata';
+
+  static const String getArticleMoreData = Base_URL + 'getmorearticledata';
+
 
 }

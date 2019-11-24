@@ -4,9 +4,6 @@ import 'package:artepie/utils/net_utils.dart';
 
 class DataUtils{
 
-  /**
-   * 使用密码账户登录
-   */
   static Future doLoginUsePassword(Map<String,String> params) async {
     var response = await NetUtils.get(Api.usePasswordLogin, params);
 
@@ -18,7 +15,19 @@ class DataUtils{
     return await NetUtils.get(Api.getUserInfo,params);
   }
 
-  static Future test(Map<String,String> params) async{
-    return await NetUtils.get(Api.test,params);
+  static Future getHomeData(Map<String,String> params) async{
+    return await NetUtils.get(Api.getHomeData,params);
+  }
+
+  static Future getHomeMoreData(Map<String,String> params) async{
+    return await NetUtils.get(Api.getHomeMoreData,params);
+  }
+
+  static Future getArticleData(Map<String,String> params) async{
+    return await NetUtils.get(Api.getArticleData,params);
+  }
+
+  static Future getArticleMoreData(Map<String,String> params) async{
+    return await NetUtils.get(Api.getArticleMoreData,params);
   }
 }
