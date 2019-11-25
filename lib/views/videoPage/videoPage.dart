@@ -1,9 +1,14 @@
 import 'package:artepie/model/user_info.dart';
 import 'package:artepie/resource/MyColors.dart';
+import 'package:artepie/routers/Application.dart';
 import 'package:artepie/utils/Adapt.dart';
+import 'package:artepie/utils/data_utils.dart';
+import 'package:artepie/views/LoadStateLayout.dart';
+import 'package:artepie/views/listview_item_bottom.dart';
 import 'package:artepie/views/userIconWidget/UserIconWidget.dart';
 import 'package:artepie/widgets/MyChewie/chewie_player.dart';
 import 'package:artepie/widgets/MyChewie/chewie_progress_colors.dart';
+import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
@@ -19,66 +24,153 @@ class VideoPage extends StatefulWidget {
 }
 
 class _MyVideoPageState extends State<VideoPage> {
-  var _noticeInfo = '我这倒是难得跑i就得跑i手机打破旧的是';
-  var _authInfo = '优秀民歌爱好者';
-  var _content = '视频播放器视频播放器视频播放器视频播放器视频播放器视频播放器视频播放器视频播放器视频播放器视频播放器';
-  var _readCount = '125';
+  var _noticeInfo = '';
+
+  LoadState _layoutState = LoadState.State_Loading;
+  BottomState _loadState = BottomState.bottom_Success;
+  ScrollController _scrollController = new ScrollController();
+
+  var _itemCount = 1;
+  List _videoItemList = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _loadVideoData();
+    _loadInform();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        setState(() {
+          _loadState = BottomState.bottom_Loading;
+        });
+        _loadMoreVideoData();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
         backgroundColor: MyColors.dividerColor,
-        body: new RefreshIndicator(
-          displacement: 150,
-          child: new Listener(
-            child: new CustomScrollView(
-              physics: BouncingScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              slivers: <Widget>[
-                SliverAppBar(
-                  title: new Text(
-                    '秀吧视频',
-                    style: new TextStyle(fontSize: Adapt.px(34), color: Colors.black),
-                  ),
-                  pinned: true,
-                  backgroundColor: Colors.white,
-                  brightness: Brightness.light,
-                  elevation: 3,
-                  forceElevated: true,
-                ),
-                SliverToBoxAdapter(
-                  child: new Padding(
-                    padding: EdgeInsets.all(Adapt.px(12)),
-                    child: new Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.info_outline,
-                          size: Adapt.px(34),
-                        ),
-                        new Padding(
-                          padding: EdgeInsets.fromLTRB(Adapt.px(8), 0, Adapt.px(8), 0),
-                          child: Text(
-                            '官方消息：$_noticeInfo',
-                            style: new TextStyle(fontSize: Adapt.px(22)),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      return _videoItem(context, index);
-                    },
-                    childCount: 20,
-                  ),
-                )
-              ],
-            ),
-          ),
-          onRefresh: () {},
+        body: new LoadStateLayout(
+          successWidget: _videoPageWidget(context),
+          errorRetry: () {
+            setState(() {
+              _layoutState = LoadState.State_Loading;
+            });
+            _loadVideoData();
+          },
+          state: _layoutState,
         ));
+  }
+
+  Widget _videoPageWidget(BuildContext context) {
+    return new RefreshIndicator(
+      displacement: Adapt.px(200),
+      child: new Listener(
+        child: new CustomScrollView(
+          controller: _scrollController,
+          physics: BouncingScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          slivers: <Widget>[
+            SliverAppBar(
+              title: new Text(
+                '秀吧视频',
+                style:
+                    new TextStyle(fontSize: Adapt.px(34), color: Colors.black),
+              ),
+              pinned: true,
+              backgroundColor: Colors.white,
+              brightness: Brightness.light,
+              elevation: 3,
+              forceElevated: true,
+            ),
+            SliverToBoxAdapter(
+                child: new InkWell(
+                    child: new Padding(
+                      padding: EdgeInsets.all(Adapt.px(12)),
+                      child: new Flex(
+                        direction: Axis.horizontal,
+                        children: <Widget>[
+                          Icon(
+                            Icons.info_outline,
+                            size: Adapt.px(34),
+                          ),
+                          Expanded(
+                              child: new Padding(
+                            padding: EdgeInsets.fromLTRB(
+                                Adapt.px(8), 0, Adapt.px(8), 0),
+                            child: Text(
+                              _noticeInfo,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: new TextStyle(fontSize: Adapt.px(22)),
+                            ),
+                          ))
+                        ],
+                      ),
+                    ),
+                    onTap: () {
+                      showDialog<Null>(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return new AlertDialog(
+                              title: new Text('公告'),
+                              content: new SingleChildScrollView(
+                                child: new ListBody(
+                                  children: <Widget>[
+                                    new Text(_noticeInfo),
+                                  ],
+                                ),
+                              ),
+                              actions: <Widget>[
+                                new FlatButton(
+                                  child: new Text('确定'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          });
+                    })),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  if (index == _itemCount) {
+                    return new ListBottomView(
+                      isHighBottom: true,
+                      bottomState: _loadState,
+                      errorRetry: () {
+                        setState(() {
+                          _loadState = BottomState.bottom_Loading;
+                        });
+                        _loadMoreVideoData();
+                      },
+                    );
+                  } else {
+                    return _videoItem(context, index);
+                  }
+                },
+                childCount: _itemCount + 1,
+              ),
+            )
+          ],
+        ),
+      ),
+      onRefresh: _loadVideoData,
+    );
   }
 
   Widget _videoItem(BuildContext context, int position) {
@@ -104,10 +196,19 @@ class _MyVideoPageState extends State<VideoPage> {
         children: <Widget>[
           Expanded(
             child: UserIconWidget(
-              url: 'http://www.artepie.cn/image/bannertest2.jpg',
+              url: _videoItemList[position]['user_icon'],
               size: Adapt.px(66),
-              authority: true,
-              isAuthor: true,
+              authority: _videoItemList[position]['user_role']
+                              .substring(0, 1) ==
+                          '0' ||
+                      _videoItemList[position]['user_role'].substring(0, 1) ==
+                          '1'
+                  ? true
+                  : false,
+              isAuthor:
+                  _videoItemList[position]['user_role'].substring(0, 1) == '0'
+                      ? false
+                      : true,
             ),
             flex: 1,
           ),
@@ -117,14 +218,20 @@ class _MyVideoPageState extends State<VideoPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 new Text(
-                  '名字',
+                  _videoItemList[position]['user_name'],
                   style: new TextStyle(
                       fontSize: Adapt.px(26),
                       color: Colors.black,
                       fontWeight: FontWeight.bold),
                 ),
                 new Text(
-                  '认证：$_authInfo',
+                  _videoItemList[position]['user_role'].substring(0, 1) ==
+                              '0' ||
+                          _videoItemList[position]['user_role']
+                                  .substring(0, 1) ==
+                              '1'
+                      ? '认证：${_videoItemList[position]['user_role'].substring(1)}'
+                      : '${_videoItemList[position]['user_signal']}',
                   style: new TextStyle(
                     fontSize: Adapt.px(20),
                     color: MyColors.fontColor,
@@ -158,7 +265,7 @@ class _MyVideoPageState extends State<VideoPage> {
                 size: Adapt.px(34),
               ),
               new Text(
-                '12',
+                _videoItemList[position]['qa_like'],
                 style: new TextStyle(fontSize: Adapt.px(22)),
               )
             ],
@@ -170,7 +277,7 @@ class _MyVideoPageState extends State<VideoPage> {
                 size: Adapt.px(34),
               ),
               new Text(
-                '5',
+                _videoItemList[position]['qa_comment'],
                 style: new TextStyle(fontSize: Adapt.px(22)),
               )
             ],
@@ -188,15 +295,6 @@ class _MyVideoPageState extends State<VideoPage> {
     );
   }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-
-    super.dispose();
-  }
-
-  var testVideoUrl =
-      'https://v-cdn.zjol.com.cn/280443.mp4';
   Widget _contentWidget(BuildContext context, int position) {
     return new Container(
       padding: EdgeInsets.all(Adapt.px(18)),
@@ -205,25 +303,29 @@ class _MyVideoPageState extends State<VideoPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           new Text(
-            '$_content',
+            _videoItemList[position]['qa_content'],
             style: new TextStyle(
               fontSize: Adapt.px(26),
             ),
           ),
           new Text(
-            '阅读：$_readCount',
+            '阅读：${_videoItemList[position]['qa_view']}',
             style: new TextStyle(
-              fontSize: Adapt.px(22),
-              color: MyColors.lowfontColor
-            ),
+                fontSize: Adapt.px(22), color: MyColors.lowfontColor),
           ),
           new Chewie(
-            new VideoPlayerController.network(testVideoUrl),
+            new VideoPlayerController.network(
+                _videoItemList[position]['qa_video']),
             aspectRatio: 16 / 9,
             autoPlay: false,
             looping: true,
             showControls: true,
-            placeholder: Container(width:double.infinity,child: Image.network('http://www.artepie.cn/image/bannertest2.jpg',fit: BoxFit.cover,)),
+            placeholder: Container(
+                width: double.infinity,
+                child: Image.network(
+                  _videoItemList[position]['qa_video_cover'],
+                  fit: BoxFit.cover,
+                )),
             autoInitialize: false,
             materialProgressColors: new ChewieProgressColors(
                 playedColor: MyColors.white,
@@ -234,5 +336,69 @@ class _MyVideoPageState extends State<VideoPage> {
         ],
       ),
     );
+  }
+
+  Future _loadVideoData() {
+    return DataUtils.getVideoData({'token': Application.spUtil.get('token')})
+        .then((result) {
+      var data = result['data'];
+
+      if (data.length == 0) {
+        setState(() {
+          _layoutState = LoadState.State_Empty;
+        });
+      } else {
+        setState(() {
+          _loadState = BottomState.bottom_Loading;
+          _layoutState = LoadState.State_Success;
+          _videoItemList = data;
+          _itemCount = data.length;
+        });
+      }
+    }).catchError((onError) {
+      setState(() {
+        LogUtil.e(onError);
+        _layoutState = LoadState.State_Error;
+      });
+    });
+  }
+
+  void _loadMoreVideoData() {
+    DataUtils.getVideoMoreData({
+      'currentpage': _itemCount.toString(),
+      'token': Application.spUtil.get('token')
+    }).then((result) {
+      var data = result['data'];
+      if (data.length == 0) {
+        setState(() {
+          _loadState = BottomState.bottom_Empty;
+        });
+      } else {
+        setState(() {
+          _videoItemList.addAll(data);
+          _itemCount = _videoItemList.length;
+        });
+      }
+    }).catchError((onError) {
+      setState(() {
+        _loadState = BottomState.bottom_Error;
+      });
+    });
+  }
+
+  void _loadInform() {
+    DataUtils.getInform({'token': Application.spUtil.get('token')})
+        .then((result) {
+      var data = result['data'];
+      setState(() {
+        _noticeInfo = data['informText'];
+      });
+    }).catchError((onError) {
+      setState(() {
+        setState(() {
+          _noticeInfo = '加载错误，刷新重试';
+        });
+      });
+    });
   }
 }

@@ -30,4 +30,19 @@ class DataUtils{
   static Future getArticleMoreData(Map<String,String> params) async{
     return await NetUtils.get(Api.getArticleMoreData,params);
   }
+
+
+  static Future getVideoData(Map<String,String> params) async{
+    return await NetUtils.get(Api.getVideoData,params);
+  }
+
+
+  static Future getVideoMoreData(Map<String,String> params) async{
+    return await NetUtils.get(Api.getVideoMoreData,params);
+  }
+
+
+  static Future getInform(Map<String,String> params) async{
+    return await NetUtils.get(Api.getInform,params);
+  }
 }

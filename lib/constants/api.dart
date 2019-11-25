@@ -16,5 +16,11 @@ class Api{
 
   static const String getArticleMoreData = Base_URL + 'getmorearticledata';
 
+  static const String getVideoData = Base_URL + 'getquestion';
+
+  static const String getVideoMoreData = Base_URL + 'getmorequestion';
+
+  static const String getInform = Base_URL + 'getinform';
+
 
 }
