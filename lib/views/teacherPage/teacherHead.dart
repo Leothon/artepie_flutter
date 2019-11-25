@@ -23,6 +23,7 @@ class _curvePageState extends State<CurvePage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return new Container(
+      margin: EdgeInsets.only(bottom: Adapt.px(22)),
       color: MyColors.dividerColor,
       child: new SingleChildScrollView(
         child: new ListBody(
