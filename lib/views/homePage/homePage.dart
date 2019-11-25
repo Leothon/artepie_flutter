@@ -1,10 +1,12 @@
 import 'package:artepie/resource/MyColors.dart';
 import 'package:artepie/routers/Application.dart';
+import 'package:artepie/routers/routers.dart';
 import 'package:artepie/utils/Adapt.dart';
 import 'package:artepie/utils/data_utils.dart';
 import 'package:artepie/views/LoadStateLayout.dart';
 import 'package:artepie/views/listview_item_bottom.dart';
 import 'package:common_utils/common_utils.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
@@ -276,7 +278,8 @@ class _MyHomePageState extends State<HomePage> {
                   ),
                 ),
                 onTap: () {
-                  //TODO 跳转教师
+                  Application.router.navigateTo(context, '${Routes.teacherPage}?teacherId=${Uri.encodeComponent(teachersInfo[index]['user_id'])}',transition: TransitionType.fadeIn);
+
                 },
               );
             },

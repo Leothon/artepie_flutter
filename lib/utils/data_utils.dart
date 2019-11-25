@@ -45,4 +45,13 @@ class DataUtils{
   static Future getInform(Map<String,String> params) async{
     return await NetUtils.get(Api.getInform,params);
   }
+
+  static Future getTeacherData(Map<String,String> params) async{
+    return await NetUtils.get(Api.getTeacherData,params);
+  }
+
+
+  static Future getTeacherMoreData(Map<String,String> params) async{
+    return await NetUtils.get(Api.getTeacherMoreData,params);
+  }
 }

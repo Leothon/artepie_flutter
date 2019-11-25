@@ -77,97 +77,94 @@ class _MyVideoPageState extends State<VideoPage> {
   Widget _videoPageWidget(BuildContext context) {
     return new RefreshIndicator(
       displacement: Adapt.px(200),
-      child: new Listener(
-        child: new CustomScrollView(
-          controller: _scrollController,
-          physics: BouncingScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          slivers: <Widget>[
-            SliverAppBar(
-              title: new Text(
-                '秀吧视频',
-                style:
-                    new TextStyle(fontSize: Adapt.px(34), color: Colors.black),
-              ),
-              pinned: true,
-              backgroundColor: Colors.white,
-              brightness: Brightness.light,
-              elevation: 3,
-              forceElevated: true,
+      child: new CustomScrollView(
+        controller: _scrollController,
+        physics: BouncingScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        slivers: <Widget>[
+          SliverAppBar(
+            title: new Text(
+              '秀吧视频',
+              style: new TextStyle(fontSize: Adapt.px(34), color: Colors.black),
             ),
-            SliverToBoxAdapter(
-                child: new InkWell(
-                    child: new Padding(
-                      padding: EdgeInsets.all(Adapt.px(12)),
-                      child: new Flex(
-                        direction: Axis.horizontal,
-                        children: <Widget>[
-                          Icon(
-                            Icons.info_outline,
-                            size: Adapt.px(34),
+            pinned: true,
+            backgroundColor: Colors.white,
+            brightness: Brightness.light,
+            elevation: 3,
+            forceElevated: true,
+          ),
+          SliverToBoxAdapter(
+              child: new InkWell(
+                  child: new Padding(
+                    padding: EdgeInsets.all(Adapt.px(12)),
+                    child: new Flex(
+                      direction: Axis.horizontal,
+                      children: <Widget>[
+                        Icon(
+                          Icons.info_outline,
+                          size: Adapt.px(34),
+                        ),
+                        Expanded(
+                            child: new Padding(
+                          padding: EdgeInsets.fromLTRB(
+                              Adapt.px(8), 0, Adapt.px(8), 0),
+                          child: Text(
+                            _noticeInfo,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: new TextStyle(fontSize: Adapt.px(22)),
                           ),
-                          Expanded(
-                              child: new Padding(
-                            padding: EdgeInsets.fromLTRB(
-                                Adapt.px(8), 0, Adapt.px(8), 0),
-                            child: Text(
-                              _noticeInfo,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: new TextStyle(fontSize: Adapt.px(22)),
-                            ),
-                          ))
-                        ],
-                      ),
+                        ))
+                      ],
                     ),
-                    onTap: () {
-                      showDialog<Null>(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (BuildContext context) {
-                            return new AlertDialog(
-                              title: new Text('公告'),
-                              content: new SingleChildScrollView(
-                                child: new ListBody(
-                                  children: <Widget>[
-                                    new Text(_noticeInfo),
-                                  ],
-                                ),
+                  ),
+                  onTap: () {
+                    showDialog<Null>(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return new AlertDialog(
+                            title: new Text('公告'),
+                            content: new SingleChildScrollView(
+                              child: new ListBody(
+                                children: <Widget>[
+                                  new Text(_noticeInfo),
+                                ],
                               ),
-                              actions: <Widget>[
-                                new FlatButton(
-                                  child: new Text('确定'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          });
-                    })),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  if (index == _itemCount) {
-                    return new ListBottomView(
-                      isHighBottom: true,
-                      bottomState: _loadState,
-                      errorRetry: () {
-                        setState(() {
-                          _loadState = BottomState.bottom_Loading;
+                            ),
+                            actions: <Widget>[
+                              new FlatButton(
+                                child: new Text('确定'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
                         });
-                        _loadMoreVideoData();
-                      },
-                    );
-                  } else {
-                    return _videoItem(context, index);
-                  }
-                },
-                childCount: _itemCount + 1,
-              ),
-            )
-          ],
-        ),
+                  })),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                if (index == _itemCount) {
+                  return new ListBottomView(
+                    isHighBottom: true,
+                    bottomState: _loadState,
+                    errorRetry: () {
+                      setState(() {
+                        _loadState = BottomState.bottom_Loading;
+                      });
+                      _loadMoreVideoData();
+                    },
+                  );
+                } else {
+                  return _videoItem(context, index);
+                }
+              },
+              childCount: _itemCount + 1,
+            ),
+          )
+        ],
       ),
       onRefresh: _loadVideoData,
     );

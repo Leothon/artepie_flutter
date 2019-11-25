@@ -125,7 +125,7 @@ class _MyArticlePage extends State<ArticlePage> {
                   crossAxisCount: 2, //Grid按两列显示
                   mainAxisSpacing: Adapt.px(28),
                   crossAxisSpacing: Adapt.px(28),
-                  childAspectRatio: 0.9,
+                  childAspectRatio: 0.75,
                 ),
                 delegate: new SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
@@ -247,9 +247,9 @@ class _MyArticlePage extends State<ArticlePage> {
                 new Text(
                   _articleList[position]['articleTitle'],
                   overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
+                  maxLines: 2,
                   style: new TextStyle(
-                      fontSize: Adapt.px(32), color: Colors.black),
+                      fontSize: Adapt.px(26), color: Colors.black),
                 ),
                 new Padding(
                   padding: EdgeInsets.fromLTRB(0, Adapt.px(6), 0, Adapt.px(6)),

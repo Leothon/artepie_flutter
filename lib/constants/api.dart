@@ -22,5 +22,9 @@ class Api{
 
   static const String getInform = Base_URL + 'getinform';
 
+  static const String getTeacherData = Base_URL + 'getteaclass';
+  static const String getTeacherMoreData = Base_URL + 'getmoreteaclass';
+
+
 
 }
