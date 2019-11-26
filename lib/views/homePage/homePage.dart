@@ -7,6 +7,7 @@ import 'package:artepie/views/LoadStateLayout.dart';
 import 'package:artepie/views/listview_item_bottom.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:fluro/fluro.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
@@ -216,7 +217,14 @@ class _MyHomePageState extends State<HomePage> {
         scrollDirection: Axis.horizontal,
         autoplay: true,
         onTap: (index) {
-          LogUtil.e('点击了第$index个');
+          if(bannersInfo[index]['banner_type'] == 'class'){
+            Application.router.navigateTo(context,
+                '${Routes.classDetailPage}?classid=${Uri.encodeComponent(bannersInfo[index]['banner_to_class_id'])}',
+                transition: TransitionType.fadeIn);
+          }else{
+            //TODO 跳转banner信息
+          }
+
         },
       ),
     );
@@ -278,8 +286,9 @@ class _MyHomePageState extends State<HomePage> {
                   ),
                 ),
                 onTap: () {
-                  Application.router.navigateTo(context, '${Routes.teacherPage}?teacherId=${Uri.encodeComponent(teachersInfo[index]['user_id'])}',transition: TransitionType.fadeIn);
-
+                  Application.router.navigateTo(context,
+                      '${Routes.teacherPage}?teacherId=${Uri.encodeComponent(teachersInfo[index]['user_id'])}',
+                      transition: TransitionType.fadeIn);
                 },
               );
             },
@@ -373,129 +382,182 @@ class _MyHomePageState extends State<HomePage> {
         ),
       ),
       onTap: () {
-        //TODO 跳转类型
+        Application.router.navigateTo(context,
+            '${Routes.typePage}?type=${Uri.encodeComponent(typeNames[position])}',
+            transition: TransitionType.fadeIn);
       },
     );
   }
 
   Widget _classItem(BuildContext context, int position) {
-    return Container(
-      height: Adapt.px(332),
-      margin: EdgeInsets.fromLTRB(Adapt.px(24), 0, Adapt.px(24), Adapt.px(18)),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(Adapt.px(28))),
-      child: new Row(
-        children: <Widget>[
-          Expanded(
-            child: new Stack(
-              children: <Widget>[
-                Container(
-                  height: Adapt.px(332),
-                  //width: Adapt.px(300),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(Adapt.px(28)),
-                    child: FadeInImage.assetNetwork(
-                      placeholder: 'lib/resource/assets/img/loading.png',
-                      image: itemInfo[position]['selectbackimg'],
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                new Offstage(
-                  offstage: !itemInfo[position]['authorize'],
-                  child: Container(
-                    height: Adapt.px(54),
-                    width: Adapt.px(120),
-                    decoration: BoxDecoration(
-                      color: MyColors.colorPrimary,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(Adapt.px(28)),
-                          topRight: Radius.circular(0),
-                          bottomLeft: Radius.circular(0),
-                          bottomRight: Radius.circular(Adapt.px(28))),
-                    ),
-                    child: new Center(
-                      child: new Text(
-                        '官方课程',
-                        style: new TextStyle(
-                            fontSize: Adapt.px(22), color: Colors.white),
+    return InkWell(
+      child: Container(
+        height: Adapt.px(332),
+        margin:
+            EdgeInsets.fromLTRB(Adapt.px(24), 0, Adapt.px(24), Adapt.px(18)),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(Adapt.px(28))),
+        child: new Row(
+          children: <Widget>[
+            Expanded(
+              child: new Stack(
+                children: <Widget>[
+                  Container(
+                    height: Adapt.px(332),
+                    //width: Adapt.px(300),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(Adapt.px(28)),
+                      child: FadeInImage.assetNetwork(
+                        placeholder: 'lib/resource/assets/img/loading.png',
+                        image: itemInfo[position]['selectbackimg'],
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            flex: 2,
-          ),
-          Expanded(
-            child: new Container(
-              //width: 180,
-              margin: EdgeInsets.fromLTRB(Adapt.px(18), 0, Adapt.px(18), 0),
-              child: new Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  new Text(itemInfo[position]['selectlisttitle'],
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: new TextStyle(
-                        fontSize: Adapt.px(34),
-                        fontWeight: FontWeight.bold,
-                      )),
-                  new Text(itemInfo[position]['selectauthor'],
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: new TextStyle(
-                          fontSize: Adapt.px(28), color: MyColors.fontColor)),
-                  new Text(itemInfo[position]['selectdesc'],
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      style: new TextStyle(
-                        fontSize: Adapt.px(24),
-                      )),
-                  new Container(
-                    height: Adapt.px(34),
-                    width: Adapt.px(88),
-                    decoration: BoxDecoration(
-                        color: itemInfo[position]['serialize']
-                            ? MyColors.colorPrimary
-                            : Colors.green,
-                        borderRadius: BorderRadius.circular(Adapt.px(18))),
-                    child: new Text(
-                        itemInfo[position]['serialize'] ? '连载中' : '已完结',
-                        textAlign: TextAlign.center,
-                        style: new TextStyle(
-                            color: Colors.white, fontSize: Adapt.px(20))),
-                  ),
-                  new Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      new Text(
-                        '${itemInfo[position]['selectstucount']}人次已学习',
-                        style: new TextStyle(
-                          fontSize: Adapt.px(22),
+                  new Offstage(
+                    offstage: !itemInfo[position]['authorize'],
+                    child: Container(
+                      height: Adapt.px(54),
+                      width: Adapt.px(120),
+                      decoration: BoxDecoration(
+                        color: MyColors.colorPrimary,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(Adapt.px(28)),
+                            topRight: Radius.circular(0),
+                            bottomLeft: Radius.circular(0),
+                            bottomRight: Radius.circular(Adapt.px(28))),
+                      ),
+                      child: new Center(
+                        child: new Text(
+                          '官方课程',
+                          style: new TextStyle(
+                              fontSize: Adapt.px(22), color: Colors.white),
                         ),
                       ),
-                      new Text(
-                        itemInfo[position]['selectprice'] == '0.00'
-                            ? '免费'
-                            : '￥${itemInfo[position]['selectprice']}',
-                        style: new TextStyle(
-                            fontSize: Adapt.px(30),
-                            fontWeight: FontWeight.bold,
-                            fontStyle: FontStyle.italic,
-                            color: MyColors.colorPrimary),
-                      ),
-                    ],
-                  )
+                    ),
+                  ),
                 ],
               ),
+              flex: 2,
             ),
-            flex: 3,
-          )
-        ],
+            Expanded(
+              child: new Container(
+                //width: 180,
+                margin: EdgeInsets.fromLTRB(Adapt.px(18), 0, Adapt.px(18), 0),
+                child: new Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    new Text(itemInfo[position]['selectlisttitle'],
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: new TextStyle(
+                          fontSize: Adapt.px(34),
+                          fontWeight: FontWeight.bold,
+                        )),
+                    new Text(itemInfo[position]['selectauthor'],
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: new TextStyle(
+                            fontSize: Adapt.px(28), color: MyColors.fontColor)),
+                    new Text(itemInfo[position]['selectdesc'],
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: new TextStyle(
+                          fontSize: Adapt.px(24),
+                        )),
+                    new Container(
+                      height: Adapt.px(34),
+                      width: Adapt.px(88),
+                      decoration: BoxDecoration(
+                          color: itemInfo[position]['serialize']
+                              ? MyColors.colorPrimary
+                              : Colors.green,
+                          borderRadius: BorderRadius.circular(Adapt.px(18))),
+                      child: new Text(
+                          itemInfo[position]['serialize'] ? '连载中' : '已完结',
+                          textAlign: TextAlign.center,
+                          style: new TextStyle(
+                              color: Colors.white, fontSize: Adapt.px(20))),
+                    ),
+                    new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        new Text(
+                          '${itemInfo[position]['selectstucount']}人次已学习',
+                          style: new TextStyle(
+                            fontSize: Adapt.px(22),
+                          ),
+                        ),
+                        new Text(
+                          itemInfo[position]['isbuy']
+                              ? '已购买'
+                              : (itemInfo[position]['selectprice'] == '0.00'
+                              ? '免费'
+                              : '￥${itemInfo[position]['selectprice']}'),
+                          style: new TextStyle(
+                              fontSize: Adapt.px(30),
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              color: MyColors.colorPrimary),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              flex: 3,
+            )
+          ],
+        ),
       ),
+      onTap: () {
+
+
+        if (itemInfo[position]['selectprice'] == '0.00' ||
+            itemInfo[position]['isbuy']) {
+          Application.router.navigateTo(context,
+              '${Routes.classDetailPage}?classid=${Uri.encodeComponent(itemInfo[position]['selectId'])}',
+              transition: TransitionType.fadeIn);
+        } else if (position == 0) {
+          Application.router.navigateTo(context,
+              '${Routes.classDetailPage}?classid=${Uri.encodeComponent(itemInfo[position]['selectId'])}',
+              transition: TransitionType.fadeIn);
+        } else {
+          showDialog<Null>(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('提醒'),
+                  content: Text('本课程是付费课程，您尚未订阅'),
+                  actions: <Widget>[
+
+                    FlatButton(
+                      child: Text('直接订阅'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+
+                        //TODO 跳转购买课程
+                      },
+                    ),
+
+                    FlatButton(
+                      child: Text('试看一下'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Application.router.navigateTo(context,
+                            '${Routes.classDetailPage}?classid=${Uri.encodeComponent(itemInfo[position]['selectId'])}',
+                            transition: TransitionType.fadeIn);
+                      },
+                    ),
+                  ],
+                );
+              });
+        }
+
+      },
     );
   }
 

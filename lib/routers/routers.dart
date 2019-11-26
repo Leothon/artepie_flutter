@@ -7,6 +7,8 @@ class Routes{
   static String loginPage = "/loginPage";
   static String appInfoPage = "/appInfoPage";
   static String teacherPage = "/teacherPage";
+  static String typePage = "/typePage";
+  static String classDetailPage = "/classDetailPage";
   
   static void configureRoutes(Router router){
     //List widgetDemos
@@ -14,5 +16,7 @@ class Routes{
     router.define(loginPage, handler: loginHandler);
     router.define(appInfoPage, handler: appInfoHandler);
     router.define(teacherPage, handler: teacherPageHandler);
+    router.define(typePage, handler: typePageHandler);
+    router.define(classDetailPage, handler: classDetailPageHandler);
   }
 }

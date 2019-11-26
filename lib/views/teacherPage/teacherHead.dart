@@ -7,8 +7,9 @@ class CurvePage extends StatefulWidget {
   final String iconUrl;
   final String name;
   final String description;
+  final String backUrl;
 
-  const CurvePage({Key key, this.iconUrl, this.name, this.description})
+  const CurvePage({Key key, this.iconUrl, this.name, this.description,this.backUrl})
       : super(key: key);
 
   @override
@@ -32,7 +33,7 @@ class _curvePageState extends State<CurvePage> {
               children: <Widget>[
                 new Container(
                   child: Image.network(
-                    'http://www.artepie.cn/image/teaback.jpg',
+                    widget.backUrl,
                     fit: BoxFit.cover,
                   ),
                   width: double.infinity,

@@ -116,6 +116,7 @@ void main() async {
   if (Platform.isAndroid) {
     SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
+
     );
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }

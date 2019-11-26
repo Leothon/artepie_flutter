@@ -21,6 +21,8 @@ class MyColors {
   static const Color black = Color(0xff000000);
   static const Color dividerColor = Color(0xfff5f5f5);
   static const Color whitealpha = Color(0xE6FFFFFF);
+
+  static const Color blackalpha = Color(0x99a7a7a7);
   static const Color alpha = Color(0x00ffffff);
   static const Color green = Color(0xff4CAF50);
   static const Color pressColorPrimary = Color(0xe5f26402);

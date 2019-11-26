@@ -173,7 +173,7 @@ class _MyArticlePage extends State<ArticlePage> {
 
                       child: FadeInImage.assetNetwork(
                         placeholder: 'lib/resource/assets/img/loading.png',
-                        image: _articleBanners[index]['banner_img'],
+                        image: _articleBanners[index]['banner_img'] == null ? 'http://www.artepie.cn/image/default_cover.png' :  _articleBanners[index]['banner_img'],
                         fit: BoxFit.cover,
                       ),
                       height: Adapt.px(380),

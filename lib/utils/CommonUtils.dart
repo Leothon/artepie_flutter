@@ -34,4 +34,8 @@ class CommonUtils {
       return 2;
     }
   }
+
+  static String msTomin(double ms) {
+    return ((ms / 1000) / 60).toStringAsFixed(2);
+  }
 }

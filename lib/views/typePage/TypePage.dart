@@ -5,58 +5,68 @@ import 'package:artepie/utils/Adapt.dart';
 import 'package:artepie/utils/data_utils.dart';
 import 'package:artepie/views/LoadStateLayout.dart';
 import 'package:artepie/views/listview_item_bottom.dart';
-import 'package:artepie/views/teacherPage/teacherHead.dart';
-import 'package:artepie/views/userIconWidget/UserIconWidget.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class TeacherPage extends StatefulWidget {
-  final String _teacherId;
-  TeacherPage(this._teacherId);
+class TypePage extends StatefulWidget {
+  final String _type;
+  TypePage(this._type);
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return new _TeacherPageState();
+    return new _typePageState();
   }
 }
 
-class _TeacherPageState extends State<TeacherPage> {
+class _typePageState extends State<TypePage> {
   LoadState _layoutState = LoadState.State_Loading;
   BottomState _loadState = BottomState.bottom_Success;
   ScrollController _scrollController = new ScrollController();
-  bool isListInTop = true;
   var _itemCount = 1;
   List _classItemList = [];
-  var _description = '';
-  var _name = '';
-  var _iconUrl = '';
+  var _classCount = '';
+
+
+  Map<String,String> typeDescription  = {
+  '民族':'所谓中国民族音乐就是祖祖辈辈生活、繁衍在中国这片土地上的各民族，从古到今在悠久历史文化传统上创造的具有民族特色，能体现民族文化和民族精神的音乐。而广义上，民族音乐是泛指中国音乐家所创作的的音乐和具有中国五声色彩的音乐。',
+  '美声':'美声不仅是一种发声方法，还代表着一种演唱风格，一种声乐学派，因之通常又可译作美声唱法、美声学派。 美声歌唱不同于其他歌唱方法的特点之一，是它采用了比其他唱法的喉头位置较低的发声方法，因而产生了一种明亮、丰满、松弛、圆润，而又具有一种金属色彩的、富于共鸣的音质；其次是它注重句法连贯，声音灵活，刚柔兼备，以柔为主的演唱风格。',
+  '古典':'古典是指那些从西方中世纪开始至今的、在欧洲主流文化背景下创作的西方古典音乐，主要因其复杂多样的创作技术和所能承载的厚重内涵而有别于通俗音乐和民间音乐。狭义指古典主义时期，1750年（J·S·巴赫去世）至1827年（贝多芬去世)，这一时期为古典主义音乐时期，它包含了两大时间段：“前古典时期”和“维也纳古典时期”。“最为著名的维也纳乐派也是在“维也纳古典时期”兴起，其代表作曲家有海顿、莫扎特和贝多芬，被后世称为“维也纳三杰”。',
+  '戏曲':'中国戏曲主要是由民间歌舞、说唱和滑稽戏三种不同艺术形式综合而成。它起源于原始歌舞，是一种历史悠久的综合舞台艺术样式。经过汉、唐到宋、金才形成比较完整的戏曲艺术，它由文学、音乐、舞蹈、美术、武术、杂技以及表演艺术综合而成，约有三百六十多个种类。它的特点是将众多艺术形式以一种标准聚合在一起，在共同具有的性质中体现其各自的个性。 [1]  中国的戏曲与希腊悲剧和喜剧、印度梵剧并称为世界三大古老的戏剧文化，经过长期的发展演变，逐步形成了以“京剧、越剧、黄梅戏、评剧、豫剧”五大戏曲剧种为核心的中华戏曲百花苑',
+  '原生态': '原生态指没有被特殊雕琢，存在于民间原始的、散发着乡土气息的表演形态，它包含着原生态唱法、原生态舞蹈、原生态歌手、原生态大写意山水画等。',
+  '民谣':'民间流行的、赋予民族色彩的歌曲，称为民谣或民歌。民谣的历史悠远，故其作者多不知名。民谣的内容丰富，有宗教的、爱情的、战争的、工作的，也有饮酒、舞蹈作乐、祭典等等。民谣表现一个民族的感情与习尚，因此各有其独特的音阶与情调风格。如法国民谣的蓬勃、意大利民谣的热情、英国民谣的淳朴、日本民谣的悲愤、西班牙民谣的狂放不羁、中国民谣的缠绵悱恻，都表现了强烈的民族气质与色彩。',
+  '通俗':'通俗唱法（原也称流行唱法）始于中国二十世纪30年代得到广泛的流传。其特点是声音自然，近似说话，中声区使用真声，高声区一般使用假声。很少使用共鸣，故音量较小。演唱时必须借助电声扩音器，演出形式以独唱为主，常配以舞蹈动作、追求声音自然甜美，感情细腻真实。',
+  '其他':'其他相关的艺术形式'};
+
+  bool isTop = false;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    _loadTeacherData();
+    _loadTypeData();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         setState(() {
           _loadState = BottomState.bottom_Loading;
         });
-        _loadMoreTeacherData();
+        _loadMoreTypeData();
       }
 
-      if (_scrollController.offset < Adapt.px(320)) {
+      if (_scrollController.offset < Adapt.px(280)) {
         setState(() {
-          isListInTop = true;
+          isTop = false;
         });
       } else {
         setState(() {
-          isListInTop = false;
+          isTop = true;
         });
       }
     });
+
+
   }
 
   @override
@@ -69,67 +79,109 @@ class _TeacherPageState extends State<TeacherPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+
     return new Scaffold(
         backgroundColor: MyColors.dividerColor,
         body: new LoadStateLayout(
-          successWidget: _teacherPageWidget(context),
+          successWidget: _typePageWidget(context),
           errorRetry: () {
             setState(() {
               _layoutState = LoadState.State_Loading;
             });
-            _loadTeacherData();
+            _loadTypeData();
           },
           state: _layoutState,
         ));
   }
 
-  Widget _teacherPageWidget(BuildContext context) {
-    return new Stack(
-      children: <Widget>[
-        RefreshIndicator(
-          displacement: Adapt.px(200),
-          child: new CustomScrollView(
-            controller: _scrollController,
-            physics: AlwaysScrollableScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            slivers: <Widget>[
-              SliverToBoxAdapter(
-                child: CurvePage(
-                  description: _description,
-                  name: _name,
-                  iconUrl: _iconUrl,
-                  backUrl: _classItemList.length == 0
-                      ? 'http://www.artepie.cn/image/video_cover.png'
-                      : _classItemList[0]['selectbackimg'],
-                ),
+  Widget _typePageWidget(BuildContext context) {
+    return RefreshIndicator(
+      displacement: Adapt.px(200),
+      child: new CustomScrollView(
+        controller: _scrollController,
+        physics: AlwaysScrollableScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        slivers: <Widget>[
+          SliverAppBar(
+            expandedHeight: Adapt.px(280),
+            brightness: Brightness.light,
+            title: new Text(
+              widget._type,
+              style: new TextStyle(color: isTop ? MyColors.fontColor : Colors.white),
+            ),
+            leading: InkWell(
+              child: Icon(
+                Icons.arrow_back,
+                color: isTop ? MyColors.fontColor : Colors.white,
               ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    if (index == _itemCount) {
-                      return new ListBottomView(
-                        isHighBottom: true,
-                        bottomState: _loadState,
-                        errorRetry: () {
-                          setState(() {
-                            _loadState = BottomState.bottom_Loading;
-                          });
-                          _loadMoreTeacherData();
-                        },
-                      );
-                    } else {
-                      return _classItem(context, index);
-                    }
-                  },
-                  childCount: _itemCount + 1,
-                ),
-              )
-            ],
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            backgroundColor: Colors.white,
+            floating: false,
+            pinned: true,
+            snap: false,
+            flexibleSpace: new FlexibleSpaceBar(
+              background: Image.network(
+                  _classItemList.length == 0 ? 'http://www.artepie.cn/image/video_cover.png' : _classItemList[0]['selectbackimg'],
+                  fit: BoxFit.cover),
+            ),
           ),
-          onRefresh: _loadTeacherData,
-        ),
-        _toolBarWidget(context),
-      ],
+          SliverToBoxAdapter(
+            child: new Container(
+                padding: EdgeInsets.all(Adapt.px(20)),
+                color: Colors.white,
+                child: new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    new Text('总课程数:$_classCount',style: new TextStyle(
+                      color: Colors.black,
+                      fontSize: Adapt.px(32)
+                    ),),
+                    new Padding(padding: EdgeInsets.only(top: Adapt.px(20),left: Adapt.px(10),right: Adapt.px(10)),child: new Text(
+                        typeDescription[widget._type],style: new TextStyle(
+                      color: MyColors.fontColor,
+                      fontSize: Adapt.px(24)
+                    ),),
+                        )
+                    ],
+                )),
+          ),
+          SliverToBoxAdapter(
+            child: ClipPath(
+              //路径裁切组件
+              clipper: BottomClipper(), //路径
+              child: new Container(
+                height: Adapt.px(100),
+                color: Colors.white,
+              ),
+            ),
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                if (index == _itemCount) {
+                  return new ListBottomView(
+                    isHighBottom: true,
+                    bottomState: _loadState,
+                    errorRetry: () {
+                      setState(() {
+                        _loadState = BottomState.bottom_Loading;
+                      });
+                      _loadMoreTypeData();
+                    },
+                  );
+                } else {
+                  return _classItem(context, index);
+                }
+              },
+              childCount: _itemCount + 1,
+            ),
+          )
+        ],
+      ),
+      onRefresh: _loadTypeData,
     );
   }
 
@@ -183,8 +235,7 @@ class _TeacherPageState extends State<TeacherPage> {
                 Expanded(
                   child: new Container(
                     //width: 180,
-                    margin:
-                        EdgeInsets.fromLTRB(Adapt.px(18), 0, Adapt.px(18), 0),
+                    margin: EdgeInsets.fromLTRB(Adapt.px(18), 0, Adapt.px(18), 0),
                     child: new Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -214,8 +265,7 @@ class _TeacherPageState extends State<TeacherPage> {
                               color: _classItemList[position]['serialize']
                                   ? MyColors.colorPrimary
                                   : Colors.green,
-                              borderRadius:
-                                  BorderRadius.circular(Adapt.px(18))),
+                              borderRadius: BorderRadius.circular(Adapt.px(18))),
                           child: new Text(
                               _classItemList[position]['serialize']
                                   ? '连载中'
@@ -266,32 +316,30 @@ class _TeacherPageState extends State<TeacherPage> {
         ],
       ),
       onTap: () {
-
-
-
-        if(_classItemList[position]['selectprice'] == '0.00' || _classItemList[position]['isbuy']){
+        if (_classItemList[position]['selectprice'] == '0.00' ||
+            _classItemList[position]['isbuy']) {
           Application.router.navigateTo(context,
-              '${Routes.classDetailPage}?classid=${Uri.encodeComponent(_classItemList[position]['selectId'])}',
+              '${Routes.classDetailPage}?classid=${Uri.encodeComponent(
+                  _classItemList[position]['selectId'])}',
               transition: TransitionType.fadeIn);
-        }else if(position == 0){
+        } else if (position == 0) {
           Application.router.navigateTo(context,
-              '${Routes.classDetailPage}?classid=${Uri.encodeComponent(_classItemList[position]['selectId'])}',
+              '${Routes.classDetailPage}?classid=${Uri.encodeComponent(
+                  _classItemList[position]['selectId'])}',
               transition: TransitionType.fadeIn);
-        }else{
-
-
+        } else {
           showDialog<Null>(
               context: context,
               barrierDismissible: false,
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: Text('提醒'),
-                  content:Text('本课程是付费课程，您尚未订阅'),
-                  actions:<Widget>[
+                  content: Text('本课程是付费课程，您尚未订阅'),
+                  actions: <Widget>[
 
                     FlatButton(
                       child: Text('直接订阅'),
-                      onPressed: (){
+                      onPressed: () {
                         Navigator.of(context).pop();
 
                         //TODO 跳转购买课程
@@ -300,28 +348,29 @@ class _TeacherPageState extends State<TeacherPage> {
 
                     FlatButton(
                       child: Text('试看一下'),
-                      onPressed: (){
+                      onPressed: () {
                         Navigator.of(context).pop();
                         Application.router.navigateTo(context,
-                            '${Routes.classDetailPage}?classid=${Uri.encodeComponent(_classItemList[position]['selectId'])}',
+                            '${Routes.classDetailPage}?classid=${Uri
+                                .encodeComponent(
+                                _classItemList[position]['selectId'])}',
                             transition: TransitionType.fadeIn);
                       },
                     ),
                   ],
                 );
-
               });
         }
-
       },
+
+
     );
   }
 
-  Future _loadTeacherData() {
-    return DataUtils.getTeacherData({
-      'token': Application.spUtil.get('token'),
-      'teaid': widget._teacherId
-    }).then((result) {
+  Future _loadTypeData() {
+    return DataUtils.getTypeData(
+            {'token': Application.spUtil.get('token'), 'type': widget._type})
+        .then((result) {
       var data = result['data'];
       if (data.length == 0) {
         setState(() {
@@ -329,13 +378,9 @@ class _TeacherPageState extends State<TeacherPage> {
         });
       } else {
         setState(() {
-          LogUtil.e('执行');
-
           _layoutState = LoadState.State_Success;
-          _description = data['teacher']['user_signal'];
-          _iconUrl = data['teacher']['user_icon'];
-          _name = data['teacher']['user_name'];
-          _classItemList = data['teaClassses'];
+          _classCount = data['typeClassCount'];
+          _classItemList = data['typeClass'];
           _itemCount = _classItemList.length;
         });
       }
@@ -347,11 +392,11 @@ class _TeacherPageState extends State<TeacherPage> {
     });
   }
 
-  void _loadMoreTeacherData() {
+  void _loadMoreTypeData() {
     _loadState = BottomState.bottom_Loading;
-    DataUtils.getTeacherMoreData({
+    DataUtils.getTypeMoreData({
       'token': Application.spUtil.get('token'),
-      'teaid': widget._teacherId,
+      'type': widget._type,
       'currentpage': _itemCount.toString(),
     }).then((result) {
       var data = result['data'];
@@ -371,60 +416,26 @@ class _TeacherPageState extends State<TeacherPage> {
       });
     });
   }
+}
 
-  Widget _toolBarWidget(BuildContext context) {
-    return new Container(
-      height: Adapt.px(160),
-      child: new Stack(
-        children: <Widget>[
-          new AppBar(
-            leading: new Text(''),
-            elevation: isListInTop ? 0 : 3,
-            brightness: Brightness.light,
-            backgroundColor: isListInTop ? Colors.transparent : Colors.white,
-          ),
-          new SafeArea(
-              top: true,
-              child: new Container(
-                height: Adapt.px(100),
-                padding:
-                    EdgeInsets.only(left: Adapt.px(30), right: Adapt.px(30)),
-                child: new Container(
-                  child: new Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      InkWell(
-                        child: Icon(
-                          Icons.arrow_back,
-                          color: isListInTop ? Colors.white : Colors.black,
-                        ),
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      new Offstage(
-                        child: UserIconWidget(
-                          url: _iconUrl,
-                          size: Adapt.px(68),
-                          isAuthor: true,
-                          authority: true,
-                        ),
-                        offstage: isListInTop ? true : false,
-                      ),
-                      new Offstage(
-                        child: new Text(
-                          _name,
-                          style: new TextStyle(fontSize: Adapt.px(30)),
-                        ),
-                        offstage: isListInTop ? true : false,
-                      )
-                    ],
-                  ),
-                ),
-              ))
-        ],
-      ),
-    );
+class BottomClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+    path.lineTo(0, 0);
+    path.lineTo(0, size.height - 50.0);
+    var firstControlPoint = Offset(size.width / 2, size.height);
+    var firstEdnPoint = Offset(size.width, size.height - 50.0);
+    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
+        firstEdnPoint.dx, firstEdnPoint.dy);
+    path.lineTo(size.width, size.height - 50.0);
+    path.lineTo(size.width, 0);
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return false;
   }
 }

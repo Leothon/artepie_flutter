@@ -26,5 +26,14 @@ class Api{
   static const String getTeacherMoreData = Base_URL + 'getmoreteaclass';
 
 
+  static const String getTypeData = Base_URL + 'getclassbytype';
+  static const String getTypeMoreData = Base_URL + 'getmoreclassbytype';
+
+
+
+  static const String getClassDetail = Base_URL + 'getclassdetail';
+  static const String getMoreClassDetail = Base_URL + 'getmoreclassdetail';
+
+
 
 }
