@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:artepie/constants/constants.dart';
 import 'package:artepie/model/user_info.dart';
+import 'package:artepie/resource/MyColors.dart';
 import 'package:artepie/routers/Application.dart';
 import 'package:artepie/utils/Adapt.dart';
 import 'package:artepie/utils/data_utils.dart';
@@ -9,6 +10,7 @@ import 'package:artepie/views/Home.dart';
 import 'package:artepie/views/commonAppBar/CommonAppBar.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:toast/toast.dart';
 
 class LoginPage extends StatefulWidget {
@@ -38,132 +40,167 @@ class _MyLoginPageState extends State<LoginPage> {
     // TODO: implement build
     return Scaffold(
         resizeToAvoidBottomPadding: true,
-
-          body: Stack(
-            children: <Widget>[
-              SingleChildScrollView(
-              child: Column(children: <Widget>[
-
-                new Container(
-                  margin: EdgeInsets.fromLTRB(
-                      0.0, Adapt.px(280), 0.0, Adapt.px(50)),
-                  child: new Text(
-                    '登录艺派，发掘艺术之美',
-                    style: new TextStyle(
-                        fontSize: Adapt.px(48), color: Colors.black),
+        backgroundColor: MyColors.dividerColor,
+        body: new Stack(
+          children: <Widget>[
+            new CustomScrollView(
+              physics: BouncingScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              slivers: <Widget>[
+                SliverAppBar(
+                  brightness: Brightness.light,
+                  leading: InkWell(
+                    child: Icon(Icons.close,
+                        color: MyColors.fontColor, size: Adapt.px(46)),
+                    onTap: () {
+                      SystemNavigator.pop();
+                    },
                   ),
-                ),
-                new Container(
-                  margin: EdgeInsets.fromLTRB(
-                      Adapt.px(50), Adapt.px(80), Adapt.px(50), 0),
-                  child: TextField(
-                    keyboardType: TextInputType.phone,
-                    maxLength: 11,
-                    controller: phoneController,
-                    decoration: InputDecoration(
-                        icon: isPassword
-                            ? Icon(Icons.account_circle)
-                            : Icon(Icons.phone),
-                        labelText: '输入手机号',
-                        labelStyle: new TextStyle(fontSize: Adapt.px(32)),
-                        hintText: '输入手机号,未注册的手机号会在验证后注册并登录',
-                        hintStyle: new TextStyle(fontSize: Adapt.px(22)),
-                        border: InputBorder.none),
-                    //autofocus: true,
-                  ),
-                ),
-                _passwordWidget(context),
-                new Container(
-                  margin: EdgeInsets.fromLTRB(
-                      Adapt.px(50), Adapt.px(20), Adapt.px(50), Adapt.px(20)),
-                  width: double.infinity,
-                  child: new MaterialButton(
-                      color: Colors.green,
-                      padding:
-                      EdgeInsets.fromLTRB(Adapt.px(20), 0, Adapt.px(20), 0),
-                      textColor: Colors.white,
-                      height: Adapt.px(90),
-                      child: new Text('登     录',
-                          style: new TextStyle(
-                              fontSize: Adapt.px(34), color: Colors.white)),
-                      onPressed:
-                      isPassword ? usePasswordLogin : useVerifyCodeLogin),
-                ),
-                new Container(
-                  margin: EdgeInsets.fromLTRB(
-                      Adapt.px(50), Adapt.px(20), Adapt.px(50), 0),
-                  child: new Row(
-                    children: <Widget>[
-                      Expanded(
+                  pinned: true,
+                  backgroundColor: Colors.white,
+//                elevation: Adapt.px(6),
+                  actions: <Widget>[
+                    new InkWell(
+                      child: Container(
+                        padding: EdgeInsets.only(right: Adapt.px(26)),
+                        alignment: Alignment.center,
                         child: new Text(
-                          '点击注册，则表示您已阅读并同意《用户协议》',
+                          '暂不登录',
                           style: new TextStyle(
-                              color: Colors.red, fontSize: Adapt.px(20)),
+                              color: MyColors.fontColor,
+                              fontSize: Adapt.px(26)),
                         ),
-                        flex: 3,
                       ),
-                      Expanded(
-                        child: GestureDetector(
-                          child: new Center(
-                            child: new Text(
-                              isPassword ? '使用验证码登录' : '使用密码登录',
-                              style: new TextStyle(
-                                  color: Colors.green, fontSize: Adapt.px(20)),
-                            ),
-                          ),
-                          onTap: switchPasswordOrMessage,
-                        ),
-                        flex: 1,
-                      ),
-                    ],
+                      onTap: () {
+                        Application.spUtil
+                            .putString("token", Constants.visitorToken);
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => AppPage(false)),
+                            (route) => route == null);
+                      },
+                    )
+                  ],
+                ),
+                SliverToBoxAdapter(
+                  child: new Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.fromLTRB(
+                        0.0, Adapt.px(150), 0.0, Adapt.px(50)),
+                    child: new Text(
+                      '登录艺派，发掘艺术之美',
+                      style: new TextStyle(
+                          fontSize: Adapt.px(48), color: Colors.black),
+                    ),
                   ),
                 ),
-                new Container(
-                    margin: EdgeInsets.all(Adapt.px(150)),
+                SliverToBoxAdapter(
+                  child: new Container(
+                    margin: EdgeInsets.fromLTRB(
+                        Adapt.px(50), Adapt.px(80), Adapt.px(50), 0),
+                    child: TextField(
+                      keyboardType: TextInputType.phone,
+                      maxLength: 11,
+                      controller: phoneController,
+                      decoration: InputDecoration(
+                          icon: isPassword
+                              ? Icon(Icons.account_circle)
+                              : Icon(Icons.phone),
+                          labelText: '输入手机号',
+                          labelStyle: new TextStyle(fontSize: Adapt.px(32)),
+                          hintText: '输入手机号,未注册的手机号会在验证后注册并登录',
+                          hintStyle: new TextStyle(fontSize: Adapt.px(22)),
+                          border: InputBorder.none),
+                      //autofocus: true,
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: _passwordWidget(context),
+                ),
+                SliverToBoxAdapter(
+                  child: new Container(
+                    margin: EdgeInsets.fromLTRB(
+                        Adapt.px(50), Adapt.px(20), Adapt.px(50), Adapt.px(20)),
+                    width: double.infinity,
+                    child: new MaterialButton(
+                        color: Colors.green,
+                        padding: EdgeInsets.fromLTRB(
+                            Adapt.px(20), 0, Adapt.px(20), 0),
+                        textColor: Colors.white,
+                        height: Adapt.px(90),
+                        child: new Text('登     录',
+                            style: new TextStyle(
+                                fontSize: Adapt.px(34), color: Colors.white)),
+                        onPressed:
+                            isPassword ? usePasswordLogin : useVerifyCodeLogin),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: new Container(
+                    margin: EdgeInsets.fromLTRB(
+                        Adapt.px(50), Adapt.px(20), Adapt.px(50), 0),
                     child: new Row(
                       children: <Widget>[
                         Expanded(
-                          child: new Center(
-                            child: Icon(
-                              IconData(0xe609, fontFamily: 'qqIcon'),
-                              size: Adapt.px(80),
-                              color: Colors.blue,
-                            ),
+                          child: new Text(
+                            '点击注册，则表示您已阅读并同意《用户协议》',
+                            style: new TextStyle(
+                                color: Colors.red, fontSize: Adapt.px(20)),
                           ),
-                          flex: 1,
+                          flex: 3,
                         ),
                         Expanded(
-                          child: new Center(
-                            child: Icon(
-                              IconData(0xe6c3, fontFamily: 'wechatIcon'),
-                              size: Adapt.px(80),
-                              color: Colors.green,
+                          child: GestureDetector(
+                            child: new Center(
+                              child: new Text(
+                                isPassword ? '使用验证码登录' : '使用密码登录',
+                                style: new TextStyle(
+                                    color: Colors.green,
+                                    fontSize: Adapt.px(20)),
+                              ),
                             ),
+                            onTap: switchPasswordOrMessage,
                           ),
                           flex: 1,
                         ),
                       ],
-                    )),
-              ]),
-          ),
-
-              loadingDialog,
-              CommonAppBar(
-                title: '',
-                subTitle: '暂不登录',
-                subTitleColor: Colors.black,
-                onPressSubTitle: () {
-                  Application.spUtil
-                      .putString("token", Constants.visitorToken);
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => AppPage(false)),
-                          (route) => route == null);
-                },
-                isBackLastPage: false,
-              ),
-            ],
-          ),
-        );
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: new Container(
+                      margin: EdgeInsets.all(Adapt.px(150)),
+                      child: new Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: new Center(
+                              child: Icon(
+                                IconData(0xe609, fontFamily: 'qqIcon'),
+                                size: Adapt.px(80),
+                                color: Colors.blue,
+                              ),
+                            ),
+                            flex: 1,
+                          ),
+                          Expanded(
+                            child: new Center(
+                              child: Icon(
+                                IconData(0xe6c3, fontFamily: 'wechatIcon'),
+                                size: Adapt.px(80),
+                                color: Colors.green,
+                              ),
+                            ),
+                            flex: 1,
+                          ),
+                        ],
+                      )),
+                ),
+              ],
+            ),
+            loadingDialog,
+          ],
+        ));
   }
 
   Widget _passwordWidget(BuildContext context) {

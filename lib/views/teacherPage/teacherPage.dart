@@ -236,9 +236,10 @@ class _TeacherPageState extends State<TeacherPage> {
                             new Text(
                               _classItemList[position]['isbuy']
                                   ? '已购买'
-                                  : (_classItemList[position]['selectprice'] == '0.00'
-                                  ? '免费'
-                                  : '￥${_classItemList[position]['selectprice']}'),
+                                  : (_classItemList[position]['selectprice'] ==
+                                          '0.00'
+                                      ? '免费'
+                                      : '￥${_classItemList[position]['selectprice']}'),
                               style: new TextStyle(
                                   fontSize: Adapt.px(30),
                                   fontWeight: FontWeight.bold,
@@ -266,41 +267,35 @@ class _TeacherPageState extends State<TeacherPage> {
         ],
       ),
       onTap: () {
-
-
-
-        if(_classItemList[position]['selectprice'] == '0.00' || _classItemList[position]['isbuy']){
+        if (_classItemList[position]['selectprice'] == '0.00' ||
+            _classItemList[position]['isbuy']) {
           Application.router.navigateTo(context,
               '${Routes.classDetailPage}?classid=${Uri.encodeComponent(_classItemList[position]['selectId'])}',
               transition: TransitionType.fadeIn);
-        }else if(position == 0){
+        } else if (position == 0) {
           Application.router.navigateTo(context,
               '${Routes.classDetailPage}?classid=${Uri.encodeComponent(_classItemList[position]['selectId'])}',
               transition: TransitionType.fadeIn);
-        }else{
-
-
+        } else {
           showDialog<Null>(
               context: context,
               barrierDismissible: false,
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: Text('提醒'),
-                  content:Text('本课程是付费课程，您尚未订阅'),
-                  actions:<Widget>[
-
+                  content: Text('本课程是付费课程，您尚未订阅'),
+                  actions: <Widget>[
                     FlatButton(
                       child: Text('直接订阅'),
-                      onPressed: (){
+                      onPressed: () {
                         Navigator.of(context).pop();
 
                         //TODO 跳转购买课程
                       },
                     ),
-
                     FlatButton(
                       child: Text('试看一下'),
-                      onPressed: (){
+                      onPressed: () {
                         Navigator.of(context).pop();
                         Application.router.navigateTo(context,
                             '${Routes.classDetailPage}?classid=${Uri.encodeComponent(_classItemList[position]['selectId'])}',
@@ -309,10 +304,8 @@ class _TeacherPageState extends State<TeacherPage> {
                     ),
                   ],
                 );
-
               });
         }
-
       },
     );
   }
