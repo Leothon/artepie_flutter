@@ -323,6 +323,8 @@ class _MyLoginPageState extends State<LoginPage> {
                 UserInformation.fromJson(response['data']);
             Application.spUtil.putBool('login', true);
             Application.spUtil.putString('token', userInfo.user_token);
+            Application.spUtil.putString('icon', userInfo.user_icon);
+            Application.spUtil.putString('time', userInfo.user_register_time);
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => AppPage(true)),
                 (route) => route == null);

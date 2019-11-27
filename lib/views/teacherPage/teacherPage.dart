@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:artepie/resource/MyColors.dart';
 import 'package:artepie/routers/Application.dart';
 import 'package:artepie/routers/routers.dart';
@@ -421,3 +423,4 @@ class _TeacherPageState extends State<TeacherPage> {
     );
   }
 }
+

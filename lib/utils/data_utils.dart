@@ -74,4 +74,9 @@ class DataUtils{
   static Future getMoreClassDetail(Map<String,String> params) async{
     return await NetUtils.get(Api.getMoreClassDetail,params);
   }
+
+
+  static Future getArticleDetail(Map<String,String> params) async{
+    return await NetUtils.get(Api.getArticleDetail,params);
+  }
 }

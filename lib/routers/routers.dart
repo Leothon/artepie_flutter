@@ -9,6 +9,8 @@ class Routes{
   static String teacherPage = "/teacherPage";
   static String typePage = "/typePage";
   static String classDetailPage = "/classDetailPage";
+  static String addArticlePage = "/addArticlePage";
+  static String articleDetailPage = "/articleDetailPage";
   
   static void configureRoutes(Router router){
     //List widgetDemos
@@ -18,5 +20,7 @@ class Routes{
     router.define(teacherPage, handler: teacherPageHandler);
     router.define(typePage, handler: typePageHandler);
     router.define(classDetailPage, handler: classDetailPageHandler);
+    router.define(addArticlePage, handler: addArticlePageHandler);
+    router.define(articleDetailPage, handler: articleDetailPageHandler);
   }
 }

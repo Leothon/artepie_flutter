@@ -35,5 +35,6 @@ class Api{
   static const String getMoreClassDetail = Base_URL + 'getmoreclassdetail';
 
 
+  static const String getArticleDetail = Base_URL + 'getarticledetail';
 
 }

@@ -37,6 +37,12 @@ dependencies:
   open_iconic_flutter: ">=0.3.0 <0.4.0"
   package_info: ^0.4.0+2
   url_launcher: ^5.2.5
+  zefyr:
+    path: ./zefyr
+  flutter_markdown: ^0.3.1
+  markdown: ^2.0.0
+  html: "^0.13.3"
+
 
 
 dev_dependencies:

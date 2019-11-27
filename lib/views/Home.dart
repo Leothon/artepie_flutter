@@ -1,7 +1,9 @@
 import 'package:artepie/model/user_info.dart';
 import 'package:artepie/resource/MyColors.dart';
 import 'package:artepie/routers/Application.dart';
+import 'package:artepie/routers/routers.dart';
 import 'package:artepie/utils/Adapt.dart';
+import 'package:artepie/utils/CommonUtils.dart';
 import 'package:artepie/views/aboutPage/aboutPage.dart';
 import 'package:artepie/views/articlePage/articlePage.dart';
 import 'package:artepie/views/homePage/homePage.dart';
@@ -9,6 +11,7 @@ import 'package:artepie/views/userIconWidget/UserIconWidget.dart';
 import 'package:artepie/views/videoPage/videoPage.dart';
 import 'package:artepie/views/emptyPage.dart';
 import 'package:common_utils/common_utils.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -103,6 +106,7 @@ class _MyAppPageState extends State<AppPage> {
                 ),
                 child: FloatingActionButton(
                   backgroundColor: MyColors.colorPrimary,
+                  heroTag: 'home',
                   child: Icon(
                     Icons.add,
                     color: Colors.white,
@@ -185,15 +189,17 @@ class _MyAppPageState extends State<AppPage> {
                   children: <Widget>[
                     UserIconWidget(
                       size: Adapt.px(80),
-                      isAuthor: true,
-                      authority: true,
-                      url: 'http://www.artepie.cn/image/bannertest2.jpg',
+                      isAuthor: false,
+                      authority: false,
+                      url: widget._hasLogin ? Application.spUtil.get('icon') : '',
                     ),
                     new Container(
                       margin: EdgeInsets.fromLTRB(Adapt.px(20), 0, 0, 0),
-                      child: new Text('今天是您加入艺派的第$_joinDayCount天，祝您学习愉快',style: new TextStyle(fontSize: Adapt.px(26)),),
+                      child: new Text(
+                        widget._hasLogin ? '今天是您加入艺派的第${CommonUtils.daysBetween(DateTime.now(), DateTime.parse(Application.spUtil.get('time')))}天，祝您学习愉快' : '您尚未登录，点击登录',
+                        style: new TextStyle(fontSize: Adapt.px(26)),
+                      ),
                     ),
-
                   ],
                 ),
               ),
@@ -212,7 +218,20 @@ class _MyAppPageState extends State<AppPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
                                 _addIconWidget(context, 0),
-                                _addIconWidget(context, 1),
+                                InkWell(
+                                  child: _addIconWidget(context, 1),
+                                  onTap: () {
+                                    _setAddBackshow(false);
+                                    if(widget._hasLogin){
+                                      Application.router.navigateTo(
+                                          context, '${Routes.addArticlePage}',
+                                          transition: TransitionType.fadeIn);
+                                    }else{
+
+                                    }
+
+                                  },
+                                ),
                                 _addIconWidget(context, 2),
                                 _addIconWidget(context, 3),
                               ],
@@ -227,7 +246,8 @@ class _MyAppPageState extends State<AppPage> {
               new Center(
                   child: GestureDetector(
                       child: new Padding(
-                        padding: EdgeInsets.fromLTRB(0.0, Adapt.px(12), 0.0, 0.0),
+                        padding:
+                            EdgeInsets.fromLTRB(0.0, Adapt.px(12), 0.0, 0.0),
                         child: Icon(
                           Icons.clear,
                           size: Adapt.px(50),
