@@ -6,6 +6,7 @@ import 'package:artepie/views/classDetailPage/ClassDetailPage.dart';
 import 'package:artepie/views/loginPage/LoginPage.dart';
 import 'package:artepie/views/teacherPage/teacherPage.dart';
 import 'package:artepie/views/typePage/TypePage.dart';
+import 'package:artepie/views/videoDetailPage/videoDetailPage.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:artepie/model/user_info.dart';
@@ -62,5 +63,13 @@ var articleDetailPageHandler = new Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
     String _articleid = params['articleid'].first;
     return new articleDetailPage(_articleid);
+  },
+);
+
+
+var videoDetailPageHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    String _videoid = params['videoid'].first;
+    return new VideoDetailPage(_videoid);
   },
 );

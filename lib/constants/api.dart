@@ -37,4 +37,9 @@ class Api{
 
   static const String getArticleDetail = Base_URL + 'getarticledetail';
 
+
+  static const String getVideoDetail = Base_URL + 'getqadetail';
+
+  static const String getVideoMoreComment = Base_URL + 'getmoreqadetail';
+
 }

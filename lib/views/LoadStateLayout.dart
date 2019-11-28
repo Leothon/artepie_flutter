@@ -114,7 +114,7 @@ class _LoadStateLayoutState extends State<LoadStateLayout> {
           ),
           Padding(
             padding: EdgeInsets.only(top: Adapt.px(18)),
-            child: Text('暂无数据'),
+            child: Text('暂无数据,或者内容被删除'),
           )
         ],
       ),
