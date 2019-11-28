@@ -1,4 +1,6 @@
+import 'package:artepie/views/ArticleDetailPage/articleDetailPage.dart';
 import 'package:artepie/views/Home.dart';
+import 'package:artepie/views/addArticlePage/addArticlePage.dart';
 import 'package:artepie/views/artepieInfoPage/artepieInfoPage.dart';
 import 'package:artepie/views/classDetailPage/ClassDetailPage.dart';
 import 'package:artepie/views/loginPage/LoginPage.dart';
@@ -45,5 +47,20 @@ var classDetailPageHandler = new Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
     String _classid = params['classid'].first;
     return new ClassDetailPage(_classid);
+  },
+);
+
+
+var addArticlePageHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return new addAriclePage();
+  },
+);
+
+
+var articleDetailPageHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    String _articleid = params['articleid'].first;
+    return new articleDetailPage(_articleid);
   },
 );

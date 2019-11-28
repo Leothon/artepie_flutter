@@ -32,7 +32,7 @@ class _MyVideoPageState extends State<VideoPage> {
 
   var _itemCount = 1;
   List _videoItemList = [];
-
+  bool isNeedUp = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -46,6 +46,17 @@ class _MyVideoPageState extends State<VideoPage> {
           _loadState = BottomState.bottom_Loading;
         });
         _loadMoreVideoData();
+      }
+
+
+      if (_scrollController.offset < Adapt.px(1000)) {
+        setState(() {
+          isNeedUp = false;
+        });
+      } else {
+        setState(() {
+          isNeedUp = true;
+        });
       }
     });
   }
@@ -71,7 +82,32 @@ class _MyVideoPageState extends State<VideoPage> {
             _loadVideoData();
           },
           state: _layoutState,
-        ));
+        ),
+      floatingActionButton: Offstage(
+        child: Container(
+          height: Adapt.px(80),
+          width: Adapt.px(80),
+          child: FloatingActionButton(
+            backgroundColor: MyColors.white,
+            heroTag: 'video',
+            child: Icon(
+              Icons.arrow_upward,
+              color: MyColors.fontColor,
+            ),
+            elevation: 3,
+            onPressed: () {
+              _scrollController.animateTo(
+                0,
+                duration: new Duration(milliseconds: 300),  // 300ms
+                curve: Curves.bounceIn,                     // 动画方式
+              );
+            },
+          ),
+        ),
+        offstage: !isNeedUp,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    );
   }
 
   Widget _videoPageWidget(BuildContext context) {
