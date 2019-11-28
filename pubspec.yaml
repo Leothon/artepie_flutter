@@ -80,6 +80,7 @@ flutter:
     - lib/resource/assets/img/bullet.png
     - lib/resource/assets/img/message.png
     - lib/resource/assets/img/settings.png
+    - lib/resource/assets/img/about.png
     - lib/resource/assets/img/tap_back_icon.png
   fonts:
     - family: wechatIcon

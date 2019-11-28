@@ -73,9 +73,10 @@ class _MyAboutPageState extends State<AboutPage> {
                   child: InkWell(
                     child: _aboutItemWidget(
                         context,
-                        Icon(
-                          Icons.bookmark,
-                          color: Colors.blue,
+                        Image.asset(
+                          'lib/resource/assets/img/buy_about.png',
+                          width: Adapt.px(48),
+                          height: Adapt.px(48),
                         ),
                         '我的订阅',
                         false),
@@ -89,9 +90,10 @@ class _MyAboutPageState extends State<AboutPage> {
                   child: InkWell(
                     child: _aboutItemWidget(
                         context,
-                        Icon(
-                          Icons.account_balance_wallet,
-                          color: Colors.brown,
+                        Image.asset(
+                          'lib/resource/assets/img/bullet.png',
+                          width: Adapt.px(48),
+                          height: Adapt.px(48),
                         ),
                         '我的钱包',
                         true),
@@ -105,9 +107,10 @@ class _MyAboutPageState extends State<AboutPage> {
                   child: InkWell(
                     child: _aboutItemWidget(
                         context,
-                        Icon(
-                          Icons.perm_contact_calendar,
-                          color: Colors.deepPurple,
+                        Image.asset(
+                          'lib/resource/assets/img/message.png',
+                          width: Adapt.px(48),
+                          height: Adapt.px(48),
                         ),
                         '消息提醒',
                         true),
@@ -121,9 +124,10 @@ class _MyAboutPageState extends State<AboutPage> {
                   child: InkWell(
                     child: _aboutItemWidget(
                         context,
-                        Icon(
-                          Icons.settings,
-                          color: Colors.orange,
+                        Image.asset(
+                          'lib/resource/assets/img/settings.png',
+                          width: Adapt.px(48),
+                          height: Adapt.px(48),
                         ),
                         '设置',
                         true),
@@ -139,9 +143,10 @@ class _MyAboutPageState extends State<AboutPage> {
                         child: InkWell(
                           child: _aboutItemWidget(
                               context,
-                              Icon(
-                                Icons.info,
-                                color: Colors.green,
+                              Image.asset(
+                                'lib/resource/assets/img/about.png',
+                                width: Adapt.px(48),
+                                height: Adapt.px(48),
                               ),
                               '关于我们',
                               false),
@@ -265,10 +270,10 @@ class _MyAboutPageState extends State<AboutPage> {
                 InkWell(
                   child: _infoChildIcon(
                       context,
-                      Icon(
-                        Icons.favorite,
-                        color: Colors.red,
-                        size: Adapt.px(54),
+                      Image.asset(
+                        'lib/resource/assets/img/favicon.png',
+                        width: Adapt.px(60),
+                        height: Adapt.px(60),
                       ),
                       '我的收藏'),
                   onTap: () {},
@@ -276,10 +281,10 @@ class _MyAboutPageState extends State<AboutPage> {
                 InkWell(
                   child: _infoChildIcon(
                       context,
-                      Icon(
-                        Icons.format_align_justify,
-                        color: Colors.blue,
-                        size: Adapt.px(54),
+                      Image.asset(
+                        'lib/resource/assets/img/order.png',
+                        width: Adapt.px(60),
+                        height: Adapt.px(60),
                       ),
                       '我的订单'),
                   onTap: () {},
@@ -287,10 +292,10 @@ class _MyAboutPageState extends State<AboutPage> {
                 InkWell(
                   child: _infoChildIcon(
                       context,
-                      Icon(
-                        Icons.assignment_return,
-                        color: Colors.orange,
-                        size: Adapt.px(54),
+                      Image.asset(
+                        'lib/resource/assets/img/upload.png',
+                        width: Adapt.px(60),
+                        height: Adapt.px(60),
                       ),
                       '我的发布'),
                   onTap: () {},
@@ -304,12 +309,12 @@ class _MyAboutPageState extends State<AboutPage> {
     );
   }
 
-  Widget _infoChildIcon(BuildContext context, Icon icon, String name) {
+  Widget _infoChildIcon(BuildContext context, Image image, String name) {
     return new Container(
       child: new Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          icon,
+          image,
           new Text(
             name,
             style: new TextStyle(
@@ -322,7 +327,7 @@ class _MyAboutPageState extends State<AboutPage> {
   }
 
   Widget _aboutItemWidget(
-      BuildContext context, Icon icon, String name, bool isTopLine) {
+      BuildContext context, Image image, String name, bool isTopLine) {
     return new Container(
 //      color: Colors.white,
       padding: EdgeInsets.fromLTRB(Adapt.px(16), 0, 0, 0),
@@ -333,7 +338,7 @@ class _MyAboutPageState extends State<AboutPage> {
             child: new Row(
               children: <Widget>[
                 Expanded(
-                  child: icon,
+                  child: image,
                   flex: 1,
                 ),
                 Expanded(
