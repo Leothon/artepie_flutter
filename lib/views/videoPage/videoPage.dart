@@ -48,7 +48,6 @@ class _MyVideoPageState extends State<VideoPage> {
         _loadMoreVideoData();
       }
 
-
       if (_scrollController.offset < Adapt.px(1000)) {
         setState(() {
           isNeedUp = false;
@@ -72,17 +71,17 @@ class _MyVideoPageState extends State<VideoPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-        backgroundColor: MyColors.dividerColor,
-        body: new LoadStateLayout(
-          successWidget: _videoPageWidget(context),
-          errorRetry: () {
-            setState(() {
-              _layoutState = LoadState.State_Loading;
-            });
-            _loadVideoData();
-          },
-          state: _layoutState,
-        ),
+      backgroundColor: MyColors.dividerColor,
+      body: new LoadStateLayout(
+        successWidget: _videoPageWidget(context),
+        errorRetry: () {
+          setState(() {
+            _layoutState = LoadState.State_Loading;
+          });
+          _loadVideoData();
+        },
+        state: _layoutState,
+      ),
       floatingActionButton: Offstage(
         child: Container(
           height: Adapt.px(80),
@@ -98,8 +97,8 @@ class _MyVideoPageState extends State<VideoPage> {
             onPressed: () {
               _scrollController.animateTo(
                 0,
-                duration: new Duration(milliseconds: 300),  // 300ms
-                curve: Curves.bounceIn,                     // 动画方式
+                duration: new Duration(milliseconds: 300), // 300ms
+                curve: Curves.bounceIn, // 动画方式
               );
             },
           ),
@@ -346,25 +345,109 @@ class _MyVideoPageState extends State<VideoPage> {
             style: new TextStyle(
                 fontSize: Adapt.px(22), color: MyColors.lowfontColor),
           ),
-          new Chewie(
-            new VideoPlayerController.network(
-                _videoItemList[position]['qa_video']),
-            aspectRatio: 16 / 9,
-            autoPlay: false,
-            looping: true,
-            showControls: true,
-            placeholder: Container(
-                width: double.infinity,
-                child: Image.network(
-                  _videoItemList[position]['qa_video_cover'],
-                  fit: BoxFit.cover,
-                )),
-            autoInitialize: false,
-            materialProgressColors: new ChewieProgressColors(
-                playedColor: MyColors.white,
-                handleColor: MyColors.colorPrimary,
-                backgroundColor: Colors.grey,
-                bufferedColor: MyColors.pressColorPrimary),
+          new Offstage(
+            offstage: _videoItemList[position]['qa_video'] == null,
+            child: new Chewie(
+              new VideoPlayerController.network(
+                  _videoItemList[position]['qa_video'] == null
+                      ? ''
+                      : _videoItemList[position]['qa_video']),
+              aspectRatio: 16 / 9,
+              autoPlay: false,
+              looping: true,
+              showControls: true,
+              placeholder: Container(
+                  width: double.infinity,
+                  child: Image.network(
+                    _videoItemList[position]['qa_video'] == null
+                        ? ''
+                        : _videoItemList[position]['qa_video_cover'],
+                    fit: BoxFit.cover,
+                  )),
+              autoInitialize: false,
+              materialProgressColors: new ChewieProgressColors(
+                  playedColor: MyColors.white,
+                  handleColor: MyColors.colorPrimary,
+                  backgroundColor: Colors.grey,
+                  bufferedColor: MyColors.pressColorPrimary),
+            ),
+          ),
+          new Offstage(
+            offstage: _videoItemList[position]['qaData'] == null,
+            child: Container(
+              alignment: Alignment.centerLeft,
+              margin: EdgeInsets.only(top: Adapt.px(14), bottom: Adapt.px(14)),
+              padding: EdgeInsets.all(
+                Adapt.px(14),
+              ),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(Adapt.px(14)),
+                  color: MyColors.dividerColor),
+              child: new Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  RichText(
+                    text: TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: _videoItemList[position]['qaData'] == null
+                                ? ''
+                                : '@${_videoItemList[position]['qaData']['user_name']}  ',
+                            style: TextStyle(
+                                fontSize: Adapt.px(28), color: MyColors.blue)),
+                        TextSpan(
+                            text: _videoItemList[position]['qaData'] == null
+                                ? ''
+                                : _videoItemList[position]['qaData']
+                                    ['qa_content'],
+                            style: TextStyle(
+                                fontSize: Adapt.px(28),
+                                color: MyColors.fontColor)),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(Adapt.px(10)),
+                    child: new Text(
+                      '喜欢：${_videoItemList[position]['qaData'] == null ? '' : _videoItemList[position]['qaData']['qa_like']}  评论：${_videoItemList[position]['qaData'] == null ? '' : _videoItemList[position]['qaData']['qa_comment']}',
+                    style: new TextStyle(
+                      fontSize: Adapt.px(22)
+                    ),
+                    ),
+                  ),
+
+                  new Offstage(
+                    offstage: _videoItemList[position]['qaData'] == null ? true : _videoItemList[position]['qaData']['qa_video'] == null,
+                    child: new Chewie(
+                      new VideoPlayerController.network(
+                          _videoItemList[position]['qaData'] == null ? '' :
+                          (_videoItemList[position]['qaData']['qa_video'] == null
+                              ? ''
+                              : _videoItemList[position]['qaData']['qa_video'])),
+                      aspectRatio: 16 / 9,
+                      autoPlay: false,
+                      looping: true,
+                      showControls: true,
+                      placeholder: Container(
+                          width: double.infinity,
+                          child: Image.network(
+                            _videoItemList[position]['qaData'] == null ? '' :
+                            (_videoItemList[position]['qaData']['qa_video_cover'] == null
+                                ? ''
+                                : _videoItemList[position]['qaData']['qa_video_cover']),
+                            fit: BoxFit.cover,
+                          )),
+                      autoInitialize: false,
+                      materialProgressColors: new ChewieProgressColors(
+                          playedColor: MyColors.white,
+                          handleColor: MyColors.colorPrimary,
+                          backgroundColor: Colors.grey,
+                          bufferedColor: MyColors.pressColorPrimary),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           )
         ],
       ),
