@@ -67,23 +67,23 @@ class _MyAboutPageState extends State<AboutPage> {
               SliverToBoxAdapter(
                 child: _headWidget(context),
               ),
-              SliverToBoxAdapter(
-                child: Material(
-                  color: Colors.white,
-                  child: InkWell(
-                    child: _aboutItemWidget(
-                        context,
-                        Image.asset(
-                          'lib/resource/assets/img/buy_about.png',
-                          width: Adapt.px(48),
-                          height: Adapt.px(48),
-                        ),
-                        '我的订阅',
-                        false),
-                    onTap: () {},
-                  ),
-                ),
-              ),
+//              SliverToBoxAdapter(
+//                child: Material(
+//                  color: Colors.white,
+//                  child: InkWell(
+//                    child: _aboutItemWidget(
+//                        context,
+//                        Image.asset(
+//                          'lib/resource/assets/img/buy_about.png',
+//                          width: Adapt.px(48),
+//                          height: Adapt.px(48),
+//                        ),
+//                        '我的订阅',
+//                        false),
+//                    onTap: () {},
+//                  ),
+//                ),
+//              ),
               SliverToBoxAdapter(
                 child: Material(
                   color: Colors.white,
@@ -259,7 +259,12 @@ class _MyAboutPageState extends State<AboutPage> {
                   ),
                 ],
               ),
-              onTap: () {},
+              onTap: () {
+
+                Application.router.navigateTo(
+                    context, "/personalPage",
+                    transition: TransitionType.material);
+              },
             ),
             flex: 1,
           ),
@@ -293,11 +298,11 @@ class _MyAboutPageState extends State<AboutPage> {
                   child: _infoChildIcon(
                       context,
                       Image.asset(
-                        'lib/resource/assets/img/upload.png',
+                        'lib/resource/assets/img/buy_about.png',
                         width: Adapt.px(60),
                         height: Adapt.px(60),
                       ),
-                      '我的发布'),
+                      '我的订阅'),
                   onTap: () {},
                 ),
               ],

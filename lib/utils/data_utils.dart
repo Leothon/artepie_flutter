@@ -89,4 +89,14 @@ class DataUtils{
   static Future getVideoMoreComment(Map<String,String> params) async{
     return await NetUtils.get(Api.getVideoMoreComment,params);
   }
+
+
+  static Future getPersonalVideo(Map<String,String> params) async{
+    return await NetUtils.get(Api.getPersonalVideo,params);
+  }
+
+
+  static Future getPersonalArticle(Map<String,String> params) async{
+    return await NetUtils.get(Api.getPersonalArticle,params);
+  }
 }

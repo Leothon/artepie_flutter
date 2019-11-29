@@ -82,6 +82,9 @@ flutter:
     - lib/resource/assets/img/settings.png
     - lib/resource/assets/img/about.png
     - lib/resource/assets/img/tap_back_icon.png
+    - lib/resource/assets/img/defaultsex.png
+    - lib/resource/assets/img/male.png
+    - lib/resource/assets/img/female.png
   fonts:
     - family: wechatIcon
       fonts:

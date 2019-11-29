@@ -42,4 +42,8 @@ class Api{
 
   static const String getVideoMoreComment = Base_URL + 'getmoreqadetail';
 
+
+  static const String getPersonalVideo = Base_URL + 'getmorequestionbyid';
+
+  static const String getPersonalArticle = Base_URL + 'getmorearticledatabyid';
 }
