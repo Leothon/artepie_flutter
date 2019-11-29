@@ -11,9 +11,11 @@ class Routes{
   static String classDetailPage = "/classDetailPage";
   static String addArticlePage = "/addArticlePage";
   static String articleDetailPage = "/articleDetailPage";
-  
+  static String videoDetailPage = "/videoDetailPage";
+  static String personalPage = "/personalPage";
+
+
   static void configureRoutes(Router router){
-    //List widgetDemos
     router.define(homePage, handler: homeHandler);
     router.define(loginPage, handler: loginHandler);
     router.define(appInfoPage, handler: appInfoHandler);
@@ -22,5 +24,7 @@ class Routes{
     router.define(classDetailPage, handler: classDetailPageHandler);
     router.define(addArticlePage, handler: addArticlePageHandler);
     router.define(articleDetailPage, handler: articleDetailPageHandler);
+    router.define(videoDetailPage, handler: videoDetailPageHandler);
+    router.define(personalPage, handler: personalPageHandler);
   }
 }

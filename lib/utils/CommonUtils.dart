@@ -52,4 +52,13 @@ class CommonUtils {
       return v ~/ 86400000;
     }
   }
+
+  static String getAgeByBirthday(String birthday){
+    if(birthday == ''){
+      return birthday;
+    }
+    int days = daysBetween(DateTime.now(), DateTime.parse(birthday));
+    double age = days / 365;
+    return age.toStringAsFixed(0);
+  }
 }
