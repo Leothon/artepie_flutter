@@ -40,6 +40,7 @@ class _listBottomView extends State<ListBottomView>{
       case BottomState.bottom_Loading:
         return new Container(
           padding: EdgeInsets.fromLTRB(0, Adapt.px(20), 0, widget.isHighBottom ? Adapt.px(60) : Adapt.px(20)),
+
           child: new Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -81,6 +82,7 @@ class _listBottomView extends State<ListBottomView>{
       case BottomState.bottom_Empty:
         return new Container(
           padding: EdgeInsets.fromLTRB(0, Adapt.px(20), 0, widget.isHighBottom ? Adapt.px(60) : Adapt.px(20)),
+          margin: EdgeInsets.only(bottom: Adapt.px(80)),
           child: Text(
             "已经滑到底了",
             textAlign: TextAlign.center,

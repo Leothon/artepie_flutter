@@ -217,23 +217,68 @@ class _MyAppPageState extends State<AppPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
-                                _addIconWidget(context, 0),
+                                InkWell(
+                                  child: _addIconWidget(context, 0),
+                                  onTap: () {
+                                    _setAddBackshow(false);
+                                    if(widget._hasLogin){
+//                                      Application.router.navigateTo(
+//                                          context, '${Routes.addArticlePage}',
+//                                          transition: TransitionType.fadeIn);
+                                    }else{
+                                      CommonUtils.toLogin(context);
+                                    }
+
+                                  },
+                                ),
                                 InkWell(
                                   child: _addIconWidget(context, 1),
                                   onTap: () {
                                     _setAddBackshow(false);
                                     if(widget._hasLogin){
-                                      Application.router.navigateTo(
-                                          context, '${Routes.addArticlePage}',
-                                          transition: TransitionType.fadeIn);
+//                                      Application.router.navigateTo(
+//                                          context, '${Routes.addArticlePage}',
+//                                          transition: TransitionType.fadeIn);
                                     }else{
-
+                                      CommonUtils.toLogin(context);
                                     }
 
                                   },
                                 ),
-                                _addIconWidget(context, 2),
-                                _addIconWidget(context, 3),
+
+
+                                InkWell(
+                                  child: _addIconWidget(context, 2),
+                                  onTap: () {
+                                    _setAddBackshow(false);
+                                    if(widget._hasLogin){
+//                                      Application.router.navigateTo(
+//                                          context, '${Routes.addArticlePage}',
+//                                          transition: TransitionType.fadeIn);
+                                    }else{
+                                      CommonUtils.toLogin(context);
+                                    }
+
+                                  },
+                                ),
+
+
+                                InkWell(
+                                  child: _addIconWidget(context, 3),
+                                  onTap: () {
+                                    _setAddBackshow(false);
+                                    if(widget._hasLogin){
+//                                      Application.router.navigateTo(
+//                                          context, '${Routes.addArticlePage}',
+//                                          transition: TransitionType.fadeIn);
+                                    }else{
+
+                                      CommonUtils.toLogin(context);
+                                    }
+
+                                  },
+                                ),
+
                               ],
                             )
                           ]),

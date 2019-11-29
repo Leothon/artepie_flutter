@@ -13,6 +13,8 @@ class Routes{
   static String articleDetailPage = "/articleDetailPage";
   static String videoDetailPage = "/videoDetailPage";
   static String personalPage = "/personalPage";
+  static String settingsPage = "/settingsPage";
+  static String commentDetailPage = "/commentDetailPage";
 
 
   static void configureRoutes(Router router){
@@ -26,5 +28,9 @@ class Routes{
     router.define(articleDetailPage, handler: articleDetailPageHandler);
     router.define(videoDetailPage, handler: videoDetailPageHandler);
     router.define(personalPage, handler: personalPageHandler);
+    router.define(settingsPage, handler: settingsPageHandler);
+    router.define(commentDetailPage, handler: commentDetailPageHandler);
+
+
   }
 }

@@ -74,6 +74,8 @@ class _MyLoginPageState extends State<LoginPage> {
                       onTap: () {
                         Application.spUtil
                             .putString("token", Constants.visitorToken);
+                        Application.spUtil
+                            .putBool("login", false);
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
                                 builder: (context) => AppPage(false)),

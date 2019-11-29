@@ -3,6 +3,7 @@ import 'package:artepie/resource/MyColors.dart';
 import 'package:artepie/routers/Application.dart';
 import 'package:artepie/routers/routers.dart';
 import 'package:artepie/utils/Adapt.dart';
+import 'package:artepie/utils/CommonUtils.dart';
 import 'package:artepie/utils/data_utils.dart';
 import 'package:artepie/views/LoadStateLayout.dart';
 import 'package:artepie/views/listview_item_bottom.dart';
@@ -210,11 +211,11 @@ class _MyVideoPageState extends State<VideoPage> {
   Widget _videoItem(BuildContext context, int position) {
     return new InkWell(
       onTap: () {
-        Application.router.navigateTo(context,
+        Application.spUtil.get('login') ? Application.router.navigateTo(context,
             '${Routes.videoDetailPage}?videoid=${Uri
                 .encodeComponent(
                 _videoItemList[position]['qa_id'])}',
-            transition: TransitionType.fadeIn);
+            transition: TransitionType.fadeIn) : CommonUtils.toLogin(context);
       },
       child: Container(
         color: MyColors.white,
@@ -240,7 +241,7 @@ class _MyVideoPageState extends State<VideoPage> {
           Expanded(
             child: new InkWell(
               onTap: () {
-                print('点击头像');
+                Application.spUtil.get('login') ? print('点击头像') : CommonUtils.toLogin(context);
               },
               child: UserIconWidget(
                 url: _videoItemList[position]['user_icon'],
@@ -263,7 +264,7 @@ class _MyVideoPageState extends State<VideoPage> {
           Expanded(
             child: new InkWell(
               onTap: () {
-                print('点击名字');
+                Application.spUtil.get('login') ? print('点击名字') : CommonUtils.toLogin(context);
               },
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -297,7 +298,7 @@ class _MyVideoPageState extends State<VideoPage> {
           Expanded(
             child: InkWell(
               onTap: () {
-                print('点击更多');
+                Application.spUtil.get('login') ? print('点击更多') : CommonUtils.toLogin(context);
               },
               child: Icon(
                 Icons.more_horiz,
@@ -317,7 +318,7 @@ class _MyVideoPageState extends State<VideoPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           new InkWell(
-            onTap: () {print('点击喜欢');},
+            onTap: () {Application.spUtil.get('login') ? print('点击喜欢') : CommonUtils.toLogin(context);},
             child: Row(
               children: <Widget>[
                 Icon(
@@ -332,7 +333,7 @@ class _MyVideoPageState extends State<VideoPage> {
             ),
           ),
           new InkWell(
-            onTap: () {print('点击评论');},
+            onTap: () {Application.spUtil.get('login') ? print('点击评论') : CommonUtils.toLogin(context);},
             child: new Row(
               children: <Widget>[
                 Icon(
@@ -347,14 +348,14 @@ class _MyVideoPageState extends State<VideoPage> {
             ),
           ),
           new InkWell(
-            onTap: () {print('点击转发');},
+            onTap: () {Application.spUtil.get('login') ? print('点击转发') : CommonUtils.toLogin(context);},
             child: Icon(
               Icons.repeat,
               size: Adapt.px(34),
             ),
           ),
           new InkWell(
-            onTap: () {print('点击分享');},
+            onTap: () {Application.spUtil.get('login') ? print('点击分享') : CommonUtils.toLogin(context);},
             child: Icon(
               Icons.share,
               size: Adapt.px(34),
@@ -414,7 +415,11 @@ class _MyVideoPageState extends State<VideoPage> {
               offstage: _videoItemList[position]['qaData'] == null,
               child: InkWell(
                 onTap: () {
-                  print('点击转发');
+                  Application.spUtil.get('login') ? Application.router.navigateTo(context,
+                      '${Routes.videoDetailPage}?videoid=${Uri
+                          .encodeComponent(
+                          _videoItemList[position]['qaData']['qa_id'])}',
+                      transition: TransitionType.fadeIn) : CommonUtils.toLogin(context);
                 },
                 child: Container(
                   alignment: Alignment.centerLeft,

@@ -99,4 +99,13 @@ class DataUtils{
   static Future getPersonalArticle(Map<String,String> params) async{
     return await NetUtils.get(Api.getPersonalArticle,params);
   }
+
+  static Future getCommentInfo(Map<String,String> params) async{
+    return await NetUtils.get(Api.getCommentInfo,params);
+  }
+
+
+  static Future getCommentReplyInfo(Map<String,String> params) async{
+    return await NetUtils.get(Api.getCommentReply,params);
+  }
 }

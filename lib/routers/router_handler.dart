@@ -5,8 +5,10 @@ import 'package:artepie/views/artepieInfoPage/artepieInfoPage.dart';
 import 'package:artepie/views/classDetailPage/ClassDetailPage.dart';
 import 'package:artepie/views/loginPage/LoginPage.dart';
 import 'package:artepie/views/personalPage/PersonalPage.dart';
+import 'package:artepie/views/settingsPage/SettingsPage.dart';
 import 'package:artepie/views/teacherPage/teacherPage.dart';
 import 'package:artepie/views/typePage/TypePage.dart';
+import 'package:artepie/views/videoDetailPage/commentDetailPage.dart';
 import 'package:artepie/views/videoDetailPage/videoDetailPage.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
@@ -79,5 +81,20 @@ var videoDetailPageHandler = new Handler(
 var personalPageHandler = new Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
     return new PersonalPage();
+  },
+);
+
+
+var settingsPageHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return new SettingsPage();
+  },
+);
+
+
+var commentDetailPageHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    String _commentid = params['commentid'].first;
+    return new CommentDetailPage(_commentid);
   },
 );

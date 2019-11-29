@@ -2,6 +2,7 @@ import 'package:artepie/resource/MyColors.dart';
 import 'package:artepie/routers/Application.dart';
 import 'package:artepie/routers/routers.dart';
 import 'package:artepie/utils/Adapt.dart';
+import 'package:artepie/utils/CommonUtils.dart';
 import 'package:artepie/utils/data_utils.dart';
 import 'package:artepie/views/LoadStateLayout.dart';
 import 'package:artepie/views/listview_item_bottom.dart';
@@ -71,7 +72,28 @@ class _videoDetailPageState extends State<VideoDetailPage> {
             _loadVideoDetailData();
           },
           state: _layoutState,
-        ));
+        ),
+        floatingActionButton: InkWell(
+          child: new Stack(
+            children: <Widget>[
+              Container(
+                height: Adapt.px(90),
+                width: double.infinity,
+                color: Colors.white,
+                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.only(left: Adapt.px(24)),
+                child: new Text('评论，请文明发言',style: new TextStyle(fontSize: Adapt.px(28),color: MyColors.fontColor),),
+              ),
+              Container(
+                height: Adapt.px(2),
+                color: MyColors.dividerColor,
+              )
+            ],
+          ),
+          onTap: (){},
+        ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    );
   }
 
   Widget _videoDetailPageWidget(BuildContext context) {
@@ -183,28 +205,37 @@ class _videoDetailPageState extends State<VideoDetailPage> {
           ),
           Offstage(
             offstage: !((_commentItemList[position]['replies']).length >= 3),
-            child: new Stack(
-              children: <Widget>[
-                new Container(
-                  padding: EdgeInsets.only(
-                      left: Adapt.px(68),
-                      top: Adapt.px(18),
-                      bottom: Adapt.px(18)),
-                  child: new Text(
-                    '查看全部${(_commentItemList[position]['replies']).length}条评论',
-                    style: new TextStyle(
-                        fontSize: Adapt.px(26),
-                        color: MyColors.colorPrimary,
-                        fontWeight: FontWeight.bold),
+            child: new InkWell(
+              child: Stack(
+                children: <Widget>[
+                  new Container(
+                    padding: EdgeInsets.only(
+                        left: Adapt.px(68),
+                        top: Adapt.px(18),
+                        bottom: Adapt.px(18)),
+                    child: new Text(
+                      '查看全部${(_commentItemList[position]['replies']).length}条评论',
+                      style: new TextStyle(
+                          fontSize: Adapt.px(26),
+                          color: MyColors.colorPrimary,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
-                ),
-                new Container(
-                  margin: EdgeInsets.only(left: Adapt.px(68)),
-                  color: MyColors.dividerColor,
-                  height: Adapt.px(2),
-                ),
-              ],
-            ),
+                  new Container(
+                    margin: EdgeInsets.only(left: Adapt.px(68)),
+                    color: MyColors.dividerColor,
+                    height: Adapt.px(2),
+                  ),
+                ],
+              ),
+              onTap: (){
+                Application.router.navigateTo(context,
+                    '${Routes.commentDetailPage}?commentid=${Uri
+                        .encodeComponent(
+                        _commentItemList[position]['comment_q_id'])}',
+                    transition: TransitionType.fadeIn);
+              },
+            )
           ),
         ],
       ),
@@ -557,7 +588,11 @@ class _videoDetailPageState extends State<VideoDetailPage> {
               offstage: videoInfo.isEmpty ? true : (videoInfo['qaData'] == null),
               child: InkWell(
                 onTap: () {
-                  print('点击转发');
+                  Application.spUtil.get('login') ? Application.router.navigateTo(context,
+                      '${Routes.videoDetailPage}?videoid=${Uri
+                          .encodeComponent(
+                          videoInfo.isEmpty ? '' : videoInfo['qaData']['qa_id'])}',
+                      transition: TransitionType.fadeIn) : CommonUtils.toLogin(context);
                 },
                 child: Container(
                   alignment: Alignment.centerLeft,

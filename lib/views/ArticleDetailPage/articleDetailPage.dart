@@ -2,6 +2,7 @@ import 'package:artepie/parseHtml/flutter_html_textview.dart';
 import 'package:artepie/resource/MyColors.dart';
 import 'package:artepie/routers/Application.dart';
 import 'package:artepie/utils/Adapt.dart';
+import 'package:artepie/utils/CommonUtils.dart';
 import 'package:artepie/utils/data_utils.dart';
 import 'package:artepie/views/LoadStateLayout.dart';
 import 'package:artepie/views/listview_item_bottom.dart';
@@ -81,16 +82,21 @@ class _articleDetailState extends State<articleDetailPage> {
                 children: <Widget>[
                   new RaisedButton(
                     onPressed: () {
-                      setState(() {
-                        data['like']
-                            ? data['likeCount'] =
-                                (double.parse(data['likeCount']) - 1)
-                                    .toStringAsFixed(0)
-                            : data['likeCount'] =
-                                (double.parse(data['likeCount']) + 1)
-                                    .toStringAsFixed(0);
-                        data['like'] = !data['like'];
-                      });
+                      if(Application.spUtil.get('login')){
+                        setState(() {
+                          data['like']
+                              ? data['likeCount'] =
+                              (double.parse(data['likeCount']) - 1)
+                                  .toStringAsFixed(0)
+                              : data['likeCount'] =
+                              (double.parse(data['likeCount']) + 1)
+                                  .toStringAsFixed(0);
+                          data['like'] = !data['like'];
+                        });
+                      }else{
+                        CommonUtils.toLogin(context);
+                      }
+
                     },
                     textColor: data.isEmpty
                         ? MyColors.colorPrimary
@@ -114,7 +120,14 @@ class _articleDetailState extends State<articleDetailPage> {
                 ],
               ),
               RaisedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    if(Application.spUtil.get('login')){
+                      //TODO 跳转
+                    }else{
+                      CommonUtils.toLogin(context);
+                    }
+
+                  },
                   icon: Icon(Icons.message,size: Adapt.px(46),color: MyColors.lowfontColor,),
                   color: Colors.white,
                   elevation: 0,
@@ -155,8 +168,20 @@ class _articleDetailState extends State<articleDetailPage> {
               ),
 
               actions: <Widget>[
-                IconButton(icon: Icon(Icons.share,color: isTop ? MyColors.fontColor : Colors.white,), onPressed: (){}),
-                IconButton(icon: Icon(Icons.more_horiz,color: isTop ? MyColors.fontColor : Colors.white,), onPressed: (){})
+                IconButton(icon: Icon(Icons.share,color: isTop ? MyColors.fontColor : Colors.white,), onPressed: (){
+                  if(Application.spUtil.get('login')){
+                    //TODO 跳转
+                  }else{
+                    CommonUtils.toLogin(context);
+                  }
+                }),
+                IconButton(icon: Icon(Icons.more_horiz,color: isTop ? MyColors.fontColor : Colors.white,), onPressed: (){
+                  if(Application.spUtil.get('login')){
+                    //TODO 跳转
+                  }else{
+                    CommonUtils.toLogin(context);
+                  }
+                })
               ],
               backgroundColor: Colors.white,
               floating: false,
