@@ -2,8 +2,12 @@ import 'package:artepie/views/ArticleDetailPage/articleDetailPage.dart';
 import 'package:artepie/views/Home.dart';
 import 'package:artepie/views/addArticlePage/addArticlePage.dart';
 import 'package:artepie/views/artepieInfoPage/artepieInfoPage.dart';
+import 'package:artepie/views/buyPage/buyPage.dart';
 import 'package:artepie/views/classDetailPage/ClassDetailPage.dart';
+import 'package:artepie/views/favPage/FavPage.dart';
 import 'package:artepie/views/loginPage/LoginPage.dart';
+import 'package:artepie/views/noticePage/NoticePage.dart';
+import 'package:artepie/views/orderPage/OrderPage.dart';
 import 'package:artepie/views/personalPage/PersonalPage.dart';
 import 'package:artepie/views/settingsPage/SettingsPage.dart';
 import 'package:artepie/views/teacherPage/teacherPage.dart';
@@ -96,5 +100,30 @@ var commentDetailPageHandler = new Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
     String _commentid = params['commentid'].first;
     return new CommentDetailPage(_commentid);
+  },
+);
+
+var noticePageHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return new NoticePage();
+  },
+);
+
+var favPageHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return new FavPage();
+  },
+);
+
+
+var buyPageHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return new BuyPage();
+  },
+);
+
+var orderPageHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return new OrderPage();
   },
 );

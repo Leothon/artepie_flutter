@@ -34,7 +34,7 @@ class _commentDetailPageState extends State<CommentDetailPage> {
   var _itemCount = 0;
   var _commentInfo = {};
   List _replyItemList = [];
-  bool isNeedUp = false;
+//  bool isNeedUp = false;
   @override
   void initState() {
     // TODO: implement initState

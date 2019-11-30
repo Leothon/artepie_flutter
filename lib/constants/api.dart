@@ -51,4 +51,15 @@ class Api{
   static const String getCommentInfo = Base_URL + 'getcommentdetail';
 
   static const String getCommentReply = Base_URL + 'getmorecommentdetail';
+
+  static const String getNotice = Base_URL + 'getmorenoticeinfo';
+
+  static const String getFav = Base_URL + 'getmorefavclassbyuid';
+
+  static const String unFav = Base_URL + 'unfavclass';
+  static const String favClass = Base_URL + 'favclass';
+
+  static const String getBuyClass = Base_URL + 'getmorebuyclass';
+
+  static const String getOrder = Base_URL + 'getmoreorderhis';
 }

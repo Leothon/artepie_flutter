@@ -1,6 +1,7 @@
 import 'package:artepie/constants/api.dart';
 import 'package:artepie/model/user_info.dart';
 import 'package:artepie/utils/net_utils.dart';
+import 'package:common_utils/common_utils.dart';
 
 class DataUtils{
 
@@ -107,5 +108,34 @@ class DataUtils{
 
   static Future getCommentReplyInfo(Map<String,String> params) async{
     return await NetUtils.get(Api.getCommentReply,params);
+  }
+
+
+  static Future getNotice(Map<String,String> params) async{
+    return await NetUtils.get(Api.getNotice,params);
+  }
+
+  static Future getFav(Map<String,String> params) async{
+    return await NetUtils.get(Api.getFav,params);
+  }
+
+  static Future unFav(Map<String,String> params) async{
+
+    return await NetUtils.post(Api.unFav,params);
+  }
+
+  static Future favClass(Map<String,String> params) async{
+
+    return await NetUtils.post(Api.favClass,params);
+  }
+
+  static Future getBuyClass(Map<String,String> params) async{
+
+    return await NetUtils.get(Api.getBuyClass,params);
+  }
+
+  static Future getOrder(Map<String,String> params) async{
+
+    return await NetUtils.get(Api.getOrder,params);
   }
 }

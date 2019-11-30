@@ -1,6 +1,7 @@
 import 'package:artepie/model/user_info.dart';
 import 'package:artepie/resource/MyColors.dart';
 import 'package:artepie/routers/Application.dart';
+import 'package:artepie/routers/routers.dart';
 import 'package:artepie/utils/Adapt.dart';
 import 'package:artepie/utils/CommonUtils.dart';
 import 'package:artepie/utils/data_utils.dart';
@@ -118,7 +119,9 @@ class _MyAboutPageState extends State<AboutPage> {
                         '消息提醒',
                         true),
                     onTap: () {
-                      Application.spUtil.get('login') ? '' : CommonUtils.toLogin(context);
+                      Application.spUtil.get('login') ? Application.router.navigateTo(
+                          context, "/noticePage",
+                          transition: TransitionType.material) : CommonUtils.toLogin(context);
                     },
                   ),
                 ),
@@ -290,7 +293,9 @@ class _MyAboutPageState extends State<AboutPage> {
                       ),
                       '我的收藏'),
                   onTap: () {
-                    Application.spUtil.get('login') ? '' : CommonUtils.toLogin(context);
+                    Application.spUtil.get('login') ? Application.router.navigateTo(context,
+                        '${Routes.favPage}',
+                        transition: TransitionType.fadeIn) : CommonUtils.toLogin(context);
                   },
                 ),
                 InkWell(
@@ -303,7 +308,9 @@ class _MyAboutPageState extends State<AboutPage> {
                       ),
                       '我的订单'),
                   onTap: () {
-                    Application.spUtil.get('login') ? '' : CommonUtils.toLogin(context);
+                    Application.spUtil.get('login') ? Application.spUtil.get('login') ?  Application.spUtil.get('login') ? Application.router.navigateTo(context,
+                        '${Routes.orderPage}',
+                        transition: TransitionType.fadeIn) : CommonUtils.toLogin(context) : CommonUtils.toLogin(context) : CommonUtils.toLogin(context);
                   },
                 ),
                 InkWell(
@@ -316,7 +323,9 @@ class _MyAboutPageState extends State<AboutPage> {
                       ),
                       '我的订阅'),
                   onTap: () {
-                    Application.spUtil.get('login') ? '' : CommonUtils.toLogin(context);
+                    Application.spUtil.get('login') ?  Application.spUtil.get('login') ? Application.router.navigateTo(context,
+                        '${Routes.buyPage}',
+                        transition: TransitionType.fadeIn) : CommonUtils.toLogin(context) : CommonUtils.toLogin(context);
                   },
                 ),
               ],
