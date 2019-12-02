@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:artepie/resource/MyColors.dart';
 import 'package:artepie/routers/Application.dart';
+import 'package:artepie/routers/routers.dart';
 import 'package:artepie/utils/Adapt.dart';
 import 'package:artepie/utils/CommonUtils.dart';
 import 'package:artepie/views/loginPage/LoginPage.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:toast/toast.dart';
@@ -106,7 +108,9 @@ class _settingsPage extends State<SettingsPage> {
                   ),
                 ),
                 onTap: () {
-                  Application.spUtil.get('login') ? '' : CommonUtils.toLogin(context);
+                  Application.spUtil.get('login') ? Application.router.navigateTo(context,
+                      '${Routes.feedbackPage}',
+                      transition: TransitionType.fadeIn) : CommonUtils.toLogin(context);
                 },
               ),
             ),

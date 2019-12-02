@@ -1,14 +1,17 @@
 import 'package:artepie/views/ArticleDetailPage/articleDetailPage.dart';
 import 'package:artepie/views/Home.dart';
+import 'package:artepie/views/WebPage/WebPage.dart';
 import 'package:artepie/views/addArticlePage/addArticlePage.dart';
 import 'package:artepie/views/artepieInfoPage/artepieInfoPage.dart';
 import 'package:artepie/views/buyPage/buyPage.dart';
 import 'package:artepie/views/classDetailPage/ClassDetailPage.dart';
+import 'package:artepie/views/editPersonalPage/EditPersonalPage.dart';
 import 'package:artepie/views/favPage/FavPage.dart';
 import 'package:artepie/views/loginPage/LoginPage.dart';
 import 'package:artepie/views/noticePage/NoticePage.dart';
 import 'package:artepie/views/orderPage/OrderPage.dart';
 import 'package:artepie/views/personalPage/PersonalPage.dart';
+import 'package:artepie/views/settingsPage/FeedbackPage.dart';
 import 'package:artepie/views/settingsPage/SettingsPage.dart';
 import 'package:artepie/views/teacherPage/teacherPage.dart';
 import 'package:artepie/views/typePage/TypePage.dart';
@@ -59,11 +62,11 @@ var classDetailPageHandler = new Handler(
 );
 
 
-var addArticlePageHandler = new Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return new addAriclePage();
-  },
-);
+//var addArticlePageHandler = new Handler(
+//  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+//    return new addAriclePage();
+//  },
+//);
 
 
 var articleDetailPageHandler = new Handler(
@@ -125,5 +128,24 @@ var buyPageHandler = new Handler(
 var orderPageHandler = new Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
     return new OrderPage();
+  },
+);
+
+var webPageHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    String _url = params['url'].first;
+    return new WebPage( _url);
+  },
+);
+
+var editPersonalPageHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return new EditPersonalPage();
+  },
+);
+
+var feedbackPageHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return new FeedbackPage();
   },
 );

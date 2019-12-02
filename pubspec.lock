@@ -173,7 +173,7 @@ packages:
     source: hosted
     version: "2.1.4"
   image_picker:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: image_picker
       url: "https://pub.flutter-io.cn"
@@ -408,6 +408,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.7.2"
+  webview_flutter:
+    dependency: "direct main"
+    description:
+      name: webview_flutter
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.16"
   xml:
     dependency: transitive
     description:

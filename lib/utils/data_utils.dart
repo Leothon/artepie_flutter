@@ -1,141 +1,158 @@
 import 'package:artepie/constants/api.dart';
+import 'package:artepie/model/FeedbackInfo.dart';
 import 'package:artepie/model/user_info.dart';
 import 'package:artepie/utils/net_utils.dart';
 import 'package:common_utils/common_utils.dart';
+import 'package:dio/dio.dart';
 
 class DataUtils{
 
   static Future doLoginUsePassword(Map<String,String> params) async {
-    var response = await NetUtils.get(Api.usePasswordLogin, params);
+    var response = await NetUtils.getInstance().get(Api.usePasswordLogin, params);
 
     return response;
 
   }
 
   static Future getUserInfo(Map<String,String> params) async{
-    return await NetUtils.get(Api.getUserInfo,params);
+    return await NetUtils.getInstance().get(Api.getUserInfo,params);
   }
 
   static Future getHomeData(Map<String,String> params) async{
-    return await NetUtils.get(Api.getHomeData,params);
+    return await NetUtils.getInstance().get(Api.getHomeData,params);
   }
 
   static Future getHomeMoreData(Map<String,String> params) async{
-    return await NetUtils.get(Api.getHomeMoreData,params);
+    return await NetUtils.getInstance().get(Api.getHomeMoreData,params);
   }
 
   static Future getArticleData(Map<String,String> params) async{
-    return await NetUtils.get(Api.getArticleData,params);
+    return await NetUtils.getInstance().get(Api.getArticleData,params);
   }
 
   static Future getArticleMoreData(Map<String,String> params) async{
-    return await NetUtils.get(Api.getArticleMoreData,params);
+    return await NetUtils.getInstance().get(Api.getArticleMoreData,params);
   }
 
 
   static Future getVideoData(Map<String,String> params) async{
-    return await NetUtils.get(Api.getVideoData,params);
+    return await NetUtils.getInstance().get(Api.getVideoData,params);
   }
 
 
   static Future getVideoMoreData(Map<String,String> params) async{
-    return await NetUtils.get(Api.getVideoMoreData,params);
+    return await NetUtils.getInstance().get(Api.getVideoMoreData,params);
   }
 
 
   static Future getInform(Map<String,String> params) async{
-    return await NetUtils.get(Api.getInform,params);
+    return await NetUtils.getInstance().get(Api.getInform,params);
   }
 
   static Future getTeacherData(Map<String,String> params) async{
-    return await NetUtils.get(Api.getTeacherData,params);
+    return await NetUtils.getInstance().get(Api.getTeacherData,params);
   }
 
 
   static Future getTeacherMoreData(Map<String,String> params) async{
-    return await NetUtils.get(Api.getTeacherMoreData,params);
+    return await NetUtils.getInstance().get(Api.getTeacherMoreData,params);
   }
 
 
   static Future getTypeData(Map<String,String> params) async{
-    return await NetUtils.get(Api.getTypeData,params);
+    return await NetUtils.getInstance().get(Api.getTypeData,params);
   }
 
 
   static Future getTypeMoreData(Map<String,String> params) async{
-    return await NetUtils.get(Api.getTypeMoreData,params);
+    return await NetUtils.getInstance().get(Api.getTypeMoreData,params);
   }
 
 
   static Future getClassDetail(Map<String,String> params) async{
-    return await NetUtils.get(Api.getClassDetail,params);
+    return await NetUtils.getInstance().get(Api.getClassDetail,params);
   }
 
 
   static Future getMoreClassDetail(Map<String,String> params) async{
-    return await NetUtils.get(Api.getMoreClassDetail,params);
+    return await NetUtils.getInstance().get(Api.getMoreClassDetail,params);
   }
 
 
   static Future getArticleDetail(Map<String,String> params) async{
-    return await NetUtils.get(Api.getArticleDetail,params);
+    return await NetUtils.getInstance().get(Api.getArticleDetail,params);
   }
 
 
   static Future getVideoDetail(Map<String,String> params) async{
-    return await NetUtils.get(Api.getVideoDetail,params);
+    return await NetUtils.getInstance().get(Api.getVideoDetail,params);
   }
 
 
   static Future getVideoMoreComment(Map<String,String> params) async{
-    return await NetUtils.get(Api.getVideoMoreComment,params);
+    return await NetUtils.getInstance().get(Api.getVideoMoreComment,params);
   }
 
 
   static Future getPersonalVideo(Map<String,String> params) async{
-    return await NetUtils.get(Api.getPersonalVideo,params);
+    return await NetUtils.getInstance().get(Api.getPersonalVideo,params);
   }
 
 
   static Future getPersonalArticle(Map<String,String> params) async{
-    return await NetUtils.get(Api.getPersonalArticle,params);
+    return await NetUtils.getInstance().get(Api.getPersonalArticle,params);
   }
 
   static Future getCommentInfo(Map<String,String> params) async{
-    return await NetUtils.get(Api.getCommentInfo,params);
+    return await NetUtils.getInstance().get(Api.getCommentInfo,params);
   }
 
 
   static Future getCommentReplyInfo(Map<String,String> params) async{
-    return await NetUtils.get(Api.getCommentReply,params);
+    return await NetUtils.getInstance().get(Api.getCommentReply,params);
   }
 
 
   static Future getNotice(Map<String,String> params) async{
-    return await NetUtils.get(Api.getNotice,params);
+    return await NetUtils.getInstance().get(Api.getNotice,params);
   }
 
   static Future getFav(Map<String,String> params) async{
-    return await NetUtils.get(Api.getFav,params);
+    return await NetUtils.getInstance().get(Api.getFav,params);
   }
 
   static Future unFav(Map<String,String> params) async{
 
-    return await NetUtils.post(Api.unFav,params);
+    return await NetUtils.getInstance().post(Api.unFav,params);
   }
 
   static Future favClass(Map<String,String> params) async{
 
-    return await NetUtils.post(Api.favClass,params);
+    return await NetUtils.getInstance().post(Api.favClass,params);
   }
 
   static Future getBuyClass(Map<String,String> params) async{
 
-    return await NetUtils.get(Api.getBuyClass,params);
+    return await NetUtils.getInstance().get(Api.getBuyClass,params);
   }
 
   static Future getOrder(Map<String,String> params) async{
 
-    return await NetUtils.get(Api.getOrder,params);
+    return await NetUtils.getInstance().get(Api.getOrder,params);
+  }
+
+
+  static Future sendFeedback(FeedbackInfo feedbackInfo) async{
+
+    FormData formData = new FormData.fromMap({
+      'userId': feedbackInfo.userId,
+      'versionCode':feedbackInfo.versionCode,
+      'deviceBrand':feedbackInfo.deviceBrand,
+      'deviceModel':feedbackInfo.deviceBrand,
+      'buildApi':feedbackInfo.deviceBrand,
+      'androidVersion':feedbackInfo.deviceBrand,
+      'feedbackContent':feedbackInfo.deviceBrand,
+    });
+    return await NetUtils.getInstance().postFromData(Api.sendFeedback,formData);
   }
 }

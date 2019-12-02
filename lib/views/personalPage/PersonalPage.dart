@@ -126,7 +126,11 @@ class _personalPageState extends State<PersonalPage> {
                   padding:
                       EdgeInsets.only(right: Adapt.px(24), left: Adapt.px(24)),
                 ),
-                onTap: () {},
+                onTap: () {
+                  Application.router.navigateTo(context,
+                      '${Routes.editPersonalPage}',
+                      transition: TransitionType.fadeIn);
+                },
               )
             ],
           ),

@@ -217,13 +217,20 @@ class _MyHomePageState extends State<HomePage> {
         scrollDirection: Axis.horizontal,
         autoplay: true,
         onTap: (index) {
+//          Application.router.navigateTo(context,
+//              '${Routes.webPage}?url=${Uri.encodeComponent('https://www.artepie.com')}',
+//              transition: TransitionType.fadeIn);
           if(bannersInfo[index]['banner_type'] == 'class'){
             Application.router.navigateTo(context,
                 '${Routes.classDetailPage}?classid=${Uri.encodeComponent(bannersInfo[index]['banner_to_class_id'])}',
                 transition: TransitionType.fadeIn);
           }else{
-            //TODO 跳转banner信息
-          }
+            Application.router.navigateTo(context,
+                '${Routes.webPage}?url=${Uri.encodeComponent(bannersInfo[index]['banner_url'])}',
+                transition: TransitionType.fadeIn);
+
+
+                }
 
         },
       ),

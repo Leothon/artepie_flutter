@@ -1,6 +1,15 @@
 class Api{
   static const String Base_URL = 'https://www.artepie.com/artepie/';
 
+
+  //获取OSS Token
+  static final String URL_TOKEN= "http://www.artepie.com:7080";
+
+  //获取OS上传图片服务器地址
+  static final String URL_UPLOAD_IMAGE_OSS= "http://artepie.oss-cn-zhangjiakou.aliyuncs.com";
+
+
+
   //使用账号密码登录
   static const String usePasswordLogin = Base_URL + 'usepasswordlogin';
 
@@ -62,4 +71,6 @@ class Api{
   static const String getBuyClass = Base_URL + 'getmorebuyclass';
 
   static const String getOrder = Base_URL + 'getmoreorderhis';
+
+  static const String sendFeedback = Base_URL + 'sendfeedback';
 }
