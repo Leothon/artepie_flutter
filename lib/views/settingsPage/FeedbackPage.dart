@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:artepie/model/FeedbackInfo.dart';
 import 'package:artepie/resource/MyColors.dart';
 import 'package:artepie/routers/Application.dart';
 import 'package:artepie/utils/Adapt.dart';
+import 'package:artepie/utils/CommonUtils.dart';
 import 'package:artepie/utils/data_utils.dart';
 import 'package:common_utils/common_utils.dart';
+import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
 
 class FeedbackPage extends StatefulWidget {
   @override
@@ -17,6 +22,23 @@ class FeedbackPage extends StatefulWidget {
 class _feedbackPageState extends State<FeedbackPage> {
   TextEditingController textController = TextEditingController();
 
+  String androidInfo = '';
+  String iosInfo = '';
+
+  String buildName = '';
+  String buildCode = '';
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getDeviceInfo();
+    CommonUtils.getPackageInfo().then((result){
+      setState(() {
+        buildName = result['version'];
+        buildCode = result['buildNumber'];
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -84,12 +106,31 @@ class _feedbackPageState extends State<FeedbackPage> {
 
 
   void _sendFeedback(){
-    FeedbackInfo feedbackInfo = new FeedbackInfo(Application.spUtil.get('userid'),'','buildApi','机器厂商','机器型号',textController.toString(),'版本号');
+    FeedbackInfo feedbackInfo = new FeedbackInfo(Application.spUtil.get('userid'),'flutter',buildName,Platform.isAndroid ? androidInfo : iosInfo,'',textController.text.toString(),buildCode);
     DataUtils.sendFeedback(feedbackInfo).then((result){
       if(result['']){};
       LogUtil.e(result);
+      Toast.show("提交成功", context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
+      Navigator.of(context).pop();
     }).catchError((onError){
       LogUtil.e(onError);
     });
+  }
+
+  void getDeviceInfo() async{
+    DeviceInfoPlugin deviceInfo = new DeviceInfoPlugin();
+    if(Platform.isIOS){
+      IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
+
+      setState(() {
+        iosInfo = '${iosDeviceInfo.name} + ${iosDeviceInfo.systemName} + ${iosDeviceInfo.systemVersion} + ${iosDeviceInfo.model} + ${iosDeviceInfo.localizedModel} + ${iosDeviceInfo.identifierForVendor} + ${iosDeviceInfo.isPhysicalDevice} + ${iosDeviceInfo.utsname}';
+      });
+    }else if(Platform.isAndroid){
+      AndroidDeviceInfo androidDeviceInfo = await deviceInfo.androidInfo;
+      setState(() {
+        androidInfo = '${androidDeviceInfo.version} + ${androidDeviceInfo.board} + ${androidDeviceInfo.bootloader} + ${androidDeviceInfo.brand} + ${androidDeviceInfo.device} + ${androidDeviceInfo.display} + ${androidDeviceInfo.fingerprint} + ${androidDeviceInfo.hardware} + ${androidDeviceInfo.host} + ${androidDeviceInfo.id} + ${androidDeviceInfo.manufacturer} + ${androidDeviceInfo.model} + ${androidDeviceInfo.product}';
+      });
+    }
   }
 }

@@ -73,4 +73,6 @@ class Api{
   static const String getOrder = Base_URL + 'getmoreorderhis';
 
   static const String sendFeedback = Base_URL + 'sendfeedback';
+
+  static const String updateUserInfo = Base_URL + 'updateuserinfo';
 }

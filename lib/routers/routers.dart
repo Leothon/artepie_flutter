@@ -43,6 +43,7 @@ class Routes{
     router.define(buyPage, handler: buyPageHandler);
     router.define(orderPage, handler: orderPageHandler);
     router.define(webPage, handler: webPageHandler);
+    router.define(editPersonalPage, handler: editPersonalPageHandler);
     router.define(feedbackPage, handler: feedbackPageHandler);
   }
 }

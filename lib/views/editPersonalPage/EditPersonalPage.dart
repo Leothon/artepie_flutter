@@ -10,6 +10,7 @@ import 'package:artepie/views/LoadStateLayout.dart';
 import 'package:artepie/views/userIconWidget/UserIconWidget.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:toast/toast.dart';
 import 'dart:convert' as JSON;
@@ -24,7 +25,7 @@ class EditPersonalPage extends StatefulWidget {
 
 class _editPersonalPageState extends State<EditPersonalPage> {
   LoadState _layoutState = LoadState.State_Loading;
-
+  TextEditingController nameController = TextEditingController();
   var userInfo = {
     'user_name': '',
     'user_icon': '',
@@ -34,6 +35,7 @@ class _editPersonalPageState extends State<EditPersonalPage> {
     'user_address': '',
     'user_phone': '',
   };
+  int groupValue = 1;
 
   bool isEdit = false;
 
@@ -51,20 +53,58 @@ class _editPersonalPageState extends State<EditPersonalPage> {
     // TODO: implement build
     return Scaffold(
         backgroundColor: Colors.white,
-        body: new Stack(
-          children: <Widget>[
-            LoadStateLayout(
-              successWidget: _editPersonalPageWidget(context),
-              errorRetry: () {
-                setState(() {
-                  _layoutState = LoadState.State_Loading;
-                });
-                _loadEditInfo();
-              },
-              state: _layoutState,
-            ),
-            loadingDialog,
-          ],
+        body: new WillPopScope(
+          child: Stack(
+            children: <Widget>[
+              LoadStateLayout(
+                successWidget: _editPersonalPageWidget(context),
+                errorRetry: () {
+                  setState(() {
+                    _layoutState = LoadState.State_Loading;
+                  });
+                  _loadEditInfo();
+                },
+                state: _layoutState,
+              ),
+              loadingDialog,
+            ],
+          ),
+          onWillPop: () {
+            if (isEdit) {
+              showDialog<Null>(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return new AlertDialog(
+                      title: new Text('提示'),
+                      content: new SingleChildScrollView(
+                        child: new ListBody(
+                          children: <Widget>[
+                            new Text('资料已被修改，保存请点击完成，退出即放弃修改'),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        new FlatButton(
+                          child: new Text('退出'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        new FlatButton(
+                          child: new Text('继续编辑'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  });
+            } else {
+              Navigator.of(context).pop();
+            }
+          },
         ));
   }
 
@@ -87,7 +127,40 @@ class _editPersonalPageState extends State<EditPersonalPage> {
                   color: MyColors.fontColor,
                 ),
                 onTap: () {
-                  Navigator.of(context).pop();
+                  if (isEdit) {
+                    showDialog<Null>(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return new AlertDialog(
+                            title: new Text('提示'),
+                            content: new SingleChildScrollView(
+                              child: new ListBody(
+                                children: <Widget>[
+                                  new Text('资料已被修改，保存请点击完成，退出即放弃修改'),
+                                ],
+                              ),
+                            ),
+                            actions: <Widget>[
+                              new FlatButton(
+                                child: new Text('退出'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              new FlatButton(
+                                child: new Text('继续编辑'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        });
+                  } else {
+                    Navigator.of(context).pop();
+                  }
                 },
               ),
               pinned: true,
@@ -251,6 +324,52 @@ class _editPersonalPageState extends State<EditPersonalPage> {
               ),
               onTap: () {
                 //TODO 跳转到昵称
+                showDialog<Null>(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      return new AlertDialog(
+                        title: new Text('修改昵称'),
+                        content: new SingleChildScrollView(
+                          child: new ListBody(
+                            children: <Widget>[
+                              TextField(
+                                controller: nameController,
+                                decoration: InputDecoration(
+                                  icon: Icon(Icons.account_box),
+                                  labelText: '输入昵称',
+                                  labelStyle:
+                                      new TextStyle(fontSize: Adapt.px(32)),
+                                  hintText: '输入昵称',
+                                  hintStyle:
+                                      new TextStyle(fontSize: Adapt.px(22)),
+                                ),
+                                //autofocus: true,
+                              ),
+                            ],
+                          ),
+                        ),
+                        actions: <Widget>[
+                          new FlatButton(
+                            child: new Text('取消'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          new FlatButton(
+                            child: new Text('确定'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              setState(() {
+                                isEdit = true;
+                                userInfo['user_name'] =
+                                    nameController.text.toString();
+                              });
+                            },
+                          ),
+                        ],
+                      );
+                    });
               },
             )),
             SliverToBoxAdapter(
@@ -278,7 +397,7 @@ class _editPersonalPageState extends State<EditPersonalPage> {
                       children: <Widget>[
                         new Text(
                           userInfo['user_sex'] == 0
-                              ? ''
+                              ? '未知'
                               : (userInfo['user_sex'] == 1 ? '男' : '女'),
                           style: new TextStyle(
                               fontSize: Adapt.px(22),
@@ -296,6 +415,71 @@ class _editPersonalPageState extends State<EditPersonalPage> {
               ),
               onTap: () {
                 //TODO 跳转到性别
+                showDialog<Null>(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      return new StatefulBuilder(
+                          builder: (context, setStateDialog) {
+                        return AlertDialog(
+                          title: new Text('修改昵称'),
+                          content: new SingleChildScrollView(
+                            child: new ListBody(
+                              children: <Widget>[
+                                new RadioListTile(
+                                    value: 0,
+                                    groupValue: groupValue,
+                                    title: new Text('未知'),
+                                    onChanged: (T) {
+                                      setStateDialog(() {
+                                        groupValue = T;
+                                      });
+                                    }),
+                                new RadioListTile(
+                                    value: 1,
+                                    groupValue: groupValue,
+                                    title: new Text('男'),
+                                    onChanged: (T) {
+                                      setStateDialog(() {
+                                        groupValue = T;
+                                      });
+                                    }),
+                                new RadioListTile(
+                                    value: 2,
+                                    groupValue: groupValue,
+                                    title: new Text('女'),
+                                    onChanged: (T) {
+                                      setStateDialog(() {
+                                        groupValue = T;
+                                      });
+                                    }),
+                              ],
+                            ),
+                          ),
+                          actions: <Widget>[
+                            new FlatButton(
+                              child: new Text('取消'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            new FlatButton(
+                              child: new Text('确定'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                setState(() {
+                                  isEdit = true;
+                                  setState(() {
+                                    isEdit = true;
+                                    userInfo['user_sex'] = groupValue;
+                                  });
+                                });
+                              },
+                            ),
+                          ],
+                        );
+                      });
+                    });
               },
             )),
             SliverToBoxAdapter(
@@ -306,41 +490,82 @@ class _editPersonalPageState extends State<EditPersonalPage> {
             ),
             SliverToBoxAdapter(
                 child: new InkWell(
-              child: Container(
-                height: Adapt.px(110),
-                padding:
-                    EdgeInsets.only(left: Adapt.px(28), right: Adapt.px(28)),
-                child: new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    new Text(
-                      '生日',
-                      style: new TextStyle(
-                          fontSize: Adapt.px(28), color: MyColors.lowfontColor),
+                    child: Container(
+                      height: Adapt.px(110),
+                      padding: EdgeInsets.only(
+                          left: Adapt.px(28), right: Adapt.px(28)),
+                      child: new Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          new Text(
+                            '生日',
+                            style: new TextStyle(
+                                fontSize: Adapt.px(28),
+                                color: MyColors.lowfontColor),
+                          ),
+                          new Row(
+                            children: <Widget>[
+                              new Text(
+                                userInfo['user_birth'],
+                                style: new TextStyle(
+                                    fontSize: Adapt.px(22),
+                                    color: MyColors.lowfontColor),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: Adapt.px(18)),
+                                child: Icon(Icons.keyboard_arrow_right,
+                                    color: MyColors.lowfontColor),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
                     ),
-                    new Row(
-                      children: <Widget>[
-                        new Text(
-                          userInfo['user_birth'],
-                          style: new TextStyle(
-                              fontSize: Adapt.px(22),
-                              color: MyColors.lowfontColor),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: Adapt.px(18)),
-                          child: Icon(Icons.keyboard_arrow_right,
-                              color: MyColors.lowfontColor),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              onTap: () {
-                //TODO 跳转生日
-              },
-            )),
+                    onTap: () {
+                      //TODO 跳转生日
+
+                      showDialog<Null>(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return new AlertDialog(
+                              title: new Text('修改生日'),
+                              content: new SingleChildScrollView(
+                                child: new ListBody(
+                                  children: <Widget>[
+                                    DatePickerWidget(
+                                      initialDateTime: userInfo['user_birth'] == null ? DateTime.now() : DateUtil.getDateTime(userInfo['user_birth']),
+                                      locale: DateTimePickerLocale.zh_cn,
+                                      pickerTheme: new DateTimePickerTheme(
+                                        cancel: new Container(height: 0,width: 0,),
+                                        confirm: new Container(height: 0,width: 0,)
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              actions: <Widget>[
+                                new FlatButton(
+                                  child: new Text('取消'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                new FlatButton(
+                                  child: new Text('确定'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      isEdit = true;
+                                      userInfo['user_birth'] = '';
+                                    });
+                                  },
+                                ),
+                              ],
+                            );
+                          });
+                    })),
             SliverToBoxAdapter(
               child: new Container(
                 height: Adapt.px(2),
@@ -543,6 +768,7 @@ class _editPersonalPageState extends State<EditPersonalPage> {
       setState(() {
         _layoutState = LoadState.State_Success;
         userInfo = data;
+        groupValue = data['user_sex'];
       });
     }).catchError((onError) {
       setState(() {
@@ -554,19 +780,15 @@ class _editPersonalPageState extends State<EditPersonalPage> {
   _takePhoto() async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
 
-    showLoadingDialog();
     setState(() {
       _imgPath = image.path;
       _getOssToken();
     });
-
-
   }
 
   _openGallery() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    showLoadingDialog();
-    LogUtil.e(image.path);
+
     setState(() {
       _imgPath = image.path;
       _getOssToken();
@@ -596,18 +818,13 @@ class _editPersonalPageState extends State<EditPersonalPage> {
   * 获取OssToken
   */
   void _getOssToken() async {
+    showLoadingDialog();
     await ApiService.getOssToken(context).then((result) {
       var data = JSON.jsonDecode(result);
-//      LogUtil.e(data);
       if (data != null) {
-
         OssUtil.accesskeyId = data['AccessKeyId'];
         OssUtil.accessKeySecret = data['AccessKeySecret'];
         OssUtil.stsToken = data['SecurityToken'];
-//        LogUtil.e(OssUtil.accesskeyId);
-//        LogUtil.e(OssUtil.accessKeySecret);
-//        LogUtil.e(OssUtil.stsToken);
-
       } else {
         Toast.show('获取失败', context);
       }
@@ -623,15 +840,16 @@ class _editPersonalPageState extends State<EditPersonalPage> {
       hideLoadingDialog();
       if (data == null) {
         Toast.show('上传成功', context);
-
       }
       setState(() {
         userInfo['user_icon'] = 'http://www.artepie.cn/$uploadName';
+        isEdit = true;
       });
     }).then((data) {
       //更新数据库中数据
       LogUtil.e(data);
     });
   }
-}
 
+  void _showBackInfo() {}
+}

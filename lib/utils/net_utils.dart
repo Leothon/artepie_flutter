@@ -68,7 +68,6 @@ class NetUtils{
     dio.options.baseUrl = Api.Base_URL;
     dio.options.connectTimeout = 5000;
     dio.options.receiveTimeout = 3000;
-
     dio.interceptors.add(LogInterceptor(responseBody: true)); //是否开启请求日志
     dio.interceptors.add(CookieManager(CookieJar()));//缓存相关类，具体设置见https://github.com/flutterchina/cookie_jar
   }
@@ -102,14 +101,14 @@ class NetUtils{
     return response.data;
   }
 
-  postFromData(String url, FormData data) async {
+  postByJson(String url, String data) async {
     Directory documentsDir = await getApplicationDocumentsDirectory();
     String documentsPath = documentsDir.path;
     var dir = new Directory("$documentsPath/cookies");
     await dir.create();
     dio.interceptors.add(CookieManager(PersistCookieJar(dir: dir.path)));
 
-    var response = await dio.post(url,data: data.toString());
+    var response = await dio.post(url,data: data);
     return response.data;
   }
 

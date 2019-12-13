@@ -206,7 +206,6 @@ class _settingsPage extends State<SettingsPage> {
       Directory tempDir = await getTemporaryDirectory();
       double value = await _getTotalSizeOfFilesInDir(tempDir);
 
-      print('临时目录大小: ' + value.toString());
       setState(() {
         _cacheSizeStr = CommonUtils.renderSize(value);
       });

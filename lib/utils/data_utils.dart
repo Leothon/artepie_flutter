@@ -144,15 +144,11 @@ class DataUtils{
 
   static Future sendFeedback(FeedbackInfo feedbackInfo) async{
 
-    FormData formData = new FormData.fromMap({
-      'userId': feedbackInfo.userId,
-      'versionCode':feedbackInfo.versionCode,
-      'deviceBrand':feedbackInfo.deviceBrand,
-      'deviceModel':feedbackInfo.deviceBrand,
-      'buildApi':feedbackInfo.deviceBrand,
-      'androidVersion':feedbackInfo.deviceBrand,
-      'feedbackContent':feedbackInfo.deviceBrand,
-    });
-    return await NetUtils.getInstance().postFromData(Api.sendFeedback,formData);
+    return await NetUtils.getInstance().postByJson(Api.sendFeedback,feedbackInfo.toJson());
+  }
+
+  static Future updateUserInfo(UserInformation userInformation) async{
+
+    return await NetUtils.getInstance().postByJson(Api.updateUserInfo,userInformation.toJson());
   }
 }

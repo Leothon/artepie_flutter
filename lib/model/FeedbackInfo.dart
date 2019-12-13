@@ -16,4 +16,8 @@ class FeedbackInfo {
       this.deviceModel,
       this.feedbackContent,
       this.versionCode);
+
+  String toJson(){
+    return '{"userId": "$userId","versionCode": "$versionCode","deviceBrand": "$deviceBrand","deviceModel": "$deviceModel","buildApi": "$buildApi","androidVersion": "$androidVersion","feedbackContent": "$feedbackContent"}';
+  }
 }
