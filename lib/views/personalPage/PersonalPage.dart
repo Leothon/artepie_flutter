@@ -16,6 +16,11 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class PersonalPage extends StatefulWidget {
+
+  final bool isMyPage;
+  final String userId;
+
+  PersonalPage(this.isMyPage,this.userId);
   @override
   State<StatefulWidget> createState() {
     return new _personalPageState();
@@ -43,8 +48,7 @@ class _personalPageState extends State<PersonalPage> {
     // TODO: implement initState
     super.initState();
 
-    _loadUserInfoData();
-
+    widget.isMyPage ? _loadUserInfoData() : _loadUserInfoDataById();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
@@ -87,7 +91,7 @@ class _personalPageState extends State<PersonalPage> {
             setState(() {
               _layoutState = LoadState.State_Loading;
             });
-            _loadUserInfoData();
+            widget.isMyPage ? _loadUserInfoData() : _loadUserInfoDataById();
             //_loadVideoData();
           },
           state: _layoutState,
@@ -119,7 +123,7 @@ class _personalPageState extends State<PersonalPage> {
             actions: <Widget>[
               new InkWell(
                 child: Container(
-                  child: new Text('编辑个人资料',
+                  child: new Text(widget.isMyPage ? '编辑个人资料' : '',
                       textAlign: TextAlign.center,
                       style: new TextStyle(color: MyColors.fontColor)),
                   alignment: Alignment.center,
@@ -127,9 +131,12 @@ class _personalPageState extends State<PersonalPage> {
                       EdgeInsets.only(right: Adapt.px(24), left: Adapt.px(24)),
                 ),
                 onTap: () {
-                  Application.router.navigateTo(context,
-                      '${Routes.editPersonalPage}',
-                      transition: TransitionType.fadeIn);
+                  if(widget.isMyPage){
+                    Application.router.navigateTo(context,
+                        '${Routes.editPersonalPage}',
+                        transition: TransitionType.fadeIn);
+                  }
+
                 },
               )
             ],
@@ -225,40 +232,47 @@ class _personalPageState extends State<PersonalPage> {
                                   color: MyColors.colorPrimary),
                             ),
                           ),
-                          new InkWell(
-                            child: Container(
-                              width: Adapt.px(140),
-                              height: Adapt.px(60),
-                              alignment: Alignment.center,
-                              margin: EdgeInsets.only(left: Adapt.px(10),bottom: Adapt.px(10)),
-                              decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.circular(Adapt.px(14)),
-                                  color: MyColors.colorPrimary),
-                              child: new Text(
-                                '认证自己',
-                                style: new TextStyle(color: Colors.white),
+                          new Offstage(
+                            offstage: !widget.isMyPage,
+                            child: new InkWell(
+                              child: Container(
+                                width: Adapt.px(140),
+                                height: Adapt.px(60),
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.only(left: Adapt.px(10),bottom: Adapt.px(10)),
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                    BorderRadius.circular(Adapt.px(14)),
+                                    color: MyColors.colorPrimary),
+                                child: new Text(
+                                  '认证自己',
+                                  style: new TextStyle(color: Colors.white),
+                                ),
                               ),
+                              onTap: () {},
                             ),
-                            onTap: () {},
                           ),
-                          new InkWell(
-                            child: Container(
-                              width: Adapt.px(140),
-                              height: Adapt.px(60),
-                              alignment: Alignment.center,
-                              margin: EdgeInsets.only(left: Adapt.px(10),bottom: Adapt.px(10)),
-                              decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.circular(Adapt.px(14)),
-                                  color: MyColors.colorPrimary),
-                              child: new Text(
-                                '制作课程',
-                                style: new TextStyle(color: Colors.white),
+                          Offstage(
+                            offstage: !widget.isMyPage,
+                            child: new InkWell(
+                              child: Container(
+                                width: Adapt.px(140),
+                                height: Adapt.px(60),
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.only(left: Adapt.px(10),bottom: Adapt.px(10)),
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                    BorderRadius.circular(Adapt.px(14)),
+                                    color: MyColors.colorPrimary),
+                                child: new Text(
+                                  '制作课程',
+                                  style: new TextStyle(color: Colors.white),
+                                ),
                               ),
+                              onTap: () {},
                             ),
-                            onTap: () {},
                           ),
+
                         ],
                       )
                     ],
@@ -392,7 +406,7 @@ class _personalPageState extends State<PersonalPage> {
                 ),
         ],
       ),
-      onRefresh: _loadUserInfoData,
+      onRefresh: widget.isMyPage ? _loadUserInfoData : _loadUserInfoDataById,
     );
   }
 
@@ -422,9 +436,34 @@ class _personalPageState extends State<PersonalPage> {
     });
   }
 
+  Future _loadUserInfoDataById() {
+    return DataUtils.getUserInfoById({'userid': widget.userId})
+        .then((result) {
+      var data = result['data'];
+      if (data.length == 0) {
+        setState(() {
+          _layoutState = LoadState.State_Empty;
+        });
+      } else {
+        setState(() {
+          userInfo = data;
+        });
+        _loadVideoData();
+//        setState(() {
+//          _layoutState = LoadState.State_Success;
+//        });
+      }
+    }).catchError((onError) {
+      setState(() {
+        LogUtil.e(onError);
+        _layoutState = LoadState.State_Error;
+      });
+    });
+  }
+
   Future _loadVideoData() {
     return DataUtils.getPersonalVideo(
-            {'currentpage': '0', 'userid': Application.spUtil.get('userid')})
+            {'currentpage': '0', 'userid': widget.isMyPage ? Application.spUtil.get('userid') : widget.userId})
         .then((result) {
       var data = result['data'];
       if (data.length == 0) {
@@ -451,7 +490,7 @@ class _personalPageState extends State<PersonalPage> {
 
   Future _loadArticleData() {
     return DataUtils.getPersonalArticle({
-      'userid': Application.spUtil.get('userid'),
+      'userid': widget.isMyPage ? Application.spUtil.get('userid') : widget.userId,
       'currentpage': '0',
     }).then((result) {
       var data = result['data'];
@@ -481,7 +520,7 @@ class _personalPageState extends State<PersonalPage> {
     _loadStateVideo = BottomState.bottom_Loading;
     DataUtils.getPersonalVideo({
       'currentpage': _itemCountVideo.toString(),
-      'userid': Application.spUtil.get('userid')
+      'userid': widget.isMyPage ? Application.spUtil.get('userid') : widget.userId
     }).then((result) {
       var data = result['data'];
       if (data.length == 0) {
@@ -505,7 +544,7 @@ class _personalPageState extends State<PersonalPage> {
   void _loadMoreArticleData() {
     _loadStateArticle = BottomState.bottom_Loading;
     DataUtils.getPersonalArticle({
-      'userid': Application.spUtil.get('userid'),
+      'userid': widget.isMyPage ? Application.spUtil.get('userid') : widget.userId,
       'currentpage': _itemCountArticle.toString(),
     }).then((result) {
       var data = result['data'];

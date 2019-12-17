@@ -17,6 +17,7 @@ import 'package:artepie/views/teacherPage/teacherPage.dart';
 import 'package:artepie/views/typePage/TypePage.dart';
 import 'package:artepie/views/videoDetailPage/commentDetailPage.dart';
 import 'package:artepie/views/videoDetailPage/videoDetailPage.dart';
+import 'package:common_utils/common_utils.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:artepie/model/user_info.dart';
@@ -87,7 +88,9 @@ var videoDetailPageHandler = new Handler(
 
 var personalPageHandler = new Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return new PersonalPage();
+    bool isMyPage = params['info'].first == 'true' ? true : false;
+    String userId = params['userid'].first;
+    return new PersonalPage(isMyPage,userId);
   },
 );
 

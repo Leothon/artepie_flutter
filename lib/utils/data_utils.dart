@@ -18,6 +18,10 @@ class DataUtils{
     return await NetUtils.getInstance().get(Api.getUserInfo,params);
   }
 
+  static Future getUserInfoById(Map<String,String> params) async{
+    return await NetUtils.getInstance().get(Api.getUserInfoById,params);
+  }
+
   static Future getHomeData(Map<String,String> params) async{
     return await NetUtils.getInstance().get(Api.getHomeData,params);
   }
@@ -42,6 +46,13 @@ class DataUtils{
 
   static Future getVideoMoreData(Map<String,String> params) async{
     return await NetUtils.getInstance().get(Api.getVideoMoreData,params);
+  }
+
+  static Future addLikeVideo(Map<String,String> params) async{
+    return await NetUtils.getInstance().post(Api.addLikeVideo,params);
+  }
+  static Future removeLikeVideo(Map<String,String> params) async{
+    return await NetUtils.getInstance().post(Api.removeLikeVideo,params);
   }
 
 
@@ -150,5 +161,25 @@ class DataUtils{
   static Future updateUserInfo(UserInformation userInformation) async{
 
     return await NetUtils.getInstance().postByJson(Api.updateUserInfo,userInformation.toJson());
+  }
+
+  static Future deleteArticle(Map<String,String> params) async{
+
+    return await NetUtils.getInstance().post(Api.deleteArticle,params);
+  }
+
+  static Future likeArticle(Map<String,String> params) async{
+
+    return await NetUtils.getInstance().post(Api.likeArticle,params);
+  }
+
+  static Future unlikeArticle(Map<String,String> params) async{
+
+    return await NetUtils.getInstance().post(Api.unlikeArticle,params);
+  }
+
+  static Future getArticleComment(Map<String,String> params) async{
+
+    return await NetUtils.getInstance().get(Api.getArticleComment,params);
   }
 }

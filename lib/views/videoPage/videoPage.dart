@@ -13,6 +13,7 @@ import 'package:artepie/widgets/MyChewie/chewie_progress_colors.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPage extends StatefulWidget {
@@ -241,7 +242,9 @@ class _MyVideoPageState extends State<VideoPage> {
           Expanded(
             child: new InkWell(
               onTap: () {
-                Application.spUtil.get('login') ? print('点击头像') : CommonUtils.toLogin(context);
+                Application.spUtil.get('login') ?  Application.router.navigateTo(context,
+                    '${Routes.personalPage}?info=false&userid=${_videoItemList[position]['qa_user_id']}',
+                    transition: TransitionType.fadeIn) : CommonUtils.toLogin(context);
               },
               child: UserIconWidget(
                 url: _videoItemList[position]['user_icon'],
@@ -264,7 +267,9 @@ class _MyVideoPageState extends State<VideoPage> {
           Expanded(
             child: new InkWell(
               onTap: () {
-                Application.spUtil.get('login') ? print('点击名字') : CommonUtils.toLogin(context);
+                Application.spUtil.get('login') ?  Application.router.navigateTo(context,
+                    '${Routes.personalPage}?info=false&userid=${_videoItemList[position]['qa_user_id']}',
+                    transition: TransitionType.fadeIn) : CommonUtils.toLogin(context);
               },
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -318,16 +323,17 @@ class _MyVideoPageState extends State<VideoPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           new InkWell(
-            onTap: () {Application.spUtil.get('login') ? print('点击喜欢') : CommonUtils.toLogin(context);},
+            onTap: () {Application.spUtil.get('login') ? _videoItemList[position]['liked'] ? _removeLikeVideoData(position) : _addLikeVideoData(position) : CommonUtils.toLogin(context);},
             child: Row(
               children: <Widget>[
                 Icon(
-                  Icons.favorite_border,
+                  _videoItemList[position]['liked'] ? Icons.favorite : Icons.favorite_border,
                   size: Adapt.px(34),
+                  color: _videoItemList[position]['liked'] ? MyColors.colorAccent : MyColors.fontColor,
                 ),
                 new Text(
                   _videoItemList[position]['qa_like'],
-                  style: new TextStyle(fontSize: Adapt.px(22)),
+                  style: new TextStyle(fontSize: Adapt.px(22),color: _videoItemList[position]['liked'] ? MyColors.colorAccent : MyColors.fontColor),
                 )
               ],
             ),
@@ -509,6 +515,39 @@ class _MyVideoPageState extends State<VideoPage> {
         ],
       ),
     );
+  }
+
+  Future _addLikeVideoData(int position) {
+    return DataUtils.addLikeVideo({'token': Application.spUtil.get('token'),'qaid' : _videoItemList[position]['qa_id']})
+        .then((result) {
+
+      setState(() {
+        _videoItemList[position]['qa_like'] = (double.parse(_videoItemList[position]['qa_like']) + 1).toStringAsFixed(0);
+        _videoItemList[position]['liked'] = !_videoItemList[position]['liked'];
+      });
+      Toast.show('已点赞', context,
+          duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
+    }).catchError((onError) {
+      Toast.show('点赞发生错误，请重试', context,
+          duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
+    });
+  }
+
+  Future _removeLikeVideoData(int position) {
+
+
+    return DataUtils.removeLikeVideo({'token': Application.spUtil.get('token'),'qaid' : _videoItemList[position]['qa_id']})
+        .then((result) {
+      setState(() {
+        _videoItemList[position]['qa_like'] = (double.parse(_videoItemList[position]['qa_like']) - 1).toStringAsFixed(0);
+        _videoItemList[position]['liked'] = !_videoItemList[position]['liked'];
+      });
+      Toast.show('已取消赞', context,
+          duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
+    }).catchError((onError) {
+      Toast.show('取消赞发生错误，请重试', context,
+          duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
+    });
   }
 
   Future _loadVideoData() {

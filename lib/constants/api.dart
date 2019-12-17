@@ -15,6 +15,7 @@ class Api{
 
 
   static const String getUserInfo = Base_URL + 'getuserinfo';
+  static const String getUserInfoById = Base_URL + 'getuserinfobyid';
 
 
   static const String getHomeData = Base_URL + 'gethomedata';
@@ -26,6 +27,9 @@ class Api{
   static const String getArticleMoreData = Base_URL + 'getmorearticledata';
 
   static const String getVideoData = Base_URL + 'getquestion';
+
+  static const String addLikeVideo = Base_URL + 'addlikeqa';
+  static const String removeLikeVideo = Base_URL + 'removelikeqa';
 
   static const String getVideoMoreData = Base_URL + 'getmorequestion';
 
@@ -75,4 +79,11 @@ class Api{
   static const String sendFeedback = Base_URL + 'sendfeedback';
 
   static const String updateUserInfo = Base_URL + 'updateuserinfo';
+
+  static const String deleteArticle = Base_URL + 'deletearticle';
+
+  static const String likeArticle = Base_URL + 'addlikearticle';
+  static const String unlikeArticle = Base_URL + 'removelikearticle';
+
+  static const String getArticleComment = Base_URL + 'getarticlecommentmore';
 }

@@ -13,6 +13,7 @@ import 'package:common_utils/common_utils.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoDetailPage extends StatefulWidget {
@@ -415,7 +416,9 @@ class _videoDetailPageState extends State<VideoDetailPage> {
           Expanded(
             child: new InkWell(
               onTap: () {
-                print('点击头像');
+                Application.router.navigateTo(context,
+                    '${Routes.personalPage}?info=false&userid=${videoInfo['qa_user_id']}',
+                    transition: TransitionType.fadeIn);
               },
               child: UserIconWidget(
                 url: videoInfo.isEmpty ? '' : videoInfo['user_icon'],
@@ -434,7 +437,9 @@ class _videoDetailPageState extends State<VideoDetailPage> {
           Expanded(
             child: new InkWell(
               onTap: () {
-                print('点击名字');
+                Application.router.navigateTo(context,
+                    '${Routes.personalPage}?info=false&userid=${videoInfo['qa_user_id']}',
+                    transition: TransitionType.fadeIn);
               },
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -486,17 +491,18 @@ class _videoDetailPageState extends State<VideoDetailPage> {
         children: <Widget>[
           new InkWell(
             onTap: () {
-              print('点击喜欢');
+              videoInfo['liked'] ? _removeLikeVideoData() : _addLikeVideoData();
             },
             child: Row(
               children: <Widget>[
                 Icon(
-                  Icons.favorite_border,
+                  videoInfo.isEmpty ? Icons.favorite_border :  (videoInfo['liked'] ? Icons.favorite : Icons.favorite_border),
                   size: Adapt.px(34),
+                  color: videoInfo.isEmpty ? MyColors.fontColor :  (videoInfo['liked'] ? MyColors.colorAccent : MyColors.fontColor),
                 ),
                 new Text(
                   videoInfo.isEmpty ? '' : videoInfo['qa_like'],
-                  style: new TextStyle(fontSize: Adapt.px(22)),
+                  style: new TextStyle(fontSize: Adapt.px(22),color: videoInfo.isEmpty ? MyColors.fontColor :  (videoInfo['liked'] ? MyColors.colorAccent : MyColors.fontColor)),
                 )
               ],
             ),
@@ -751,5 +757,38 @@ class _videoDetailPageState extends State<VideoDetailPage> {
         ],
       ),
     );
+  }
+
+  Future _addLikeVideoData() {
+    return DataUtils.addLikeVideo({'token': Application.spUtil.get('token'),'qaid' : videoInfo['qa_id']})
+        .then((result) {
+
+      setState(() {
+        videoInfo['qa_like'] = (double.parse(videoInfo['qa_like']) + 1).toStringAsFixed(0);
+        videoInfo['liked'] = !videoInfo['liked'];
+      });
+      Toast.show('已点赞', context,
+          duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
+    }).catchError((onError) {
+      Toast.show('点赞发生错误，请重试', context,
+          duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
+    });
+  }
+
+  Future _removeLikeVideoData() {
+
+
+    return DataUtils.removeLikeVideo({'token': Application.spUtil.get('token'),'qaid' : videoInfo['qa_id']})
+        .then((result) {
+      setState(() {
+        videoInfo['qa_like'] = (double.parse(videoInfo['qa_like']) - 1).toStringAsFixed(0);
+        videoInfo['liked'] = !videoInfo['liked'];
+      });
+      Toast.show('已取消赞', context,
+          duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
+    }).catchError((onError) {
+      Toast.show('取消赞发生错误，请重试', context,
+          duration: Toast.LENGTH_SHORT, gravity: Toast.CENTER);
+    });
   }
 }

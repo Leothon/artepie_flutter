@@ -272,9 +272,10 @@ class _MyAboutPageState extends State<AboutPage> {
                 ],
               ),
               onTap: () {
-                Application.spUtil.get('login') ? Application.router.navigateTo(
-                    context, "/personalPage",
-                    transition: TransitionType.material) : CommonUtils.toLogin(context);
+
+                Application.spUtil.get('login') ? Application.router.navigateTo(context,
+                    '${Routes.personalPage}?info=true&userid=00',
+                    transition: TransitionType.fadeIn) : CommonUtils.toLogin(context);
               },
             ),
             flex: 1,
