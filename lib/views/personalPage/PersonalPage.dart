@@ -7,6 +7,8 @@ import 'package:artepie/utils/data_utils.dart';
 import 'package:artepie/views/LoadStateLayout.dart';
 import 'package:artepie/views/listview_item_bottom.dart';
 import 'package:artepie/views/userIconWidget/UserIconWidget.dart';
+import 'package:artepie/views/videoPage/ChewiePage.dart';
+import 'package:artepie/views/videoPage/VideoBean.dart';
 import 'package:artepie/widgets/MyChewie/chewie_player.dart';
 import 'package:artepie/widgets/MyChewie/chewie_progress_colors.dart';
 import 'package:common_utils/common_utils.dart';
@@ -16,11 +18,10 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class PersonalPage extends StatefulWidget {
-
   final bool isMyPage;
   final String userId;
 
-  PersonalPage(this.isMyPage,this.userId);
+  PersonalPage(this.isMyPage, this.userId);
   @override
   State<StatefulWidget> createState() {
     return new _personalPageState();
@@ -43,6 +44,18 @@ class _personalPageState extends State<PersonalPage> {
 
   bool videoEmpty = true;
   bool articleEmpty = true;
+
+  List<VideoBean> videolist = [];
+  //itemHight  向上滑动的距离
+  double itemHight = 0;
+  //点击item的 角标
+  int clickPosition = 0;
+  //列表滑动的距离的初始值
+  double initPosition = 0;
+  //向下滑动的距离
+  double upHight = 0;
+  //   initPosition  记录点击时候列表滑动的高度
+
   @override
   void initState() {
     // TODO: implement initState
@@ -50,6 +63,19 @@ class _personalPageState extends State<PersonalPage> {
 
     widget.isMyPage ? _loadUserInfoData() : _loadUserInfoDataById();
     _scrollController.addListener(() {
+      if (itemHight > 0) {
+        if (_scrollController.position.pixels - initPosition > itemHight ||
+            initPosition - _scrollController.position.pixels > upHight) {
+          print('控件该隐藏了');
+          //获取点击的视频 然后隐藏   并且itemHight =0
+          VideoBean bean = videolist[clickPosition];
+          setState(() {
+            bean.isSeeVideo = false;
+            itemHight = 0;
+          });
+        }
+      }
+
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         setState(() {
@@ -131,12 +157,11 @@ class _personalPageState extends State<PersonalPage> {
                       EdgeInsets.only(right: Adapt.px(24), left: Adapt.px(24)),
                 ),
                 onTap: () {
-                  if(widget.isMyPage){
-                    Application.router.navigateTo(context,
-                        '${Routes.editPersonalPage}',
+                  if (widget.isMyPage) {
+                    Application.router.navigateTo(
+                        context, '${Routes.editPersonalPage}',
                         transition: TransitionType.fadeIn);
                   }
-
                 },
               )
             ],
@@ -195,7 +220,7 @@ class _personalPageState extends State<PersonalPage> {
                         ),
                       ),
                       new Padding(
-                          padding: EdgeInsets.all(Adapt.px(12)),
+                        padding: EdgeInsets.all(Adapt.px(12)),
                         child: new Text(
                           userInfo.isEmpty ? '' : userInfo['user_signal'],
                           style: new TextStyle(
@@ -221,12 +246,16 @@ class _personalPageState extends State<PersonalPage> {
                         children: <Widget>[
                           new Padding(
                             padding: EdgeInsets.all(Adapt.px(12)),
-                            child: new Text(userInfo.isEmpty ? '' : (
-                            (userInfo['user_role'].substring(0, 1) == '0' ||
-                                      userInfo['user_role'].substring(0, 1) ==
-                                          '1')
-                                  ? '认证: ${userInfo.isEmpty ? '' : userInfo['user_role'].substring(1)}'
-                                  : ''),
+                            child: new Text(
+                              userInfo.isEmpty
+                                  ? ''
+                                  : ((userInfo['user_role'].substring(0, 1) ==
+                                              '0' ||
+                                          userInfo['user_role']
+                                                  .substring(0, 1) ==
+                                              '1')
+                                      ? '认证: ${userInfo.isEmpty ? '' : userInfo['user_role'].substring(1)}'
+                                      : ''),
                               style: new TextStyle(
                                   fontSize: Adapt.px(24),
                                   color: MyColors.colorPrimary),
@@ -239,10 +268,11 @@ class _personalPageState extends State<PersonalPage> {
                                 width: Adapt.px(140),
                                 height: Adapt.px(60),
                                 alignment: Alignment.center,
-                                margin: EdgeInsets.only(left: Adapt.px(10),bottom: Adapt.px(10)),
+                                margin: EdgeInsets.only(
+                                    left: Adapt.px(10), bottom: Adapt.px(10)),
                                 decoration: BoxDecoration(
                                     borderRadius:
-                                    BorderRadius.circular(Adapt.px(14)),
+                                        BorderRadius.circular(Adapt.px(14)),
                                     color: MyColors.colorPrimary),
                                 child: new Text(
                                   '认证自己',
@@ -259,10 +289,11 @@ class _personalPageState extends State<PersonalPage> {
                                 width: Adapt.px(140),
                                 height: Adapt.px(60),
                                 alignment: Alignment.center,
-                                margin: EdgeInsets.only(left: Adapt.px(10),bottom: Adapt.px(10)),
+                                margin: EdgeInsets.only(
+                                    left: Adapt.px(10), bottom: Adapt.px(10)),
                                 decoration: BoxDecoration(
                                     borderRadius:
-                                    BorderRadius.circular(Adapt.px(14)),
+                                        BorderRadius.circular(Adapt.px(14)),
                                     color: MyColors.colorPrimary),
                                 child: new Text(
                                   '制作课程',
@@ -272,7 +303,6 @@ class _personalPageState extends State<PersonalPage> {
                               onTap: () {},
                             ),
                           ),
-
                         ],
                       )
                     ],
@@ -282,9 +312,12 @@ class _personalPageState extends State<PersonalPage> {
                     alignment: Alignment.center,
                     child: UserIconWidget(
                       url: userInfo.isEmpty ? '' : userInfo['user_icon'],
-                      isAuthor: userInfo.isEmpty ? true : (userInfo['user_role'].substring(0, 1) == '1'),
-                      authority:userInfo.isEmpty ? true :
-                      (userInfo['user_role'].substring(0, 1) == '0' ||
+                      isAuthor: userInfo.isEmpty
+                          ? true
+                          : (userInfo['user_role'].substring(0, 1) == '1'),
+                      authority: userInfo.isEmpty
+                          ? true
+                          : (userInfo['user_role'].substring(0, 1) == '0' ||
                               userInfo['user_role'].substring(0, 1) == '1'),
                       size: Adapt.px(120),
                     ),
@@ -345,6 +378,8 @@ class _personalPageState extends State<PersonalPage> {
               ? SliverList(
                   delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
+                    GlobalKey firstKey = GlobalKey();
+                    GlobalKey secondKey = GlobalKey();
                     if (videoEmpty) {
                       return _emptyView;
                     } else {
@@ -359,8 +394,13 @@ class _personalPageState extends State<PersonalPage> {
                               _loadMoreVideoData();
                             });
                       } else {
-                        return _videoItemWidget(context, index);
+                        return _videoItemWidget(
+                          context,
+                          index,
+                          firstKey,
+                          secondKey
 
+                        );
                       }
                     }
                   },
@@ -410,7 +450,6 @@ class _personalPageState extends State<PersonalPage> {
     );
   }
 
-
   Future _loadUserInfoData() {
     return DataUtils.getUserInfo({'token': Application.spUtil.get('token')})
         .then((result) {
@@ -437,8 +476,7 @@ class _personalPageState extends State<PersonalPage> {
   }
 
   Future _loadUserInfoDataById() {
-    return DataUtils.getUserInfoById({'userid': widget.userId})
-        .then((result) {
+    return DataUtils.getUserInfoById({'userid': widget.userId}).then((result) {
       var data = result['data'];
       if (data.length == 0) {
         setState(() {
@@ -462,9 +500,11 @@ class _personalPageState extends State<PersonalPage> {
   }
 
   Future _loadVideoData() {
-    return DataUtils.getPersonalVideo(
-            {'currentpage': '0', 'userid': widget.isMyPage ? Application.spUtil.get('userid') : widget.userId})
-        .then((result) {
+    return DataUtils.getPersonalVideo({
+      'currentpage': '0',
+      'userid':
+          widget.isMyPage ? Application.spUtil.get('userid') : widget.userId
+    }).then((result) {
       var data = result['data'];
       if (data.length == 0) {
         setState(() {
@@ -490,7 +530,8 @@ class _personalPageState extends State<PersonalPage> {
 
   Future _loadArticleData() {
     return DataUtils.getPersonalArticle({
-      'userid': widget.isMyPage ? Application.spUtil.get('userid') : widget.userId,
+      'userid':
+          widget.isMyPage ? Application.spUtil.get('userid') : widget.userId,
       'currentpage': '0',
     }).then((result) {
       var data = result['data'];
@@ -520,7 +561,8 @@ class _personalPageState extends State<PersonalPage> {
     _loadStateVideo = BottomState.bottom_Loading;
     DataUtils.getPersonalVideo({
       'currentpage': _itemCountVideo.toString(),
-      'userid': widget.isMyPage ? Application.spUtil.get('userid') : widget.userId
+      'userid':
+          widget.isMyPage ? Application.spUtil.get('userid') : widget.userId
     }).then((result) {
       var data = result['data'];
       if (data.length == 0) {
@@ -544,7 +586,8 @@ class _personalPageState extends State<PersonalPage> {
   void _loadMoreArticleData() {
     _loadStateArticle = BottomState.bottom_Loading;
     DataUtils.getPersonalArticle({
-      'userid': widget.isMyPage ? Application.spUtil.get('userid') : widget.userId,
+      'userid':
+          widget.isMyPage ? Application.spUtil.get('userid') : widget.userId,
       'currentpage': _itemCountArticle.toString(),
     }).then((result) {
       var data = result['data'];
@@ -589,9 +632,11 @@ class _personalPageState extends State<PersonalPage> {
     );
   }
 
-  Widget _videoItemWidget(BuildContext context, int position) {
+  Widget _videoItemWidget(BuildContext context, int position,
+      GlobalKey firstKey, GlobalKey secondKey) {
     return new InkWell(
       onTap: () {
+        itemClick(secondKey, position);
         Application.router.navigateTo(context,
             '${Routes.videoDetailPage}?videoid=${Uri.encodeComponent(_videoItemList[position]['qa_id'])}',
             transition: TransitionType.fadeIn);
@@ -604,7 +649,7 @@ class _personalPageState extends State<PersonalPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             _headWidget(context, position),
-            _contentWidget(context, position),
+            _contentWidget(context, position,firstKey,secondKey),
             _footWidget(context, position),
           ],
         ),
@@ -753,7 +798,8 @@ class _personalPageState extends State<PersonalPage> {
     );
   }
 
-  Widget _contentWidget(BuildContext context, int position) {
+  Widget _contentWidget(BuildContext context, int position, GlobalKey firstKey,
+      GlobalKey secondKey) {
     return new Container(
       padding: EdgeInsets.all(Adapt.px(18)),
       child: new Column(
@@ -773,30 +819,61 @@ class _personalPageState extends State<PersonalPage> {
           ),
           new Offstage(
             offstage: _videoItemList[position]['qa_video'] == null,
-            child: new Chewie(
-              new VideoPlayerController.network(
-                  _videoItemList[position]['qa_video'] == null
-                      ? ''
-                      : _videoItemList[position]['qa_video']),
-              aspectRatio: 16 / 9,
-              autoPlay: false,
-              looping: true,
-              showControls: true,
-              placeholder: Container(
-                  width: double.infinity,
-                  child: Image.network(
-                    _videoItemList[position]['qa_video'] == null
-                        ? ''
-                        : _videoItemList[position]['qa_video_cover'],
-                    fit: BoxFit.cover,
-                  )),
-              autoInitialize: false,
-              materialProgressColors: new ChewieProgressColors(
-                  playedColor: MyColors.white,
-                  handleColor: MyColors.colorPrimary,
-                  backgroundColor: Colors.grey,
-                  bufferedColor: MyColors.pressColorPrimary),
-            ),
+            child: videolist[position].isSeeVideo
+                ? Container(
+                    key: firstKey,
+                    child: ChewiePage(
+                      placeholder: new Container(
+                          width: double.infinity,
+                          child: Image.network(
+                            _videoItemList[position]['qa_video'] == null
+                                ? ''
+                                : _videoItemList[position]['qa_video_cover'],
+                            fit: BoxFit.cover,
+                          )),
+                      videoPlayerController: VideoPlayerController.network(
+                          _videoItemList[position]['qa_video'] == null
+                              ? ''
+                              : _videoItemList[position]['qa_video']),
+                    ),
+                  )
+                : Container(
+                    key: secondKey,
+                    height: MediaQuery.of(context).size.width * 9 / 16,
+                    width: MediaQuery.of(context).size.width,
+                    margin: EdgeInsets.all(10),
+                    color: Colors.orange,
+                    child: Center(
+                      child: Text(
+                        'data',
+                        style: TextStyle(color: Colors.black, fontSize: 17),
+                      ),
+                    ),
+                  ),
+//            child: new Chewie(
+//              new VideoPlayerController.network(
+//                  _videoItemList[position]['qa_video'] == null
+//                      ? ''
+//                      : _videoItemList[position]['qa_video']),
+//              aspectRatio: 16 / 9,
+//              autoPlay: false,
+//              looping: true,
+//              showControls: true,
+//              placeholder: Container(
+//                  width: double.infinity,
+//                  child: Image.network(
+//                    _videoItemList[position]['qa_video'] == null
+//                        ? ''
+//                        : _videoItemList[position]['qa_video_cover'],
+//                    fit: BoxFit.cover,
+//                  )),
+//              autoInitialize: false,
+//              materialProgressColors: new ChewieProgressColors(
+//                  playedColor: MyColors.white,
+//                  handleColor: MyColors.colorPrimary,
+//                  backgroundColor: Colors.grey,
+//                  bufferedColor: MyColors.pressColorPrimary),
+//            ),
           ),
           new Offstage(
               offstage: _videoItemList[position]['qaData'] == null,
@@ -850,40 +927,91 @@ class _personalPageState extends State<PersonalPage> {
                             ? true
                             : _videoItemList[position]['qaData']['qa_video'] ==
                                 null,
-                        child: new Chewie(
-                          new VideoPlayerController.network(
-                              _videoItemList[position]['qaData'] == null
-                                  ? ''
-                                  : (_videoItemList[position]['qaData']
-                                              ['qa_video'] ==
-                                          null
-                                      ? ''
-                                      : _videoItemList[position]['qaData']
-                                          ['qa_video'])),
-                          aspectRatio: 16 / 9,
-                          autoPlay: false,
-                          looping: true,
-                          showControls: true,
-                          placeholder: Container(
-                              width: double.infinity,
-                              child: Image.network(
-                                _videoItemList[position]['qaData'] == null
-                                    ? ''
-                                    : (_videoItemList[position]['qaData']
-                                                ['qa_video_cover'] ==
-                                            null
-                                        ? ''
-                                        : _videoItemList[position]['qaData']
-                                            ['qa_video_cover']),
-                                fit: BoxFit.cover,
-                              )),
-                          autoInitialize: false,
-                          materialProgressColors: new ChewieProgressColors(
-                              playedColor: MyColors.white,
-                              handleColor: MyColors.colorPrimary,
-                              backgroundColor: Colors.grey,
-                              bufferedColor: MyColors.pressColorPrimary),
-                        ),
+
+                        child: videolist[position].isSeeVideo
+                            ? Container(
+                                key: firstKey,
+                                child: ChewiePage(
+                                  placeholder: Container(
+                                      width: double.infinity,
+                                      child: Image.network(
+                                        _videoItemList[position]['qaData'] ==
+                                                null
+                                            ? ''
+                                            : (_videoItemList[position]
+                                                            ['qaData']
+                                                        ['qa_video_cover'] ==
+                                                    null
+                                                ? ''
+                                                : _videoItemList[position]
+                                                        ['qaData']
+                                                    ['qa_video_cover']),
+                                        fit: BoxFit.cover,
+                                      )),
+                                  videoPlayerController:
+                                      VideoPlayerController.network(
+                                          _videoItemList[position]
+                                                      ['qaData'] ==
+                                                  null
+                                              ? ''
+                                              : (_videoItemList[position]
+                                                              ['qaData']
+                                                          ['qa_video'] ==
+                                                      null
+                                                  ? ''
+                                                  : _videoItemList[position]
+                                                      ['qaData']['qa_video'])),
+                                ),
+                              )
+                            : Container(
+                                key: secondKey,
+                                height:
+                                    MediaQuery.of(context).size.width * 9 / 16,
+                                width: MediaQuery.of(context).size.width,
+                                margin: EdgeInsets.all(10),
+                                color: Colors.orange,
+                                child: Center(
+                                  child: Text(
+                                    'data',
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 17),
+                                  ),
+                                ),
+                              ),
+//                        child: new Chewie(
+//                          new VideoPlayerController.network(
+//                              _videoItemList[position]['qaData'] == null
+//                                  ? ''
+//                                  : (_videoItemList[position]['qaData']
+//                                              ['qa_video'] ==
+//                                          null
+//                                      ? ''
+//                                      : _videoItemList[position]['qaData']
+//                                          ['qa_video'])),
+//                          aspectRatio: 16 / 9,
+//                          autoPlay: false,
+//                          looping: true,
+//                          showControls: true,
+//                          placeholder: Container(
+//                              width: double.infinity,
+//                              child: Image.network(
+//                                _videoItemList[position]['qaData'] == null
+//                                    ? ''
+//                                    : (_videoItemList[position]['qaData']
+//                                                ['qa_video_cover'] ==
+//                                            null
+//                                        ? ''
+//                                        : _videoItemList[position]['qaData']
+//                                            ['qa_video_cover']),
+//                                fit: BoxFit.cover,
+//                              )),
+//                          autoInitialize: false,
+//                          materialProgressColors: new ChewieProgressColors(
+//                              playedColor: MyColors.white,
+//                              handleColor: MyColors.colorPrimary,
+//                              backgroundColor: Colors.grey,
+//                              bufferedColor: MyColors.pressColorPrimary),
+//                        ),
                       ),
                     ],
                   ),
@@ -985,5 +1113,32 @@ class _personalPageState extends State<PersonalPage> {
             transition: TransitionType.fadeIn);
       },
     );
+  }
+
+  itemClick(GlobalKey secondKey, int position) {
+    RenderBox renderBox = secondKey.currentContext.findRenderObject();
+    var offset = renderBox.localToGlobal(Offset(0.0, renderBox.size.height));
+    setState(() {
+      //获取当前列表滚动的距离
+      itemHight = offset.dy;
+      clickPosition = position;
+    });
+    print('$itemHight');
+    for (int j = 0; j < videolist.length; j++) {
+      VideoBean videoBean = videolist[j];
+      setState(() {
+        videoBean.isSeeVideo = false;
+      });
+    }
+    //  bus.sendBroadcast('ChewieListItem');
+    VideoBean bean = videolist[position];
+    setState(() {
+      bean.isSeeVideo = true;
+      initPosition = _scrollController.position.pixels;
+      //屏幕的高度-视频所处的高度 +视频的高度
+      upHight = MediaQuery.of(context).size.height -
+          itemHight +
+          MediaQuery.of(context).size.width * 9 / 16;
+    });
   }
 }

@@ -7,6 +7,7 @@ import 'package:artepie/utils/data_utils.dart';
 import 'package:artepie/views/LoadStateLayout.dart';
 import 'package:artepie/views/listview_item_bottom.dart';
 import 'package:artepie/views/userIconWidget/UserIconWidget.dart';
+import 'package:artepie/views/videoPage/ChewiePage.dart';
 import 'package:artepie/widgets/MyChewie/chewie_player.dart';
 import 'package:artepie/widgets/MyChewie/chewie_progress_colors.dart';
 import 'package:common_utils/common_utils.dart';
@@ -63,36 +64,40 @@ class _videoDetailPageState extends State<VideoDetailPage> {
     // TODO: implement build
 
     return new Scaffold(
-        backgroundColor: MyColors.dividerColor,
-        body: new LoadStateLayout(
-          successWidget: _videoDetailPageWidget(context),
-          errorRetry: () {
-            setState(() {
-              _layoutState = LoadState.State_Loading;
-            });
-            _loadVideoDetailData();
-          },
-          state: _layoutState,
-        ),
-        floatingActionButton: InkWell(
-          child: new Stack(
-            children: <Widget>[
-              Container(
-                height: Adapt.px(90),
-                width: double.infinity,
-                color: Colors.white,
-                alignment: Alignment.centerLeft,
-                padding: EdgeInsets.only(left: Adapt.px(24)),
-                child: new Text('评论，请文明发言',style: new TextStyle(fontSize: Adapt.px(28),color: MyColors.fontColor),),
+      backgroundColor: MyColors.dividerColor,
+      body: new LoadStateLayout(
+        successWidget: _videoDetailPageWidget(context),
+        errorRetry: () {
+          setState(() {
+            _layoutState = LoadState.State_Loading;
+          });
+          _loadVideoDetailData();
+        },
+        state: _layoutState,
+      ),
+      floatingActionButton: InkWell(
+        child: new Stack(
+          children: <Widget>[
+            Container(
+              height: Adapt.px(90),
+              width: double.infinity,
+              color: Colors.white,
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.only(left: Adapt.px(24)),
+              child: new Text(
+                '评论，请文明发言',
+                style: new TextStyle(
+                    fontSize: Adapt.px(28), color: MyColors.fontColor),
               ),
-              Container(
-                height: Adapt.px(2),
-                color: MyColors.dividerColor,
-              )
-            ],
-          ),
-          onTap: (){},
+            ),
+            Container(
+              height: Adapt.px(2),
+              color: MyColors.dividerColor,
+            )
+          ],
         ),
+        onTap: () {},
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
@@ -205,39 +210,36 @@ class _videoDetailPageState extends State<VideoDetailPage> {
                 : _commentReplyItem(context, false, 1, position),
           ),
           Offstage(
-            offstage: !((_commentItemList[position]['replies']).length >= 3),
-            child: new InkWell(
-              child: Stack(
-                children: <Widget>[
-                  new Container(
-                    padding: EdgeInsets.only(
-                        left: Adapt.px(68),
-                        top: Adapt.px(18),
-                        bottom: Adapt.px(18)),
-                    child: new Text(
-                      '查看全部${(_commentItemList[position]['replies']).length}条评论',
-                      style: new TextStyle(
-                          fontSize: Adapt.px(26),
-                          color: MyColors.colorPrimary,
-                          fontWeight: FontWeight.bold),
+              offstage: !((_commentItemList[position]['replies']).length >= 3),
+              child: new InkWell(
+                child: Stack(
+                  children: <Widget>[
+                    new Container(
+                      padding: EdgeInsets.only(
+                          left: Adapt.px(68),
+                          top: Adapt.px(18),
+                          bottom: Adapt.px(18)),
+                      child: new Text(
+                        '查看全部${(_commentItemList[position]['replies']).length}条评论',
+                        style: new TextStyle(
+                            fontSize: Adapt.px(26),
+                            color: MyColors.colorPrimary,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
-                  ),
-                  new Container(
-                    margin: EdgeInsets.only(left: Adapt.px(68)),
-                    color: MyColors.dividerColor,
-                    height: Adapt.px(2),
-                  ),
-                ],
-              ),
-              onTap: (){
-                Application.router.navigateTo(context,
-                    '${Routes.commentDetailPage}?commentid=${Uri
-                        .encodeComponent(
-                        _commentItemList[position]['comment_q_id'])}',
-                    transition: TransitionType.fadeIn);
-              },
-            )
-          ),
+                    new Container(
+                      margin: EdgeInsets.only(left: Adapt.px(68)),
+                      color: MyColors.dividerColor,
+                      height: Adapt.px(2),
+                    ),
+                  ],
+                ),
+                onTap: () {
+                  Application.router.navigateTo(context,
+                      '${Routes.commentDetailPage}?commentid=${Uri.encodeComponent(_commentItemList[position]['comment_q_id'])}',
+                      transition: TransitionType.fadeIn);
+                },
+              )),
         ],
       ),
     );
@@ -423,13 +425,17 @@ class _videoDetailPageState extends State<VideoDetailPage> {
               child: UserIconWidget(
                 url: videoInfo.isEmpty ? '' : videoInfo['user_icon'],
                 size: Adapt.px(66),
-                authority:  videoInfo.isEmpty ? false : (videoInfo['user_role'].substring(0, 1) == '0' ||
-                        videoInfo['user_role'].substring(0, 1) == '1'
-                    ? true
-                    : false),
-                isAuthor:  videoInfo.isEmpty ? false : (videoInfo['user_role'].substring(0, 1) == '0'
+                authority: videoInfo.isEmpty
                     ? false
-                    : true),
+                    : (videoInfo['user_role'].substring(0, 1) == '0' ||
+                            videoInfo['user_role'].substring(0, 1) == '1'
+                        ? true
+                        : false),
+                isAuthor: videoInfo.isEmpty
+                    ? false
+                    : (videoInfo['user_role'].substring(0, 1) == '0'
+                        ? false
+                        : true),
               ),
             ),
             flex: 1,
@@ -453,10 +459,12 @@ class _videoDetailPageState extends State<VideoDetailPage> {
                         fontWeight: FontWeight.bold),
                   ),
                   new Text(
-                    videoInfo.isEmpty ? '' : (videoInfo['user_role'].substring(0, 1) == '0' ||
-                            videoInfo['user_role'].substring(0, 1) == '1'
-                        ? '认证：${videoInfo['user_role'].substring(1)}'
-                        : '${videoInfo['user_signal']}'),
+                    videoInfo.isEmpty
+                        ? ''
+                        : (videoInfo['user_role'].substring(0, 1) == '0' ||
+                                videoInfo['user_role'].substring(0, 1) == '1'
+                            ? '认证：${videoInfo['user_role'].substring(1)}'
+                            : '${videoInfo['user_signal']}'),
                     style: new TextStyle(
                       fontSize: Adapt.px(20),
                       color: MyColors.fontColor,
@@ -496,13 +504,27 @@ class _videoDetailPageState extends State<VideoDetailPage> {
             child: Row(
               children: <Widget>[
                 Icon(
-                  videoInfo.isEmpty ? Icons.favorite_border :  (videoInfo['liked'] ? Icons.favorite : Icons.favorite_border),
+                  videoInfo.isEmpty
+                      ? Icons.favorite_border
+                      : (videoInfo['liked']
+                          ? Icons.favorite
+                          : Icons.favorite_border),
                   size: Adapt.px(34),
-                  color: videoInfo.isEmpty ? MyColors.fontColor :  (videoInfo['liked'] ? MyColors.colorAccent : MyColors.fontColor),
+                  color: videoInfo.isEmpty
+                      ? MyColors.fontColor
+                      : (videoInfo['liked']
+                          ? MyColors.colorAccent
+                          : MyColors.fontColor),
                 ),
                 new Text(
                   videoInfo.isEmpty ? '' : videoInfo['qa_like'],
-                  style: new TextStyle(fontSize: Adapt.px(22),color: videoInfo.isEmpty ? MyColors.fontColor :  (videoInfo['liked'] ? MyColors.colorAccent : MyColors.fontColor)),
+                  style: new TextStyle(
+                      fontSize: Adapt.px(22),
+                      color: videoInfo.isEmpty
+                          ? MyColors.fontColor
+                          : (videoInfo['liked']
+                              ? MyColors.colorAccent
+                              : MyColors.fontColor)),
                 )
               ],
             ),
@@ -561,44 +583,60 @@ class _videoDetailPageState extends State<VideoDetailPage> {
             ),
           ),
           new Text(
-            '阅读：${ videoInfo.isEmpty ? '' : videoInfo['qa_view']}',
+            '阅读：${videoInfo.isEmpty ? '' : videoInfo['qa_view']}',
             style: new TextStyle(
                 fontSize: Adapt.px(22), color: MyColors.lowfontColor),
           ),
           new Offstage(
-            offstage:  videoInfo.isEmpty ? true : videoInfo['qa_video'] == null,
-            child: new Chewie(
-              new VideoPlayerController.network(
-                  videoInfo.isEmpty ? '' : (videoInfo['qa_video'] == null ? '' : videoInfo['qa_video'])),
-              aspectRatio: 16 / 9,
-              autoPlay: false,
-              looping: true,
-              showControls: true,
+            offstage: videoInfo.isEmpty ? true : videoInfo['qa_video'] == null,
+            child: new ChewiePage(
               placeholder: Container(
                   width: double.infinity,
                   child: Image.network(
-                    videoInfo.isEmpty ? '' : (videoInfo['qa_video'] == null
+                    videoInfo.isEmpty
                         ? ''
-                        : videoInfo['qa_video_cover']),
+                        : (videoInfo['qa_video'] == null
+                            ? ''
+                            : videoInfo['qa_video_cover']),
                     fit: BoxFit.cover,
                   )),
-              autoInitialize: false,
-              materialProgressColors: new ChewieProgressColors(
-                  playedColor: MyColors.white,
-                  handleColor: MyColors.colorPrimary,
-                  backgroundColor: Colors.grey,
-                  bufferedColor: MyColors.pressColorPrimary),
+
+              videoPlayerController: new VideoPlayerController.network(
+                  videoInfo.isEmpty
+                      ? ''
+                      : (videoInfo['qa_video'] == null
+                          ? ''
+                          : videoInfo['qa_video'])),
+//              aspectRatio: 16 / 9,
+//              autoPlay: false,
+//              looping: true,
+//              showControls: true,
+//              placeholder: Container(
+//                  width: double.infinity,
+//                  child: Image.network(
+//                    videoInfo.isEmpty ? '' : (videoInfo['qa_video'] == null
+//                        ? ''
+//                        : videoInfo['qa_video_cover']),
+//                    fit: BoxFit.cover,
+//                  )),
+//              autoInitialize: false,
+//              materialProgressColors: new ChewieProgressColors(
+//                  playedColor: MyColors.white,
+//                  handleColor: MyColors.colorPrimary,
+//                  backgroundColor: Colors.grey,
+//                  bufferedColor: MyColors.pressColorPrimary),
             ),
           ),
           new Offstage(
-              offstage: videoInfo.isEmpty ? true : (videoInfo['qaData'] == null),
+              offstage:
+                  videoInfo.isEmpty ? true : (videoInfo['qaData'] == null),
               child: InkWell(
                 onTap: () {
-                  Application.spUtil.get('login') ? Application.router.navigateTo(context,
-                      '${Routes.videoDetailPage}?videoid=${Uri
-                          .encodeComponent(
-                          videoInfo.isEmpty ? '' : videoInfo['qaData']['qa_id'])}',
-                      transition: TransitionType.fadeIn) : CommonUtils.toLogin(context);
+                  Application.spUtil.get('login')
+                      ? Application.router.navigateTo(context,
+                          '${Routes.videoDetailPage}?videoid=${Uri.encodeComponent(videoInfo.isEmpty ? '' : videoInfo['qaData']['qa_id'])}',
+                          transition: TransitionType.fadeIn)
+                      : CommonUtils.toLogin(context);
                 },
                 child: Container(
                   alignment: Alignment.centerLeft,
@@ -619,16 +657,16 @@ class _videoDetailPageState extends State<VideoDetailPage> {
                             TextSpan(
                                 text: videoInfo.isEmpty
                                     ? ''
-                                    : '@${videoInfo['qaData'] == null
-                                    ? ''
-                                    : videoInfo['qaData']['user_name']}  ',
+                                    : '@${videoInfo['qaData'] == null ? '' : videoInfo['qaData']['user_name']}  ',
                                 style: TextStyle(
                                     fontSize: Adapt.px(28),
                                     color: MyColors.blue)),
                             TextSpan(
-                                text: videoInfo.isEmpty ? '' : (videoInfo['qaData'] == null
+                                text: videoInfo.isEmpty
                                     ? ''
-                                    : videoInfo['qaData']['qa_content']),
+                                    : (videoInfo['qaData'] == null
+                                        ? ''
+                                        : videoInfo['qaData']['qa_content']),
                                 style: TextStyle(
                                     fontSize: Adapt.px(28),
                                     color: MyColors.fontColor)),
@@ -643,38 +681,62 @@ class _videoDetailPageState extends State<VideoDetailPage> {
                         ),
                       ),
                       new Offstage(
-                        offstage: videoInfo.isEmpty ? true : (videoInfo['qaData'] == null
+                        offstage: videoInfo.isEmpty
                             ? true
-                            : videoInfo['qaData']['qa_video'] == null),
-                        child: new Chewie(
-                          new VideoPlayerController.network(
-                              videoInfo.isEmpty ? '' : (videoInfo['qaData'] == null
-                                  ? ''
-                                  : (videoInfo['qaData']['qa_video'] == null
-                                      ? ''
-                                      : videoInfo['qaData']['qa_video']))),
-                          aspectRatio: 16 / 9,
-                          autoPlay: false,
-                          looping: true,
-                          showControls: true,
+                            : (videoInfo['qaData'] == null
+                                ? true
+                                : videoInfo['qaData']['qa_video'] == null),
+                        child: new ChewiePage(
                           placeholder: Container(
                               width: double.infinity,
                               child: Image.network(
-                                videoInfo.isEmpty ? '' : (videoInfo['qaData'] == null
+                                videoInfo.isEmpty
                                     ? ''
-                                    : (videoInfo['qaData']['qa_video_cover'] ==
-                                            null
+                                    : (videoInfo['qaData'] == null
                                         ? ''
-                                        : videoInfo['qaData']
-                                            ['qa_video_cover'])),
+                                        : (videoInfo['qaData']
+                                                    ['qa_video_cover'] ==
+                                                null
+                                            ? ''
+                                            : videoInfo['qaData']
+                                                ['qa_video_cover'])),
                                 fit: BoxFit.cover,
                               )),
-                          autoInitialize: false,
-                          materialProgressColors: new ChewieProgressColors(
-                              playedColor: MyColors.white,
-                              handleColor: MyColors.colorPrimary,
-                              backgroundColor: Colors.grey,
-                              bufferedColor: MyColors.pressColorPrimary),
+
+                          videoPlayerController:
+                              new VideoPlayerController.network(videoInfo
+                                      .isEmpty
+                                  ? ''
+                                  : (videoInfo['qaData'] == null
+                                      ? ''
+                                      : (videoInfo['qaData']['qa_video'] == null
+                                          ? ''
+                                          : videoInfo['qaData']['qa_video']))),
+//                          aspectRatio: 16 / 9,
+//                          autoPlay: false,
+//                          looping: true,
+//                          showControls: true,
+//                          placeholder: Container(
+//                              width: double.infinity,
+//                              child: Image.network(
+//                                videoInfo.isEmpty
+//                                    ? ''
+//                                    : (videoInfo['qaData'] == null
+//                                        ? ''
+//                                        : (videoInfo['qaData']
+//                                                    ['qa_video_cover'] ==
+//                                                null
+//                                            ? ''
+//                                            : videoInfo['qaData']
+//                                                ['qa_video_cover'])),
+//                                fit: BoxFit.cover,
+//                              )),
+//                          autoInitialize: false,
+//                          materialProgressColors: new ChewieProgressColors(
+//                              playedColor: MyColors.white,
+//                              handleColor: MyColors.colorPrimary,
+//                              backgroundColor: Colors.grey,
+//                              bufferedColor: MyColors.pressColorPrimary),
                         ),
                       ),
                     ],
@@ -760,11 +822,13 @@ class _videoDetailPageState extends State<VideoDetailPage> {
   }
 
   Future _addLikeVideoData() {
-    return DataUtils.addLikeVideo({'token': Application.spUtil.get('token'),'qaid' : videoInfo['qa_id']})
-        .then((result) {
-
+    return DataUtils.addLikeVideo({
+      'token': Application.spUtil.get('token'),
+      'qaid': videoInfo['qa_id']
+    }).then((result) {
       setState(() {
-        videoInfo['qa_like'] = (double.parse(videoInfo['qa_like']) + 1).toStringAsFixed(0);
+        videoInfo['qa_like'] =
+            (double.parse(videoInfo['qa_like']) + 1).toStringAsFixed(0);
         videoInfo['liked'] = !videoInfo['liked'];
       });
       Toast.show('已点赞', context,
@@ -776,12 +840,13 @@ class _videoDetailPageState extends State<VideoDetailPage> {
   }
 
   Future _removeLikeVideoData() {
-
-
-    return DataUtils.removeLikeVideo({'token': Application.spUtil.get('token'),'qaid' : videoInfo['qa_id']})
-        .then((result) {
+    return DataUtils.removeLikeVideo({
+      'token': Application.spUtil.get('token'),
+      'qaid': videoInfo['qa_id']
+    }).then((result) {
       setState(() {
-        videoInfo['qa_like'] = (double.parse(videoInfo['qa_like']) - 1).toStringAsFixed(0);
+        videoInfo['qa_like'] =
+            (double.parse(videoInfo['qa_like']) - 1).toStringAsFixed(0);
         videoInfo['liked'] = !videoInfo['liked'];
       });
       Toast.show('已取消赞', context,

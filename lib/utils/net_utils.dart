@@ -68,7 +68,7 @@ class NetUtils{
     dio.options.baseUrl = Api.Base_URL;
     dio.options.connectTimeout = 5000;
     dio.options.receiveTimeout = 3000;
-    dio.interceptors.add(LogInterceptor(responseBody: true)); //是否开启请求日志
+    dio.interceptors.add(LogInterceptor(responseBody: false)); //是否开启请求日志
     dio.interceptors.add(CookieManager(CookieJar()));//缓存相关类，具体设置见https://github.com/flutterchina/cookie_jar
   }
 
