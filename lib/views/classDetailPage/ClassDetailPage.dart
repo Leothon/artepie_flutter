@@ -9,6 +9,7 @@ import 'package:artepie/views/userIconWidget/UserIconWidget.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
 
 class ClassDetailPage extends StatefulWidget {
   final String _classId;
@@ -113,9 +114,9 @@ class _classDetailPageState extends State<ClassDetailPage> {
                 onPressed: () {
                   //TODO 收藏课程
 
-                  setState(() {
-                    _teaClasss['isfav'] = !_teaClasss['isfav'];
-                  });
+                  _teaClasss['isfav'] ? _unFavClass() : _favClass();
+
+
                 },
               ),
               new IconButton(
@@ -484,6 +485,36 @@ class _classDetailPageState extends State<ClassDetailPage> {
       setState(() {
         _loadState = BottomState.bottom_Error;
       });
+    });
+  }
+
+  void _favClass() {
+
+    DataUtils.favClass({
+      'token': Application.spUtil.get('token'),
+      'classid': widget._classId,
+    }).then((result) {
+      Toast.show('已收藏该课程', context,duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
+      setState(() {
+        _teaClasss['isfav'] = true;
+      });
+    }).catchError((onError) {
+      Toast.show('收藏该课程失败', context,duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
+    });
+  }
+
+  void _unFavClass() {
+
+    DataUtils.unFav({
+      'token': Application.spUtil.get('token'),
+      'classid': widget._classId,
+    }).then((result) {
+      Toast.show('已取消收藏该课程', context,duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
+      setState(() {
+        _teaClasss['isfav'] = false;
+      });
+    }).catchError((onError) {
+      Toast.show('取消收藏失败', context,duration: Toast.LENGTH_LONG, gravity: Toast.CENTER);
     });
   }
 }

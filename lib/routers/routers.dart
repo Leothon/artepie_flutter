@@ -13,6 +13,16 @@ class Routes{
   static String articleDetailPage = "/articleDetailPage";
   static String videoDetailPage = "/videoDetailPage";
   static String personalPage = "/personalPage";
+  static String settingsPage = "/settingsPage";
+  static String commentDetailPage = "/commentDetailPage";
+  static String noticePage = "/noticePage";
+  static String favPage = "/favPage";
+  static String buyPage = "/buyPage";
+  static String orderPage = "/orderPage";
+  static String webPage = "/webPage";
+  static String editPersonalPage = "/editPersonalPage";
+  static String feedbackPage = "/feedbackPage";
+
 
 
   static void configureRoutes(Router router){
@@ -22,9 +32,18 @@ class Routes{
     router.define(teacherPage, handler: teacherPageHandler);
     router.define(typePage, handler: typePageHandler);
     router.define(classDetailPage, handler: classDetailPageHandler);
-    router.define(addArticlePage, handler: addArticlePageHandler);
+//    router.define(addArticlePage, handler: addArticlePageHandler);
     router.define(articleDetailPage, handler: articleDetailPageHandler);
     router.define(videoDetailPage, handler: videoDetailPageHandler);
     router.define(personalPage, handler: personalPageHandler);
+    router.define(settingsPage, handler: settingsPageHandler);
+    router.define(commentDetailPage, handler: commentDetailPageHandler);
+    router.define(noticePage, handler: noticePageHandler);
+    router.define(favPage, handler: favPageHandler);
+    router.define(buyPage, handler: buyPageHandler);
+    router.define(orderPage, handler: orderPageHandler);
+    router.define(webPage, handler: webPageHandler);
+    router.define(editPersonalPage, handler: editPersonalPageHandler);
+    router.define(feedbackPage, handler: feedbackPageHandler);
   }
 }

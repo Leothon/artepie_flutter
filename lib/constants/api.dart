@@ -1,11 +1,21 @@
 class Api{
   static const String Base_URL = 'https://www.artepie.com/artepie/';
 
+
+  //获取OSS Token
+  static final String URL_TOKEN= "http://www.artepie.com:7080";
+
+  //获取OS上传图片服务器地址
+  static final String URL_UPLOAD_IMAGE_OSS= "http://artepie.oss-cn-zhangjiakou.aliyuncs.com";
+
+
+
   //使用账号密码登录
   static const String usePasswordLogin = Base_URL + 'usepasswordlogin';
 
 
   static const String getUserInfo = Base_URL + 'getuserinfo';
+  static const String getUserInfoById = Base_URL + 'getuserinfobyid';
 
 
   static const String getHomeData = Base_URL + 'gethomedata';
@@ -17,6 +27,9 @@ class Api{
   static const String getArticleMoreData = Base_URL + 'getmorearticledata';
 
   static const String getVideoData = Base_URL + 'getquestion';
+
+  static const String addLikeVideo = Base_URL + 'addlikeqa';
+  static const String removeLikeVideo = Base_URL + 'removelikeqa';
 
   static const String getVideoMoreData = Base_URL + 'getmorequestion';
 
@@ -46,4 +59,31 @@ class Api{
   static const String getPersonalVideo = Base_URL + 'getmorequestionbyid';
 
   static const String getPersonalArticle = Base_URL + 'getmorearticledatabyid';
+
+
+  static const String getCommentInfo = Base_URL + 'getcommentdetail';
+
+  static const String getCommentReply = Base_URL + 'getmorecommentdetail';
+
+  static const String getNotice = Base_URL + 'getmorenoticeinfo';
+
+  static const String getFav = Base_URL + 'getmorefavclassbyuid';
+
+  static const String unFav = Base_URL + 'unfavclass';
+  static const String favClass = Base_URL + 'favclass';
+
+  static const String getBuyClass = Base_URL + 'getmorebuyclass';
+
+  static const String getOrder = Base_URL + 'getmoreorderhis';
+
+  static const String sendFeedback = Base_URL + 'sendfeedback';
+
+  static const String updateUserInfo = Base_URL + 'updateuserinfo';
+
+  static const String deleteArticle = Base_URL + 'deletearticle';
+
+  static const String likeArticle = Base_URL + 'addlikearticle';
+  static const String unlikeArticle = Base_URL + 'removelikearticle';
+
+  static const String getArticleComment = Base_URL + 'getarticlecommentmore';
 }

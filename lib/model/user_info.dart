@@ -60,4 +60,9 @@ class UserInformation {
   String toString() {
     return 'ID:$user_id,名字:$user_name,头像:$user_icon,生日:$user_birth,性别:$user_sex,密码:$user_password,令牌:$user_token,状态:$user_status,注册时间:$user_register_time,注册IP:$user_register_ip,最后一次登录时间:$user_lastlogin_time,手机号码:$user_phone,用户身份:$user_role,用户余额:$user_balance,艺币:$user_art_coin';
   }
+
+  String toJson(){
+    return '{"user_id":"$user_id","user_name":"$user_name","user_icon":"$user_icon","user_birth":"$user_birth","user_sex":"$user_sex","user_password":"$user_password","user_token":"$user_token","user_status":"$user_status","user_register_time":"$user_register_time","user_register_ip":"$user_register_ip","user_lastlogin_time":"$user_lastlogin_time","user_phone":"$user_phone","user_role":"$user_role","user_balance":"$user_balance","user_art_coin":"$user_art_coin"}';
+
+  }
 }

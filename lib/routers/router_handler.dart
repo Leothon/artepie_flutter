@@ -1,13 +1,23 @@
 import 'package:artepie/views/ArticleDetailPage/articleDetailPage.dart';
 import 'package:artepie/views/Home.dart';
+import 'package:artepie/views/WebPage/WebPage.dart';
 import 'package:artepie/views/addArticlePage/addArticlePage.dart';
 import 'package:artepie/views/artepieInfoPage/artepieInfoPage.dart';
+import 'package:artepie/views/buyPage/buyPage.dart';
 import 'package:artepie/views/classDetailPage/ClassDetailPage.dart';
+import 'package:artepie/views/editPersonalPage/EditPersonalPage.dart';
+import 'package:artepie/views/favPage/FavPage.dart';
 import 'package:artepie/views/loginPage/LoginPage.dart';
+import 'package:artepie/views/noticePage/NoticePage.dart';
+import 'package:artepie/views/orderPage/OrderPage.dart';
 import 'package:artepie/views/personalPage/PersonalPage.dart';
+import 'package:artepie/views/settingsPage/FeedbackPage.dart';
+import 'package:artepie/views/settingsPage/SettingsPage.dart';
 import 'package:artepie/views/teacherPage/teacherPage.dart';
 import 'package:artepie/views/typePage/TypePage.dart';
+import 'package:artepie/views/videoDetailPage/commentDetailPage.dart';
 import 'package:artepie/views/videoDetailPage/videoDetailPage.dart';
+import 'package:common_utils/common_utils.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:artepie/model/user_info.dart';
@@ -53,11 +63,11 @@ var classDetailPageHandler = new Handler(
 );
 
 
-var addArticlePageHandler = new Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return new addAriclePage();
-  },
-);
+//var addArticlePageHandler = new Handler(
+//  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+//    return new addAriclePage();
+//  },
+//);
 
 
 var articleDetailPageHandler = new Handler(
@@ -78,6 +88,67 @@ var videoDetailPageHandler = new Handler(
 
 var personalPageHandler = new Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return new PersonalPage();
+    bool isMyPage = params['info'].first == 'true' ? true : false;
+    String userId = params['userid'].first;
+    return new PersonalPage(isMyPage,userId);
+  },
+);
+
+
+var settingsPageHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return new SettingsPage();
+  },
+);
+
+
+var commentDetailPageHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    String _commentid = params['commentid'].first;
+    return new CommentDetailPage(_commentid);
+  },
+);
+
+var noticePageHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return new NoticePage();
+  },
+);
+
+var favPageHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return new FavPage();
+  },
+);
+
+
+var buyPageHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return new BuyPage();
+  },
+);
+
+var orderPageHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return new OrderPage();
+  },
+);
+
+var webPageHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    String _url = params['url'].first;
+    return new WebPage( _url);
+  },
+);
+
+var editPersonalPageHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return new EditPersonalPage();
+  },
+);
+
+var feedbackPageHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    return new FeedbackPage();
   },
 );

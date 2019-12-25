@@ -1,3 +1,5 @@
+import 'package:artepie/views/loginPage/LoginPage.dart';
+import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 
 class CommonUtils {
@@ -61,4 +63,60 @@ class CommonUtils {
     double age = days / 365;
     return age.toStringAsFixed(0);
   }
+
+  ///格式化文件大小
+  static renderSize(double value) {
+    if (null == value) {
+      return 0;
+    }
+    List<String> unitArr = List()
+      ..add('B')
+      ..add('K')
+      ..add('M')
+      ..add('G');
+    int index = 0;
+    while (value > 1024) {
+      index++;
+      value = value / 1024;
+    }
+    String size = value.toStringAsFixed(2);
+    return size + unitArr[index];
+  }
+
+  static toLogin(BuildContext context){
+    showDialog<Null>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return new AlertDialog(
+            title: new Text('提醒'),
+            content: new SingleChildScrollView(
+              child: new ListBody(
+                children: <Widget>[
+                  new Text('您尚未登录，请登录'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+
+              new FlatButton(
+                child: new Text('取消'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              new FlatButton(
+                child: new Text('登录'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                          (route) => route == null);
+                },
+              ),
+            ],
+          );
+        });
+  }
+
 }

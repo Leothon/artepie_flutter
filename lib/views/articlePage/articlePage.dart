@@ -1,3 +1,4 @@
+import 'package:artepie/MessageEvent/pageDataUpdate.dart';
 import 'package:artepie/model/user_info.dart';
 import 'package:artepie/resource/MyColors.dart';
 import 'package:artepie/routers/Application.dart';
@@ -39,6 +40,12 @@ class _MyArticlePage extends State<ArticlePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    Application.event.on<dataUpdate>().listen((event) {
+      if(event.info == 'article'){
+        _loadArticleData();
+      }
+
+    });
     _loadArticleData();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==

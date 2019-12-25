@@ -1,10 +1,12 @@
 import 'package:artepie/model/user_info.dart';
 import 'package:artepie/resource/MyColors.dart';
 import 'package:artepie/routers/Application.dart';
+import 'package:artepie/routers/routers.dart';
 import 'package:artepie/utils/Adapt.dart';
 import 'package:artepie/utils/CommonUtils.dart';
 import 'package:artepie/utils/data_utils.dart';
 import 'package:artepie/views/LoadStateLayout.dart';
+import 'package:artepie/views/loginPage/LoginPage.dart';
 import 'package:artepie/views/userIconWidget/UserIconWidget.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:fluro/fluro.dart';
@@ -97,7 +99,9 @@ class _MyAboutPageState extends State<AboutPage> {
                         ),
                         '我的钱包',
                         true),
-                    onTap: () {},
+                    onTap: () {
+                      Application.spUtil.get('login') ? '' : CommonUtils.toLogin(context);
+                    },
                   ),
                 ),
               ),
@@ -114,7 +118,11 @@ class _MyAboutPageState extends State<AboutPage> {
                         ),
                         '消息提醒',
                         true),
-                    onTap: () {},
+                    onTap: () {
+                      Application.spUtil.get('login') ? Application.router.navigateTo(
+                          context, "/noticePage",
+                          transition: TransitionType.material) : CommonUtils.toLogin(context);
+                    },
                   ),
                 ),
               ),
@@ -131,7 +139,11 @@ class _MyAboutPageState extends State<AboutPage> {
                         ),
                         '设置',
                         true),
-                    onTap: () {},
+                    onTap: () {
+                      Application.router.navigateTo(
+                          context, "/settingsPage",
+                          transition: TransitionType.material);
+                    },
                   ),
                 ),
               ),
@@ -261,9 +273,9 @@ class _MyAboutPageState extends State<AboutPage> {
               ),
               onTap: () {
 
-                Application.router.navigateTo(
-                    context, "/personalPage",
-                    transition: TransitionType.material);
+                Application.spUtil.get('login') ? Application.router.navigateTo(context,
+                    '${Routes.personalPage}?info=true&userid=00',
+                    transition: TransitionType.fadeIn) : CommonUtils.toLogin(context);
               },
             ),
             flex: 1,
@@ -281,7 +293,11 @@ class _MyAboutPageState extends State<AboutPage> {
                         height: Adapt.px(60),
                       ),
                       '我的收藏'),
-                  onTap: () {},
+                  onTap: () {
+                    Application.spUtil.get('login') ? Application.router.navigateTo(context,
+                        '${Routes.favPage}',
+                        transition: TransitionType.fadeIn) : CommonUtils.toLogin(context);
+                  },
                 ),
                 InkWell(
                   child: _infoChildIcon(
@@ -292,7 +308,11 @@ class _MyAboutPageState extends State<AboutPage> {
                         height: Adapt.px(60),
                       ),
                       '我的订单'),
-                  onTap: () {},
+                  onTap: () {
+                    Application.spUtil.get('login') ? Application.spUtil.get('login') ?  Application.spUtil.get('login') ? Application.router.navigateTo(context,
+                        '${Routes.orderPage}',
+                        transition: TransitionType.fadeIn) : CommonUtils.toLogin(context) : CommonUtils.toLogin(context) : CommonUtils.toLogin(context);
+                  },
                 ),
                 InkWell(
                   child: _infoChildIcon(
@@ -303,7 +323,11 @@ class _MyAboutPageState extends State<AboutPage> {
                         height: Adapt.px(60),
                       ),
                       '我的订阅'),
-                  onTap: () {},
+                  onTap: () {
+                    Application.spUtil.get('login') ?  Application.spUtil.get('login') ? Application.router.navigateTo(context,
+                        '${Routes.buyPage}',
+                        transition: TransitionType.fadeIn) : CommonUtils.toLogin(context) : CommonUtils.toLogin(context);
+                  },
                 ),
               ],
             ),
@@ -339,7 +363,7 @@ class _MyAboutPageState extends State<AboutPage> {
       child: new Stack(
         children: <Widget>[
           new Container(
-            height: Adapt.px(90),
+            height: Adapt.px(100),
             child: new Row(
               children: <Widget>[
                 Expanded(
