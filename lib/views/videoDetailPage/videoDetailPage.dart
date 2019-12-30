@@ -7,7 +7,6 @@ import 'package:artepie/utils/data_utils.dart';
 import 'package:artepie/views/LoadStateLayout.dart';
 import 'package:artepie/views/listview_item_bottom.dart';
 import 'package:artepie/views/userIconWidget/UserIconWidget.dart';
-import 'package:artepie/views/videoPage/ChewiePage.dart';
 import 'package:artepie/widgets/MyChewie/chewie_player.dart';
 import 'package:artepie/widgets/MyChewie/chewie_progress_colors.dart';
 import 'package:common_utils/common_utils.dart';
@@ -589,7 +588,16 @@ class _videoDetailPageState extends State<VideoDetailPage> {
           ),
           new Offstage(
             offstage: videoInfo.isEmpty ? true : videoInfo['qa_video'] == null,
-            child: new ChewiePage(
+            child: new Chewie(
+              new VideoPlayerController.network(videoInfo.isEmpty
+                  ? ''
+                  : (videoInfo['qa_video'] == null
+                      ? ''
+                      : videoInfo['qa_video'])),
+              aspectRatio: 16 / 9,
+              autoPlay: false,
+              looping: true,
+              showControls: true,
               placeholder: Container(
                   width: double.infinity,
                   child: Image.network(
@@ -600,31 +608,12 @@ class _videoDetailPageState extends State<VideoDetailPage> {
                             : videoInfo['qa_video_cover']),
                     fit: BoxFit.cover,
                   )),
-
-              videoPlayerController: new VideoPlayerController.network(
-                  videoInfo.isEmpty
-                      ? ''
-                      : (videoInfo['qa_video'] == null
-                          ? ''
-                          : videoInfo['qa_video'])),
-//              aspectRatio: 16 / 9,
-//              autoPlay: false,
-//              looping: true,
-//              showControls: true,
-//              placeholder: Container(
-//                  width: double.infinity,
-//                  child: Image.network(
-//                    videoInfo.isEmpty ? '' : (videoInfo['qa_video'] == null
-//                        ? ''
-//                        : videoInfo['qa_video_cover']),
-//                    fit: BoxFit.cover,
-//                  )),
-//              autoInitialize: false,
-//              materialProgressColors: new ChewieProgressColors(
-//                  playedColor: MyColors.white,
-//                  handleColor: MyColors.colorPrimary,
-//                  backgroundColor: Colors.grey,
-//                  bufferedColor: MyColors.pressColorPrimary),
+              autoInitialize: false,
+              materialProgressColors: new ChewieProgressColors(
+                  playedColor: MyColors.white,
+                  handleColor: MyColors.colorPrimary,
+                  backgroundColor: Colors.grey,
+                  bufferedColor: MyColors.pressColorPrimary),
             ),
           ),
           new Offstage(
@@ -686,7 +675,18 @@ class _videoDetailPageState extends State<VideoDetailPage> {
                             : (videoInfo['qaData'] == null
                                 ? true
                                 : videoInfo['qaData']['qa_video'] == null),
-                        child: new ChewiePage(
+                        child: new Chewie(
+                          new VideoPlayerController.network(videoInfo.isEmpty
+                              ? ''
+                              : (videoInfo['qaData'] == null
+                                  ? ''
+                                  : (videoInfo['qaData']['qa_video'] == null
+                                      ? ''
+                                      : videoInfo['qaData']['qa_video']))),
+                          aspectRatio: 16 / 9,
+                          autoPlay: false,
+                          looping: true,
+                          showControls: true,
                           placeholder: Container(
                               width: double.infinity,
                               child: Image.network(
@@ -702,41 +702,12 @@ class _videoDetailPageState extends State<VideoDetailPage> {
                                                 ['qa_video_cover'])),
                                 fit: BoxFit.cover,
                               )),
-
-                          videoPlayerController:
-                              new VideoPlayerController.network(videoInfo
-                                      .isEmpty
-                                  ? ''
-                                  : (videoInfo['qaData'] == null
-                                      ? ''
-                                      : (videoInfo['qaData']['qa_video'] == null
-                                          ? ''
-                                          : videoInfo['qaData']['qa_video']))),
-//                          aspectRatio: 16 / 9,
-//                          autoPlay: false,
-//                          looping: true,
-//                          showControls: true,
-//                          placeholder: Container(
-//                              width: double.infinity,
-//                              child: Image.network(
-//                                videoInfo.isEmpty
-//                                    ? ''
-//                                    : (videoInfo['qaData'] == null
-//                                        ? ''
-//                                        : (videoInfo['qaData']
-//                                                    ['qa_video_cover'] ==
-//                                                null
-//                                            ? ''
-//                                            : videoInfo['qaData']
-//                                                ['qa_video_cover'])),
-//                                fit: BoxFit.cover,
-//                              )),
-//                          autoInitialize: false,
-//                          materialProgressColors: new ChewieProgressColors(
-//                              playedColor: MyColors.white,
-//                              handleColor: MyColors.colorPrimary,
-//                              backgroundColor: Colors.grey,
-//                              bufferedColor: MyColors.pressColorPrimary),
+                          autoInitialize: false,
+                          materialProgressColors: new ChewieProgressColors(
+                              playedColor: MyColors.white,
+                              handleColor: MyColors.colorPrimary,
+                              backgroundColor: Colors.grey,
+                              bufferedColor: MyColors.pressColorPrimary),
                         ),
                       ),
                     ],

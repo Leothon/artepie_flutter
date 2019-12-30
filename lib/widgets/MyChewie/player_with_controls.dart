@@ -1,49 +1,78 @@
+import 'dart:async';
 import 'dart:ui';
 
-import 'package:artepie/widgets/MyChewie/chewie_player.dart';
+
+import 'package:artepie/widgets/MyChewie/chewie_progress_colors.dart';
 import 'package:artepie/widgets/MyChewie/cupertino_controls.dart';
 import 'package:artepie/widgets/MyChewie/material_controls.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-class PlayerWithControls extends StatelessWidget {
-  PlayerWithControls({Key key}) : super(key: key);
+class PlayerWithControls extends StatefulWidget {
+  final VideoPlayerController controller;
+  final Future<dynamic> Function() onExpandCollapse;
+  final bool fullScreen;
+  final ChewieProgressColors cupertinoProgressColors;
+  final ChewieProgressColors materialProgressColors;
+  final Widget placeholder;
+  final double aspectRatio;
+  final bool autoPlay;
+  final bool showControls;
+
+  final String title;
+  PlayerWithControls({
+    Key key,
+    @required this.controller,
+    @required this.onExpandCollapse,
+    @required this.aspectRatio,
+    this.fullScreen = false,
+    this.showControls = true,
+    this.cupertinoProgressColors,
+    this.materialProgressColors,
+    this.placeholder,
+    this.autoPlay,
+    this.title = '',
+  }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final ChewieController chewieController = ChewieController.of(context);
+  State createState() {
+    return new _VideoPlayerWithControlsState();
+  }
+}
 
-    return Center(
-      child: Container(
+class _VideoPlayerWithControlsState extends State<PlayerWithControls> {
+  @override
+  Widget build(BuildContext context) {
+    final controller = widget.controller;
+
+    return new Center(
+      child: new Container(
         width: MediaQuery.of(context).size.width,
-        child: AspectRatio(
-          aspectRatio:
-              chewieController.aspectRatio ?? _calculateAspectRatio(context),
-          child: _buildPlayerWithControls(chewieController, context),
-        ),
+        child: new AspectRatio(
+                aspectRatio: widget.aspectRatio,
+                child: _buildPlayerWithControls(controller, context),
+              ),
       ),
     );
   }
 
   Container _buildPlayerWithControls(
-      ChewieController chewieController, BuildContext context) {
-    return Container(
-      child: Stack(
+      VideoPlayerController controller, BuildContext context) {
+    return new Container(
+      child: new Stack(
         children: <Widget>[
-          chewieController.placeholder ?? Container(),
-          Center(
-            child: Hero(
-              tag: chewieController.videoPlayerController,
-              child: AspectRatio(
-                aspectRatio: chewieController.aspectRatio ??
-                    _calculateAspectRatio(context),
-                child: VideoPlayer(chewieController.videoPlayerController),
-              ),
+          widget.placeholder ?? new Container(),
+          new Center(
+            child: new Hero(
+              tag: controller,
+              child: new AspectRatio(
+                      aspectRatio: widget.aspectRatio,
+                      child: new VideoPlayer(controller),
+                    ),
             ),
           ),
-          chewieController.overlay ?? Container(),
-          _buildControls(context, chewieController),
+          _buildControls(context, controller),
         ],
       ),
     );
@@ -51,25 +80,69 @@ class PlayerWithControls extends StatelessWidget {
 
   Widget _buildControls(
     BuildContext context,
-    ChewieController chewieController,
+    VideoPlayerController controller,
   ) {
-    return chewieController.showControls
-        ? chewieController.customControls != null
-            ? chewieController.customControls
-            : Theme.of(context).platform == TargetPlatform.android
-                ? MaterialControls()
-                : CupertinoControls(
-                    backgroundColor: Color.fromRGBO(41, 41, 41, 0.7),
-                    iconColor: Color.fromARGB(255, 200, 200, 200),
-                  )
-        : Container();
+
+    return widget.showControls
+        ? new MaterialControls(
+      controller: controller,
+      onExpandCollapse: widget.onExpandCollapse,
+      fullScreen: widget.fullScreen,
+      progressColors: widget.materialProgressColors,
+      autoPlay: widget.autoPlay,
+      title: widget.title,
+    ) : new Container();
+//    return widget.showControls
+//        ? Theme.of(context).platform == TargetPlatform.android
+//            ? new MaterialControls(
+//                controller: controller,
+//                onExpandCollapse: widget.onExpandCollapse,
+//                fullScreen: widget.fullScreen,
+//                progressColors: widget.materialProgressColors,
+//                autoPlay: widget.autoPlay,
+//                title: widget.title,
+//              )
+//            : new CupertinoControls(
+//                backgroundColor: new Color.fromRGBO(41, 41, 41, 0.7),
+//                iconColor: new Color.fromARGB(255, 200, 200, 200),
+//                controller: controller,
+//                onExpandCollapse: widget.onExpandCollapse,
+//                fullScreen: widget.fullScreen,
+//                progressColors: widget.cupertinoProgressColors,
+//                autoPlay: widget.autoPlay,
+//              )
+//        : new Container();
   }
 
-  double _calculateAspectRatio(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final width = size.width;
-    final height = size.height;
+  @override
+  void initState() {
+    // Hack to show the video when it starts playing. Should be fixed by the
+    // Plugin IMO.
+    widget.controller.addListener(_onPlay);
 
-    return width > height ? width / height : height / width;
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(PlayerWithControls oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.controller.dataSource != oldWidget.controller.dataSource) {
+      widget.controller.addListener(_onPlay);
+    }
+  }
+
+  @override
+  dispose() {
+    widget.controller.removeListener(_onPlay);
+    super.dispose();
+  }
+
+  void _onPlay() {
+    if (widget.controller.value.isPlaying) {
+      setState(() {
+        widget.controller.removeListener(_onPlay);
+      });
+    }
   }
 }

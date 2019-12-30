@@ -8,7 +8,6 @@ import 'package:artepie/utils/data_utils.dart';
 import 'package:artepie/views/LoadStateLayout.dart';
 import 'package:artepie/views/listview_item_bottom.dart';
 import 'package:artepie/views/userIconWidget/UserIconWidget.dart';
-import 'package:artepie/views/videoPage/ChewiePage.dart';
 import 'package:artepie/views/videoPage/VideoBean.dart';
 import 'package:artepie/widgets/MyChewie/chewie_player.dart';
 import 'package:artepie/widgets/MyChewie/chewie_progress_colors.dart';
@@ -40,15 +39,15 @@ class _MyVideoPageState extends State<VideoPage> {
   List _videoItemList = [];
   bool isNeedUp = false;
 
-  List<VideoBean> videolist = [];
-  //itemHight  向上滑动的距离
-  double itemHight = 0;
-  //点击item的 角标
-  int clickPosition = 0;
-  //列表滑动的距离的初始值
-  double initPosition = 0;
-  //向下滑动的距离
-  double upHight = 0;
+//  List<VideoBean> videolist = [];
+//  //itemHight  向上滑动的距离
+//  double itemHight = 0;
+//  //点击item的 角标
+//  int clickPosition = 0;
+//  //列表滑动的距离的初始值
+//  double initPosition = 0;
+//  //向下滑动的距离
+//  double upHight = 0;
   //   initPosition  记录点击时候列表滑动的高度
   @override
   void initState() {
@@ -56,18 +55,18 @@ class _MyVideoPageState extends State<VideoPage> {
     _loadVideoData();
     _loadInform();
     _scrollController.addListener(() {
-      if (itemHight > 0) {
-        if (_scrollController.position.pixels - initPosition > itemHight ||
-            initPosition - _scrollController.position.pixels > upHight) {
-          print('控件该隐藏了');
-          //获取点击的视频 然后隐藏   并且itemHight =0
-          VideoBean bean = videolist[clickPosition];
-          setState(() {
-            bean.isSeeVideo = false;
-            itemHight = 0;
-          });
-        }
-      }
+//      if (itemHight > 0) {
+//        if (_scrollController.position.pixels - initPosition > itemHight ||
+//            initPosition - _scrollController.position.pixels > upHight) {
+//          print('控件该隐藏了');
+//          //获取点击的视频 然后隐藏   并且itemHight =0
+//          VideoBean bean = videolist[clickPosition];
+//          setState(() {
+//            bean.isSeeVideo = false;
+//            itemHight = 0;
+//          });
+//        }
+//      }
 
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
@@ -210,8 +209,8 @@ class _MyVideoPageState extends State<VideoPage> {
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
-                GlobalKey firstKey = GlobalKey();
-                GlobalKey secondKey = GlobalKey();
+//                GlobalKey firstKey = GlobalKey();
+//                GlobalKey secondKey = GlobalKey();
                 if (index == _itemCount) {
                   return new ListBottomView(
                     isHighBottom: true,
@@ -224,7 +223,7 @@ class _MyVideoPageState extends State<VideoPage> {
                     },
                   );
                 } else {
-                  return _videoItem(context, index, firstKey, secondKey);
+                  return _videoItem(context, index);
                   //return buildItems(videolist[index], firstKey, secondKey);
                 }
               },
@@ -237,11 +236,10 @@ class _MyVideoPageState extends State<VideoPage> {
     );
   }
 
-  Widget _videoItem(BuildContext context, int position, GlobalKey firstKey,
-      GlobalKey secondKey) {
-    return new InkWell(
+  Widget _videoItem(BuildContext context, int position) {
+    return new GestureDetector(
       onTap: () {
-        itemClick(secondKey, position);
+        //itemClick(secondKey, position);
         Application.spUtil.get('login')
             ? Application.router.navigateTo(context,
                 '${Routes.videoDetailPage}?videoid=${Uri.encodeComponent(_videoItemList[position]['qa_id'])}',
@@ -256,7 +254,7 @@ class _MyVideoPageState extends State<VideoPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             _headWidget(context, position),
-            _contentWidget(context, position, firstKey, secondKey),
+            _contentWidget(context, position),
             _footWidget(context, position),
           ],
         ),
@@ -434,8 +432,7 @@ class _MyVideoPageState extends State<VideoPage> {
     );
   }
 
-  Widget _contentWidget(BuildContext context, int position, GlobalKey firstKey,
-      GlobalKey secondKey) {
+  Widget _contentWidget(BuildContext context, int position) {
     return new Container(
       padding: EdgeInsets.all(Adapt.px(18)),
       child: new Column(
@@ -456,61 +453,64 @@ class _MyVideoPageState extends State<VideoPage> {
           new Offstage(
             offstage: _videoItemList[position]['qa_video'] == null,
 
-            child: videolist[position].isSeeVideo
-                ? Container(
-                    key: firstKey,
-                    child: ChewiePage(
-                      placeholder: new Container(
-                          width: double.infinity,
-                          child: Image.network(
-                            _videoItemList[position]['qa_video'] == null
-                                ? ''
-                                : _videoItemList[position]['qa_video_cover'],
-                            fit: BoxFit.cover,
-                          )),
-                      videoPlayerController: VideoPlayerController.network(
-                          _videoItemList[position]['qa_video'] == null
-                              ? ''
-                              : _videoItemList[position]['qa_video']),
-                    ),
-                  )
-                : Container(
-                    key: secondKey,
-                    height: MediaQuery.of(context).size.width * 9 / 16,
-                    width: MediaQuery.of(context).size.width,
-                    margin: EdgeInsets.all(10),
-                    color: Colors.orange,
-                    child: Center(
-                      child: Text(
-                        'data',
-                        style: TextStyle(color: Colors.black, fontSize: 17),
-                      ),
-                    ),
-                  ),
-//            child: new Chewie(
-//              new VideoPlayerController.network(
-//                  _videoItemList[position]['qa_video'] == null
-//                      ? ''
-//                      : _videoItemList[position]['qa_video']),
-//              aspectRatio: 16 / 9,
-//              autoPlay: false,
-//              looping: true,
-//              showControls: true,
-//              placeholder: Container(
-//                  width: double.infinity,
-//                  child: Image.network(
-//                    _videoItemList[position]['qa_video'] == null
-//                        ? ''
-//                        : _videoItemList[position]['qa_video_cover'],
-//                    fit: BoxFit.cover,
-//                  )),
-//              autoInitialize: false,
-//              materialProgressColors: new ChewieProgressColors(
-//                  playedColor: MyColors.white,
-//                  handleColor: MyColors.colorPrimary,
-//                  backgroundColor: Colors.grey,
-//                  bufferedColor: MyColors.pressColorPrimary),
-//            ),
+
+
+
+//            child: videolist[position].isSeeVideo
+//                ? Container(
+//                    key: firstKey,
+//                    child: ChewiePage(
+//                      placeholder: new Container(
+//                          width: double.infinity,
+//                          child: Image.network(
+//                            _videoItemList[position]['qa_video'] == null
+//                                ? ''
+//                                : _videoItemList[position]['qa_video_cover'],
+//                            fit: BoxFit.cover,
+//                          )),
+//                      videoPlayerController: VideoPlayerController.network(
+//                          _videoItemList[position]['qa_video'] == null
+//                              ? ''
+//                              : _videoItemList[position]['qa_video']),
+//                    ),
+//                  )
+//                : Container(
+//                    key: secondKey,
+//                    height: MediaQuery.of(context).size.width * 9 / 16,
+//                    width: MediaQuery.of(context).size.width,
+//                    margin: EdgeInsets.all(10),
+//                    color: Colors.orange,
+//                    child: Center(
+//                      child: Text(
+//                        'data',
+//                        style: TextStyle(color: Colors.black, fontSize: 17),
+//                      ),
+//                    ),
+////                  ),
+            child: new Chewie(
+              new VideoPlayerController.network(
+                  _videoItemList[position]['qa_video'] == null
+                      ? ''
+                      : _videoItemList[position]['qa_video']),
+              aspectRatio: 16 / 9,
+              autoPlay: false,
+              looping: true,
+              showControls: true,
+              placeholder: Container(
+                  width: double.infinity,
+                  child: Image.network(
+                    _videoItemList[position]['qa_video'] == null
+                        ? ''
+                        : _videoItemList[position]['qa_video_cover'],
+                    fit: BoxFit.cover,
+                  )),
+              autoInitialize: false,
+              materialProgressColors: new ChewieProgressColors(
+                  playedColor: MyColors.white,
+                  handleColor: MyColors.colorPrimary,
+                  backgroundColor: Colors.grey,
+                  bufferedColor: MyColors.pressColorPrimary),
+            ),
           ),
           new Offstage(
               offstage: _videoItemList[position]['qaData'] == null,
@@ -568,90 +568,91 @@ class _MyVideoPageState extends State<VideoPage> {
                             ? true
                             : _videoItemList[position]['qaData']['qa_video'] ==
                                 null,
-                        child: videolist[position].isSeeVideo
-                            ? Container(
-                                key: firstKey,
-                                child: ChewiePage(
-                                  placeholder: Container(
-                                      width: double.infinity,
-                                      child: Image.network(
-                                        _videoItemList[position]['qaData'] ==
-                                                null
-                                            ? ''
-                                            : (_videoItemList[position]
-                                                            ['qaData']
-                                                        ['qa_video_cover'] ==
-                                                    null
-                                                ? ''
-                                                : _videoItemList[position]
-                                                        ['qaData']
-                                                    ['qa_video_cover']),
-                                        fit: BoxFit.cover,
-                                      )),
-                                  videoPlayerController:
-                                      VideoPlayerController.network(
-                                          _videoItemList[position]
-                                                      ['qaData'] ==
-                                                  null
-                                              ? ''
-                                              : (_videoItemList[position]
-                                                              ['qaData']
-                                                          ['qa_video'] ==
-                                                      null
-                                                  ? ''
-                                                  : _videoItemList[position]
-                                                      ['qaData']['qa_video'])),
-                                ),
-                              )
-                            : Container(
-                                key: secondKey,
-                                height:
-                                    MediaQuery.of(context).size.width * 9 / 16,
-                                width: MediaQuery.of(context).size.width,
-                                margin: EdgeInsets.all(10),
-                                color: Colors.orange,
-                                child: Center(
-                                  child: Text(
-                                    'data',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 17),
-                                  ),
-                                ),
-                              ),
-//                        new Chewie(
-//                          new VideoPlayerController.network(
-//                              _videoItemList[position]['qaData'] == null
-//                                  ? ''
-//                                  : (_videoItemList[position]['qaData']
-//                                              ['qa_video'] ==
-//                                          null
-//                                      ? ''
-//                                      : _videoItemList[position]['qaData']
-//                                          ['qa_video'])),
-//                          aspectRatio: 16 / 9,
-//                          autoPlay: false,
-//                          looping: true,
-//                          showControls: true,
-//                          placeholder: Container(
-//                              width: double.infinity,
-//                              child: Image.network(
-//                                _videoItemList[position]['qaData'] == null
-//                                    ? ''
-//                                    : (_videoItemList[position]['qaData']
-//                                                ['qa_video_cover'] ==
-//                                            null
-//                                        ? ''
-//                                        : _videoItemList[position]['qaData']
-//                                            ['qa_video_cover']),
-//                                fit: BoxFit.cover,
-//                              )),
-//                          autoInitialize: false,
-//                          materialProgressColors: new ChewieProgressColors(
-//                              playedColor: MyColors.white,
-//                              handleColor: MyColors.colorPrimary,
-//                              backgroundColor: Colors.grey,
-//                              bufferedColor: MyColors.pressColorPrimary),
-//                        ),
+
+//                        child: videolist[position].isSeeVideo
+//                            ? Container(
+//                                key: firstKey,
+//                                child: ChewiePage(
+//                                  placeholder: Container(
+//                                      width: double.infinity,
+//                                      child: Image.network(
+//                                        _videoItemList[position]['qaData'] ==
+//                                                null
+//                                            ? ''
+//                                            : (_videoItemList[position]
+//                                                            ['qaData']
+//                                                        ['qa_video_cover'] ==
+//                                                    null
+//                                                ? ''
+//                                                : _videoItemList[position]
+//                                                        ['qaData']
+//                                                    ['qa_video_cover']),
+//                                        fit: BoxFit.cover,
+//                                      )),
+//                                  videoPlayerController:
+//                                      VideoPlayerController.network(
+//                                          _videoItemList[position]
+//                                                      ['qaData'] ==
+//                                                  null
+//                                              ? ''
+//                                              : (_videoItemList[position]
+//                                                              ['qaData']
+//                                                          ['qa_video'] ==
+//                                                      null
+//                                                  ? ''
+//                                                  : _videoItemList[position]
+//                                                      ['qaData']['qa_video'])),
+//                                ),
+//                              )
+//                            : Container(
+//                                key: secondKey,
+//                                height:
+//                                    MediaQuery.of(context).size.width * 9 / 16,
+//                                width: MediaQuery.of(context).size.width,
+//                                margin: EdgeInsets.all(10),
+//                                color: Colors.orange,
+//                                child: Center(
+//                                  child: Text(
+//                                    'data',
+//                                    style: TextStyle(
+//                                        color: Colors.black, fontSize: 17),
+//                                  ),
+//                                ),
+//                              ),
+                        child:new Chewie(
+                          new VideoPlayerController.network(
+                              _videoItemList[position]['qaData'] == null
+                                  ? ''
+                                  : (_videoItemList[position]['qaData']
+                                              ['qa_video'] ==
+                                          null
+                                      ? ''
+                                      : _videoItemList[position]['qaData']
+                                          ['qa_video'])),
+                          aspectRatio: 16 / 9,
+                          autoPlay: false,
+                          looping: true,
+                          showControls: true,
+                          placeholder: Container(
+                              width: double.infinity,
+                              child: Image.network(
+                                _videoItemList[position]['qaData'] == null
+                                    ? ''
+                                    : (_videoItemList[position]['qaData']
+                                                ['qa_video_cover'] ==
+                                            null
+                                        ? ''
+                                        : _videoItemList[position]['qaData']
+                                            ['qa_video_cover']),
+                                fit: BoxFit.cover,
+                              )),
+                          autoInitialize: false,
+                          materialProgressColors: new ChewieProgressColors(
+                              playedColor: MyColors.white,
+                              handleColor: MyColors.colorPrimary,
+                              backgroundColor: Colors.grey,
+                              bufferedColor: MyColors.pressColorPrimary),
+                        ),
                       ),
                     ],
                   ),
@@ -716,6 +717,14 @@ class _MyVideoPageState extends State<VideoPage> {
           _videoItemList = data;
           _itemCount = data.length;
         });
+
+//        for(int i = 0;i < _videoItemList.length; i++){
+//          VideoBean videoBean = new VideoBean(_videoItemList[i]['qa_video'],true);
+//          videolist.add(videoBean);
+//        }
+//        setState(() {
+//
+//        });
       }
     }).catchError((onError) {
       setState(() {
@@ -740,6 +749,15 @@ class _MyVideoPageState extends State<VideoPage> {
           _videoItemList.addAll(data);
           _itemCount = _videoItemList.length;
         });
+
+//        for(int i = 0;i < data.length; i++){
+//          VideoBean videoBean = new VideoBean(data[i]['qa_video'],true);
+//          videolist.add(videoBean);
+//        }
+//        setState(() {
+//
+//        });
+
       }
     }).catchError((onError) {
       setState(() {
@@ -765,30 +783,30 @@ class _MyVideoPageState extends State<VideoPage> {
   }
 
 
-  itemClick(GlobalKey secondKey, int position) {
-    RenderBox renderBox = secondKey.currentContext.findRenderObject();
-    var offset = renderBox.localToGlobal(Offset(0.0, renderBox.size.height));
-    setState(() {
-      //获取当前列表滚动的距离
-      itemHight = offset.dy;
-      clickPosition = position;
-    });
-    print('$itemHight');
-    for (int j = 0; j < videolist.length; j++) {
-      VideoBean videoBean = videolist[j];
-      setState(() {
-        videoBean.isSeeVideo = false;
-      });
-    }
-    //  bus.sendBroadcast('ChewieListItem');
-    VideoBean bean = videolist[position];
-    setState(() {
-      bean.isSeeVideo = true;
-      initPosition = _scrollController.position.pixels;
-      //屏幕的高度-视频所处的高度 +视频的高度
-      upHight = MediaQuery.of(context).size.height -
-          itemHight +
-          MediaQuery.of(context).size.width * 9 / 16;
-    });
-  }
+//  itemClick(GlobalKey secondKey, int position) {
+//    RenderBox renderBox = secondKey.currentContext.findRenderObject();
+//    var offset = renderBox.localToGlobal(Offset(0.0, renderBox.size.height));
+//    setState(() {
+//      //获取当前列表滚动的距离
+//      itemHight = offset.dy;
+//      clickPosition = position;
+//    });
+//    print('$itemHight');
+//    for (int j = 0; j < videolist.length; j++) {
+//      VideoBean videoBean = videolist[j];
+//      setState(() {
+//        videoBean.isSeeVideo = false;
+//      });
+//    }
+//    //  bus.sendBroadcast('ChewieListItem');
+//    VideoBean bean = videolist[position];
+//    setState(() {
+//      bean.isSeeVideo = true;
+//      initPosition = _scrollController.position.pixels;
+//      //屏幕的高度-视频所处的高度 +视频的高度
+//      upHight = MediaQuery.of(context).size.height -
+//          itemHight +
+//          MediaQuery.of(context).size.width * 9 / 16;
+//    });
+//  }
 }
